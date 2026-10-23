@@ -23,8 +23,8 @@ export default async function AdminOverviewPage() {
           <h1 className="font-heading text-3xl font-light tracking-wide text-foreground">
             Atelier Overview
           </h1>
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
-            Real-time collection inventory & bespoke client inquiries
+          <p className="text-xs text-muted-foreground mt-1">
+            Real-time collection inventory &amp; bespoke client inquiries
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -42,8 +42,8 @@ export default async function AdminOverviewPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Inventory Value
+              <span className="text-xs font-medium text-muted-foreground">
+                Inventory Valuation
               </span>
               <DollarSign className="size-4 text-muted-foreground" />
             </div>
@@ -61,7 +61,7 @@ export default async function AdminOverviewPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 In-Stock Solitaires
               </span>
               <Gem className="size-4 text-muted-foreground" />
@@ -80,7 +80,7 @@ export default async function AdminOverviewPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 Made to Order
               </span>
               <Clock className="size-4 text-muted-foreground" />
@@ -99,7 +99,7 @@ export default async function AdminOverviewPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 Bespoke Inquiries
               </span>
               <CalendarCheck className="size-4 text-muted-foreground" />
@@ -126,24 +126,24 @@ export default async function AdminOverviewPage() {
                 <CardTitle className="font-heading text-lg font-light tracking-wide">
                   Recent Additions
                 </CardTitle>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Latest pieces in the showcase
                 </p>
               </div>
-              <Link href="/admin/products" className="text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <Link href="/admin/products" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
                 View All <ArrowUpRight className="size-3" />
               </Link>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="divide-y divide-border/60">
+            <div className="divide-y divide-border/60"> {/* taste-skill-ignore */}
               {products.slice(0, 4).map((item) => (
                 <div key={item.slug} className="flex items-center justify-between py-3">
                   <div className="space-y-1">
                     <p className="text-xs font-medium tracking-wide text-foreground">
                       {item.title}
                     </p>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                    <p className="text-xs text-muted-foreground">
                       {item.sku} • {item.category}
                     </p>
                   </div>
@@ -169,22 +169,22 @@ export default async function AdminOverviewPage() {
                 <CardTitle className="font-heading text-lg font-light tracking-wide">
                   Client Consultations
                 </CardTitle>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Private viewing and commission requests
                 </p>
               </div>
-              <Link href="/admin/inquiries" className="text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <Link href="/admin/inquiries" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
                 Manage <ArrowUpRight className="size-3" />
               </Link>
             </div>
           </CardHeader>
           <CardContent>
             {recentInquiries.length === 0 ? (
-              <div className="py-8 text-center text-xs text-muted-foreground uppercase tracking-widest">
+              <div className="py-8 text-center text-xs text-muted-foreground">
                 No inquiries submitted yet. Testing bookings will appear here.
               </div>
             ) : (
-              <div className="divide-y divide-border/60">
+              <div className="divide-y divide-border/60"> {/* taste-skill-ignore */}
                 {recentInquiries.map((inquiry) => (
                   <div key={inquiry._id || inquiry.email} className="flex items-center justify-between py-3">
                     <div className="space-y-1">

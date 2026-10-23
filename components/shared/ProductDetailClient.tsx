@@ -59,18 +59,18 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-svh bg-background text-foreground">
       {/* Top Breadcrumb Header: Flat, clean */}
       <div className="border-b border-border/60 bg-background py-4 px-6 lg:px-12">
         <div className="container mx-auto flex items-center justify-between">
           <Link
             href="/collections"
-            className="flex items-center gap-2 text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 text-sm tracking-wider text-muted-foreground hover:text-foreground transition-colors"
           >
-            <ArrowLeft className="size-3.5" />
+            <ArrowLeft className="size-4" />
             <span>Salon Collection</span>
           </Link>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Link href="/" className="hover:text-foreground">Atelier</Link>
             <span>/</span>
             <Link href="/collections" className="hover:text-foreground">{product.category}</Link>
@@ -95,7 +95,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
                 />
               )}
-              <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-xs text-foreground">
+              <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-sm text-foreground">
                 {product.stockStatus === "in_stock" ? "Available in Salon" : "Bespoke Made to Order"}
               </div>
             </div>
@@ -122,7 +122,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           {/* Right: Jewelry Details & Specifications */}
           <div className="space-y-8">
             <div className="space-y-3">
-              <span className="text-xs text-muted-foreground block">
+              <span className="text-sm text-muted-foreground block">
                 {product.collection} Salon Series • Reference {product.sku}
               </span>
               <h1 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-5xl">
@@ -133,7 +133,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   ${product.price.toLocaleString()}
                 </span>
                 {product.compareAtPrice && (
-                  <span className="text-sm text-muted-foreground line-through">
+                  <span className="text-base text-muted-foreground line-through">
                     ${product.compareAtPrice.toLocaleString()}
                   </span>
                 )}
@@ -143,7 +143,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             {/* Metal Selection */}
             {product.metals.length > 0 && (
               <div className="space-y-3">
-                <span className="text-xs font-medium text-muted-foreground block">
+                <span className="text-sm font-medium text-foreground block">
                   Select Precious Metal Alloy
                 </span>
                 <MetalSelector
@@ -161,39 +161,39 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
             {/* Gemological Specifications Matrix */}
             <div className="bg-secondary/40 p-6 space-y-4">
-              <span className="text-xs font-medium text-foreground block">
+              <h3 className="font-heading text-lg font-normal text-foreground">
                 Atelier Gemological Specifications
-              </span>
-              <div className="grid grid-cols-2 gap-4 text-xs">
+              </h3>
+              <dl className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-muted-foreground block">Primary Gemstone</span>
-                  <span className="font-medium text-foreground">{product.gemstones.join(", ")}</span>
+                  <dt className="text-muted-foreground block">Primary Gemstone</dt>
+                  <dd className="font-medium text-foreground">{product.gemstones.join(", ")}</dd>
                 </div>
                 {product.caratWeight && (
                   <div>
-                    <span className="text-muted-foreground block">Carat Weight</span>
-                    <span className="font-medium text-foreground">{product.caratWeight} ct</span>
+                    <dt className="text-muted-foreground block">Carat Weight</dt>
+                    <dd className="font-medium text-foreground">{product.caratWeight} ct</dd>
                   </div>
                 )}
                 {product.clarity && (
                   <div>
-                    <span className="text-muted-foreground block">Clarity Certification</span>
-                    <span className="font-medium text-foreground">{product.clarity} (GIA Verified)</span>
+                    <dt className="text-muted-foreground block">Clarity Certification</dt>
+                    <dd className="font-medium text-foreground">{product.clarity} (GIA Verified)</dd>
                   </div>
                 )}
                 {product.cutGrade && (
                   <div>
-                    <span className="text-muted-foreground block">Cut Symmetry</span>
-                    <span className="font-medium text-foreground">{product.cutGrade}</span>
+                    <dt className="text-muted-foreground block">Cut Symmetry</dt>
+                    <dd className="font-medium text-foreground">{product.cutGrade}</dd>
                   </div>
                 )}
-              </div>
+              </dl>
             </div>
 
             {/* CTA and Consultation Trigger */}
             <div className="space-y-4 pt-2">
               <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
-                <DialogTrigger render={<Button size="lg" className="w-full text-xs font-medium" />}>
+                <DialogTrigger render={<Button size="lg" className="w-full text-sm font-medium" />}>
                   Request Private Salon Viewing
                 </DialogTrigger>
 
@@ -204,7 +204,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                       <DialogTitle className="font-heading text-xl font-normal">
                         Private Atelier Consultation
                       </DialogTitle>
-                      <DialogDescription className="text-xs text-muted-foreground">
+                      <DialogDescription className="text-sm text-muted-foreground">
                         Schedule a private viewing of {product.title} with an atelier gemologist.
                       </DialogDescription>
                     </DialogHeader>
@@ -216,7 +216,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                           <h4 className="font-heading text-lg text-foreground">
                             Viewing Requested
                           </h4>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-sm text-muted-foreground">
                             Our concierge will contact you via {email || "email"} within 24 hours to confirm your private appointment.
                           </p>
                         </div>
@@ -234,7 +234,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     ) : (
                       <form onSubmit={handleBookingSubmit} className="space-y-4 pt-2">
                         <div>
-                          <label className="text-xs text-muted-foreground block mb-1">
+                          <label className="text-sm text-muted-foreground block mb-1">
                             Your Full Name *
                           </label>
                           <Input
@@ -242,13 +242,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             onChange={(e) => setFullName(e.target.value)}
                             required
                             placeholder="Lady Evelyn Sinclair"
-                            className="text-xs"
+                            className="text-sm"
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="text-xs text-muted-foreground block mb-1">
+                            <label className="text-sm text-muted-foreground block mb-1">
                               Email Address *
                             </label>
                             <Input
@@ -257,11 +257,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                               onChange={(e) => setEmail(e.target.value)}
                               required
                               placeholder="evelyn@sinclair.com"
-                              className="text-xs"
+                              className="text-sm"
                             />
                           </div>
                           <div>
-                            <label className="text-xs text-muted-foreground block mb-1">
+                            <label className="text-sm text-muted-foreground block mb-1">
                               Telephone *
                             </label>
                             <Input
@@ -270,13 +270,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                               onChange={(e) => setPhone(e.target.value)}
                               required
                               placeholder="+1 (555) 019-2831"
-                              className="text-xs"
+                              className="text-sm"
                             />
                           </div>
                         </div>
 
                         <div>
-                          <label className="text-xs text-muted-foreground block mb-1">
+                          <label className="text-sm text-muted-foreground block mb-1">
                             Preferred Viewing Date *
                           </label>
                           <Input
@@ -284,12 +284,12 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             value={preferredDate}
                             onChange={(e) => setPreferredDate(e.target.value)}
                             required
-                            className="text-xs"
+                            className="text-sm"
                           />
                         </div>
 
                         <div>
-                          <label className="text-xs text-muted-foreground block mb-1">
+                          <label className="text-sm text-muted-foreground block mb-1">
                             Special Requests / Sizing Details
                           </label>
                           <Textarea
@@ -297,7 +297,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             onChange={(e) => setNotes(e.target.value)}
                             rows={3}
                             placeholder="Ring size 6.5, interest in matching band..."
-                            className="text-xs"
+                            className="text-sm"
                           />
                         </div>
 
@@ -320,7 +320,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </DialogPortal>
               </Dialog>
 
-              <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border/50">
+              <div className="flex items-center justify-between text-sm text-muted-foreground pt-3 border-t border-border/50">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="size-4 text-foreground" />
                   Insured Global Transport

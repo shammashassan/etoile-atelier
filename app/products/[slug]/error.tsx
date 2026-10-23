@@ -16,7 +16,7 @@ export default function ProductDetailError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-center p-6">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-4 text-center p-6">
       <h2 className="font-heading text-2xl tracking-wide text-foreground">
         Unable to load jewelry presentation
       </h2>

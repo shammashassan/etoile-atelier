@@ -15,7 +15,7 @@ export default function GlobalError({
 
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background text-foreground text-center px-4 font-sans">
+      <body className="flex min-h-svh flex-col items-center justify-center gap-4 bg-background text-foreground text-center px-4 font-sans">
         <h1 className="text-3xl font-bold tracking-tight">Application Error</h1>
         <p className="max-w-md text-sm text-muted-foreground">
           A critical system error occurred. Please try reloading the application.

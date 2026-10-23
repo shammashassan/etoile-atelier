@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductDetailLoading() {
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-svh bg-background p-8">
       <div className="container mx-auto grid gap-12 lg:grid-cols-2 animate-pulse">
         <Skeleton className="aspect-square w-full" />
         <div className="space-y-6">

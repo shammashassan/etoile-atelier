@@ -4,7 +4,7 @@ import React, { useTransition, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useQueryState, parseAsString } from "nuqs";
-import { Search, X, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Search, X, ArrowRight } from "lucide-react";
 import { type Product, CATEGORIES, METALS } from "@/lib/schemas/product";
 import { Input } from "@/components/ui/input";
 import {
@@ -107,7 +107,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search gemstones, designs, metals..."
-              className="pl-10 text-xs bg-background rounded-none border-border"
+              className="pl-10 text-sm bg-background rounded-none border-border"
             />
             {search && (
               <button
@@ -126,7 +126,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value={metal}
               onValueChange={(val) => startTransition(() => { void setMetal(val); })}
             >
-              <SelectTrigger className="w-40 text-xs bg-background rounded-none border-border">
+              <SelectTrigger className="w-44 text-sm bg-background rounded-none border-border">
                 <SelectValue placeholder="Precious Metal" />
               </SelectTrigger>
               <SelectContent>
@@ -143,7 +143,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value={sort}
               onValueChange={(val) => startTransition(() => { void setSort(val); })}
             >
-              <SelectTrigger className="w-40 text-xs bg-background rounded-none border-border">
+              <SelectTrigger className="w-44 text-sm bg-background rounded-none border-border">
                 <SelectValue placeholder="Sort Order" />
               </SelectTrigger>
               <SelectContent>
@@ -160,7 +160,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                   void setInStockOnly(inStockOnly === "true" ? "false" : "true");
                 })
               }
-              className={`px-3 py-2 text-xs font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
                 inStockOnly === "true"
                   ? "bg-foreground text-background"
                   : "bg-background text-foreground hover:bg-muted"
@@ -173,7 +173,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               <button
                 type="button"
                 onClick={resetFilters}
-                className="px-3 py-2 text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
+                className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground underline underline-offset-4"
               >
                 Reset Filters
               </button>
@@ -186,7 +186,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
           <button
             type="button"
             onClick={() => startTransition(() => { void setCategory("all"); })}
-            className={`px-4 py-2 text-xs transition-colors shrink-0 ${
+            className={`px-4 py-2 text-sm transition-colors shrink-0 ${
               category === "all"
                 ? "bg-foreground text-background font-medium"
                 : "bg-background text-muted-foreground hover:text-foreground"
@@ -202,7 +202,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 key={cat}
                 type="button"
                 onClick={() => startTransition(() => { void setCategory(cat); })}
-                className={`px-4 py-2 text-xs transition-colors shrink-0 ${
+                className={`px-4 py-2 text-sm transition-colors shrink-0 ${
                   isSelected
                     ? "bg-foreground text-background font-medium"
                     : "bg-background text-muted-foreground hover:text-foreground"
@@ -216,7 +216,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
       </div>
 
       {/* Results Counter */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>
           Showing {filteredProducts.length} {filteredProducts.length === 1 ? "salon piece" : "salon pieces"}
         </span>
@@ -229,13 +229,13 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
           <h3 className="font-heading text-2xl font-light text-foreground mb-2">
             No Archival Pieces Found
           </h3>
-          <p className="max-w-md text-xs text-muted-foreground mb-6">
+          <p className="max-w-md text-sm text-muted-foreground mb-6">
             We could not find any jewelry matching your precise criteria. Adjust your search or contact our concierge for bespoke commissions.
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="bg-foreground text-background px-4 py-2 text-xs font-medium"
+            className="bg-foreground text-background px-4 py-2 text-sm font-medium"
           >
             Clear Filters
           </button>
@@ -261,12 +261,12 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                     />
                   )}
                   {/* Discreet status tag */}
-                  <div className="absolute top-3 left-3 bg-background/95 px-2.5 py-1 text-[11px] text-foreground">
+                  <div className="absolute top-3 left-3 bg-background/95 px-3 py-1 text-sm text-foreground">
                     {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
                   </div>
                 </Link>
 
-                <div className="flex flex-col gap-1.5 pt-1">
+                <div className="flex flex-col gap-2 pt-1">
                   <div className="flex items-baseline justify-between gap-2">
                     <Link
                       href={`/products/${product.slug}`}
@@ -278,19 +278,19 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                       ${product.price.toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     {product.metals[0]} • {product.gemstones[0]} {product.caratWeight ? `(${product.caratWeight} ct)` : ""}
                   </p>
-                  <p className="text-xs text-muted-foreground/80 line-clamp-2 leading-relaxed mt-1">
+                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                     {product.shortDescription}
                   </p>
                   <div className="mt-3">
                     <Link
                       href={`/products/${product.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground hover:underline underline-offset-4"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:underline underline-offset-4"
                     >
                       Inspect Details &amp; Gemology
-                      <ArrowRight className="size-3" />
+                      <ArrowRight className="size-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -307,13 +307,13 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
             <h2 className="font-heading text-2xl font-normal text-foreground sm:text-3xl">
               Commission a Custom Heirloom
             </h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="text-base leading-relaxed text-muted-foreground">
               Our master gemologists source rare untreated stones and sculpt custom one-of-a-kind heirlooms tailored to your private vision.
             </p>
           </div>
           <Link
             href="/consultation"
-            className="bg-foreground text-background px-6 py-3.5 text-xs font-medium shrink-0 hover:bg-foreground/90 transition-colors"
+            className="bg-foreground text-background px-6 py-3.5 text-sm font-medium shrink-0 hover:bg-foreground/90 transition-colors"
           >
             Book Bespoke Consultation
           </Link>

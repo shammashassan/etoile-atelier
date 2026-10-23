@@ -24,7 +24,6 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
   const activeProduct = products.find((p) => p.slug === selectedSlug) || products[0];
   const primaryImage = activeProduct.images.find((img) => img.isPrimary) || activeProduct.images[0];
 
-  // Visual lighting parameters
   const lightingProfiles: Record<
     LightingMode,
     { label: string; temp: string; filter: string; toneName: string; desc: string }
@@ -34,34 +33,40 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
       temp: "5500K",
       filter: "brightness(1.02) contrast(1.06) saturate(1.0)",
       toneName: "Diamond Scintillation Standard",
-      desc: "Reveals the true color grade and brilliant optical dispersion under direct northern light.",
+      desc: "Reveals true color grade and brilliant optical dispersion under direct northern light.",
     },
     candlelight: {
       label: "Salon Candlelight",
       temp: "2700K",
       filter: "brightness(0.96) contrast(1.1) sepia(0.2) saturate(1.18)",
       toneName: "Place Vendôme Evening Gala",
-      desc: "Warm incandescent atmosphere highlighting fire dispersion and the deep luster of precious metal mountings.",
+      desc: "Warm incandescent atmosphere highlighting fire dispersion and precious metal lusters.",
     },
     bench: {
       label: "Jeweler's Bench",
       temp: "4000K",
       filter: "brightness(1.08) contrast(1.15) saturate(0.92)",
       toneName: "Master Craftsman Inspection",
-      desc: "High CRI surgical illumination allowing examination of micro-pavé prongs, clarity facets, and symmetry.",
+      desc: "High CRI surgical illumination allowing examination of micro-pavé prongs and clarity facets.",
     },
   };
 
   const currentProfile = lightingProfiles[lighting];
 
   return (
-    <div className="w-full">
-      {/* Studio Header: Clean, Architectural, No Eyebrows */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="w-full"
+    >
+      {/* Studio Header */}
       <div className="mb-12 max-w-2xl">
         <h2 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
           Atelier Optical &amp; Metallurgy Studio
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xl">
           Examine gemstones under calibrated salon lighting spectra, rotate incident light across hand-cut facets, and compare alloy mountings.
         </p>
       </div>
@@ -73,8 +78,8 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
             {/* Master Jewel Artwork */}
             <motion.div
               key={`${activeProduct.slug}-${alloy}`}
-              initial={{ opacity: 0.4, scale: 0.98 }}
-              animate={{ opacity: 1, scale: isLoupeActive ? 1.65 : 1 }}
+              initial={{ opacity: 0.5, scale: 0.98 }}
+              animate={{ opacity: 1, scale: isLoupeActive ? 1.6 : 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="relative h-full w-full"
               style={{
@@ -103,15 +108,15 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
               />
             </motion.div>
 
-            {/* Specimen Tag overlay - quiet, no glass */}
-            <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-xs tracking-wider text-foreground">
+            {/* Specimen Tag overlay */}
+            <div className="absolute top-4 left-4 bg-background px-3 py-1.5 text-sm text-foreground">
               {activeProduct.caratWeight ? `${activeProduct.caratWeight} ct` : "Fine Specimen"} • {activeProduct.gemstones[0]}
             </div>
 
             {/* Loupe Toggle Indicator */}
             {isLoupeActive && (
-              <div className="absolute bottom-4 left-4 bg-background px-3 py-1 text-xs text-foreground">
-                10× Gemological Loupe Magnification Active
+              <div className="absolute bottom-4 left-4 bg-background px-3 py-1.5 text-sm text-foreground">
+                10× Gemological Loupe Active
               </div>
             )}
           </div>
@@ -123,8 +128,8 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                 <span className="text-sm font-medium text-foreground block">
                   Incident Light Angle
                 </span>
-                <span className="text-xs text-muted-foreground">
-                  Rotate illumination vector across pavilion facets ({lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`})
+                <span className="text-sm text-muted-foreground">
+                  Rotate illumination vector across facets ({lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`})
                 </span>
               </div>
               <input
@@ -133,19 +138,19 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                 max="45"
                 value={lightAngle}
                 onChange={(e) => setLightAngle(Number(e.target.value))}
-                className="w-full sm:w-48 accent-foreground cursor-pointer h-1 bg-border rounded-none"
+                className="w-full sm:w-48 accent-foreground cursor-pointer h-1.5 bg-background rounded-none"
                 aria-label="Incident light angle"
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border/50">
-              <span className="text-xs text-muted-foreground">
-                Current Spectrum: <strong className="text-foreground font-medium">{currentProfile.toneName} ({currentProfile.temp})</strong>
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 bg-secondary">
+              <span className="text-sm text-muted-foreground">
+                Spectrum: <strong className="text-foreground font-medium">{currentProfile.toneName} ({currentProfile.temp})</strong>
               </span>
               <button
                 type="button"
                 onClick={() => setIsLoupeActive(!isLoupeActive)}
-                className={`px-4 py-2 text-xs font-medium transition-colors ${
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
                   isLoupeActive
                     ? "bg-foreground text-background"
                     : "bg-background text-foreground hover:bg-muted"
@@ -161,7 +166,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
         <div className="lg:col-span-5 flex flex-col gap-8">
           {/* Specimen Selector */}
           <div>
-            <span className="text-xs font-medium text-muted-foreground block mb-3">
+            <span className="text-sm font-medium text-foreground block mb-3">
               Select Salon Masterpiece
             </span>
             <div className="grid grid-cols-2 gap-2">
@@ -176,10 +181,10 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                       : "bg-secondary text-foreground hover:bg-muted"
                   }`}
                 >
-                  <span className="text-xs block line-clamp-1 font-medium">
+                  <span className="text-sm block line-clamp-1 font-medium">
                     {item.title}
                   </span>
-                  <span className="text-xs opacity-75 block mt-1">
+                  <span className="text-sm opacity-80 block mt-1">
                     ${item.price.toLocaleString()}
                   </span>
                 </button>
@@ -189,7 +194,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
 
           {/* Illumination Spectra Selector */}
           <div>
-            <span className="text-xs font-medium text-muted-foreground block mb-3">
+            <span className="text-sm font-medium text-foreground block mb-3">
               Calibrated Illumination Spectrum
             </span>
             <div className="flex flex-col gap-2">
@@ -201,21 +206,21 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                     key={mode}
                     type="button"
                     onClick={() => setLighting(mode)}
-                    className={`p-3 text-left transition-all flex items-baseline justify-between ${
+                    className={`p-3.5 text-left transition-all flex items-baseline justify-between ${
                       isActive
-                        ? "border-l-2 border-foreground bg-secondary text-foreground pl-4"
-                        : "bg-background/40 text-muted-foreground hover:text-foreground pl-3"
+                        ? "bg-secondary text-foreground pl-4 font-medium"
+                        : "bg-background text-muted-foreground hover:text-foreground pl-3"
                     }`}
                   >
                     <div>
                       <span className="text-sm font-medium block text-foreground">
                         {prof.label}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-sm text-muted-foreground">
                         {prof.desc}
                       </span>
                     </div>
-                    <span className="text-xs font-mono shrink-0 ml-4">
+                    <span className="text-sm shrink-0 ml-4 font-normal">
                       {prof.temp}
                     </span>
                   </button>
@@ -226,7 +231,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
 
           {/* Metallurgy Alloy Selector */}
           <div>
-            <span className="text-xs font-medium text-muted-foreground block mb-3">
+            <span className="text-sm font-medium text-foreground block mb-3">
               Precious Metal Alloy
             </span>
             <div className="grid grid-cols-3 gap-2">
@@ -235,9 +240,9 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                   key={m}
                   type="button"
                   onClick={() => setAlloy(m)}
-                  className={`py-2 px-3 text-xs text-center transition-colors ${
+                  className={`py-2.5 px-3 text-sm text-center transition-colors ${
                     alloy === m
-                      ? "bg-foreground text-background"
+                      ? "bg-foreground text-background font-medium"
                       : "bg-secondary text-foreground hover:bg-muted"
                   }`}
                 >
@@ -249,48 +254,50 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
 
           {/* Gemological Specifications Dossier */}
           <div className="bg-secondary p-6">
-            <h4 className="font-heading text-lg font-normal mb-4 text-foreground">
-              Gemological Dossier
-            </h4>
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-1 border-b border-border/40">
-                <span className="text-muted-foreground">Primary Gemstone</span>
-                <span className="font-medium text-foreground">{activeProduct.gemstones.join(", ")}</span>
-              </div>
-              {activeProduct.caratWeight && (
-                <div className="flex justify-between py-1 border-b border-border/40">
-                  <span className="text-muted-foreground">Total Carat Weight</span>
-                  <span className="font-medium text-foreground">{activeProduct.caratWeight} ct</span>
-                </div>
-              )}
-              {activeProduct.clarity && (
-                <div className="flex justify-between py-1 border-b border-border/40">
-                  <span className="text-muted-foreground">Clarity Certification</span>
-                  <span className="font-medium text-foreground">{activeProduct.clarity} (GIA Verified)</span>
-                </div>
-              )}
-              {activeProduct.cutGrade && (
-                <div className="flex justify-between py-1 border-b border-border/40">
-                  <span className="text-muted-foreground">Cut Proportion Grade</span>
-                  <span className="font-medium text-foreground">{activeProduct.cutGrade} Symmetry</span>
-                </div>
-              )}
-              <div className="flex justify-between py-1 border-b border-border/40">
-                <span className="text-muted-foreground">Mounting Metallurgy</span>
-                <span className="font-medium text-foreground">{alloy}</span>
-              </div>
-              <div className="flex justify-between py-1">
-                <span className="text-muted-foreground">Provenance &amp; Ethical Chain</span>
-                <span className="font-medium text-foreground">Kimberley Audited • Place Vendôme</span>
-              </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-4 gap-2">
+              <h3 className="font-heading text-xl font-normal text-foreground">
+                Gemological Dossier
+              </h3>
               <span className="font-heading text-2xl font-light text-foreground">
                 ${activeProduct.price.toLocaleString()}
               </span>
-              <Link href={`/products/${activeProduct.slug}`}>
-                <Button size="sm">
+            </div>
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between py-1.5">
+                <dt className="text-muted-foreground">Primary Gemstone</dt>
+                <dd className="font-medium text-foreground">{activeProduct.gemstones.join(", ")}</dd>
+              </div>
+              {activeProduct.caratWeight && (
+                <div className="flex justify-between py-1.5">
+                  <dt className="text-muted-foreground">Total Carat Weight</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.caratWeight} ct</dd>
+                </div>
+              )}
+              {activeProduct.clarity && (
+                <div className="flex justify-between py-1.5">
+                  <dt className="text-muted-foreground">Clarity Certification</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.clarity} (GIA Verified)</dd>
+                </div>
+              )}
+              {activeProduct.cutGrade && (
+                <div className="flex justify-between py-1.5">
+                  <dt className="text-muted-foreground">Cut Proportion Grade</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.cutGrade} Symmetry</dd>
+                </div>
+              )}
+              <div className="flex justify-between py-1.5">
+                <dt className="text-muted-foreground">Mounting Metallurgy</dt>
+                <dd className="font-medium text-foreground">{alloy}</dd>
+              </div>
+              <div className="flex justify-between py-1.5">
+                <dt className="text-muted-foreground">Ethical Provenance</dt>
+                <dd className="font-medium text-foreground">Kimberley Audited • Place Vendôme</dd>
+              </div>
+            </dl>
+
+            <div className="mt-8 pt-4">
+              <Link href={`/products/${activeProduct.slug}`} className="block w-full">
+                <Button size="sm" className="w-full text-sm">
                   Acquire or Request Private Viewing
                 </Button>
               </Link>
@@ -298,6 +305,6 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

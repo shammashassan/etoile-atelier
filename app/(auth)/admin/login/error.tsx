@@ -15,7 +15,7 @@ export default function AdminLoginError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-center p-4">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-4 text-center p-4">
       <h2 className="font-heading text-xl tracking-wide text-foreground">
         Authentication Error
       </h2>
