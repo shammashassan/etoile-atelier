@@ -11,11 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const metadata: Metadata = {
   title: BRAND.seo.collectionsTitle,
   description: BRAND.collectionsDescription,
-  openGraph: {
-    title: `${BRAND.seo.collectionsTitle} | ${BRAND.name}`,
-    description: BRAND.collectionsDescription,
-    url: `${process.env.NEXT_BASE_APP_URL!}/collections`,
-  },
   alternates: {
     canonical: "/collections",
   },

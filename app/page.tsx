@@ -20,11 +20,6 @@ export const metadata: Metadata = {
     absolute: BRAND.seo.homeTitle,
   },
   description: BRAND.heroDescription,
-  openGraph: {
-    title: BRAND.seo.homeTitle,
-    description: BRAND.heroDescription,
-    url: process.env.NEXT_BASE_APP_URL!,
-  },
   alternates: {
     canonical: "/",
   },
