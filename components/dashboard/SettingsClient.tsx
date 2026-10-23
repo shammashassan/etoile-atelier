@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field";
 
 interface SettingsClientProps {
   initialSettings: SiteSettings;
@@ -71,54 +72,70 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Branding & Announcement</CardTitle>
+          <CardTitle>Branding &amp; Announcement</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-              Atelier Brand Name
-            </label>
-            <Input {...register("atelierName")} />
-            {errors.atelierName && (
-              <p className="text-xs text-destructive mt-1">{errors.atelierName.message}</p>
-            )}
-          </div>
+        <CardContent>
+          <FieldGroup className="gap-4">
+            <Field>
+              <FieldLabel htmlFor="atelierName" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Atelier Brand Name
+              </FieldLabel>
+              <Input id="atelierName" {...register("atelierName")} />
+              {errors.atelierName && (
+                <FieldError>{errors.atelierName.message}</FieldError>
+              )}
+            </Field>
 
-          <div>
-            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-              Brand Tagline
-            </label>
-            <Input {...register("tagline")} />
-          </div>
+            <Field>
+              <FieldLabel htmlFor="tagline" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Brand Tagline
+              </FieldLabel>
+              <Input id="tagline" {...register("tagline")} />
+              {errors.tagline && (
+                <FieldError>{errors.tagline.message}</FieldError>
+              )}
+            </Field>
 
-          <div>
-            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-              Announcement Banner Text (Top of Storefront)
-            </label>
-            <Textarea {...register("announcementBar")} rows={2} />
-          </div>
+            <Field>
+              <FieldLabel htmlFor="announcementBar" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Announcement Banner Text (Top of Storefront)
+              </FieldLabel>
+              <Textarea id="announcementBar" {...register("announcementBar")} rows={2} />
+              {errors.announcementBar && (
+                <FieldError>{errors.announcementBar.message}</FieldError>
+              )}
+            </Field>
+          </FieldGroup>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Concierge & Client Services</CardTitle>
+          <CardTitle>Concierge &amp; Client Services</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-                Concierge Email
-              </label>
-              <Input type="email" {...register("contactEmail")} />
+        <CardContent>
+          <FieldGroup className="gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="contactEmail" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Concierge Email
+                </FieldLabel>
+                <Input id="contactEmail" type="email" {...register("contactEmail")} />
+                {errors.contactEmail && (
+                  <FieldError>{errors.contactEmail.message}</FieldError>
+                )}
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="contactPhone" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Private Line / Telephone
+                </FieldLabel>
+                <Input id="contactPhone" {...register("contactPhone")} />
+                {errors.contactPhone && (
+                  <FieldError>{errors.contactPhone.message}</FieldError>
+                )}
+              </Field>
             </div>
-            <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-                Private Line / Telephone
-              </label>
-              <Input {...register("contactPhone")} />
-            </div>
-          </div>
+          </FieldGroup>
         </CardContent>
       </Card>
     </form>

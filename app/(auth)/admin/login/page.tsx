@@ -10,11 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
+import { Logo } from "@/components/shared/Logo";
+import { BRAND } from "@/lib/data";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("director@etoile-atelier.com");
-  const [password, setPassword] = useState("AtelierDirector2026!");
+  const [email, setEmail] = useState<string>(BRAND.contact.adminEmail);
+  const [password, setPassword] = useState<string>(BRAND.contact.adminDefaultPassword);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setServerError] = useState<string | null>(null);
 
@@ -43,21 +45,23 @@ export default function AdminLoginPage() {
   };
 
   const handleFillCredentials = () => {
-    setEmail("director@etoile-atelier.com");
-    setPassword("AtelierDirector2026!");
+    setEmail(BRAND.contact.adminEmail);
+    setPassword(BRAND.contact.adminDefaultPassword);
     setServerError(null);
   };
 
   return (
     <div data-ui="auth-portal" className="flex min-h-svh items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md space-y-8">
-        <div className="text-center space-y-2">
-          <span className="font-heading text-3xl font-normal tracking-widest uppercase text-foreground">
-            Étoile Atelier
-          </span>
-          <p className="text-xs tracking-widest uppercase text-muted-foreground">
-            Director &amp; Management Portal
-          </p>
+        <div className="text-center flex flex-col items-center justify-center">
+          <Link href="/" className="group transition-transform hover:scale-[1.02]">
+            <Logo
+              variant="stacked"
+              size="lg"
+              subtitle={`Director & Management Portal • ${BRAND.headquarters.district}`}
+              goldAccent
+            />
+          </Link>
         </div>
 
         <Card className="bg-secondary p-8 sm:p-10 space-y-6 border border-border">
@@ -82,7 +86,7 @@ export default function AdminLoginPage() {
 
               <FieldGroup className="gap-4">
                 <Field>
-                  <FieldLabel htmlFor="admin-email" className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                  <FieldLabel htmlFor="admin-email" className="text-sm font-medium text-foreground">
                     Atelier Email
                   </FieldLabel>
                   <div className="relative">
@@ -93,13 +97,13 @@ export default function AdminLoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="pl-9 text-xs bg-background"
+                      className="pl-9 text-sm bg-background"
                     />
                   </div>
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="admin-pass" className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                  <FieldLabel htmlFor="admin-pass" className="text-sm font-medium text-foreground">
                     Master Password
                   </FieldLabel>
                   <div className="relative">
@@ -110,21 +114,21 @@ export default function AdminLoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="pl-9 text-xs bg-background"
+                      className="pl-9 text-sm bg-background"
                     />
                   </div>
                 </Field>
               </FieldGroup>
 
-              <Button type="submit" className="w-full text-xs uppercase tracking-wider font-semibold" disabled={isLoading}>
+              <Button type="submit" className="w-full text-sm font-medium" disabled={isLoading}>
                 {isLoading ? "Authenticating Session..." : "Authorize Director Access"}
                 <ArrowRight className="size-3.5 ml-2" />
               </Button>
             </form>
 
-            <div className="bg-background/80 p-4 text-xs text-muted-foreground space-y-2 border border-border/40 mt-4">
+            <div className="bg-background/80 p-4 text-sm text-muted-foreground space-y-2 border border-border/40 mt-4">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-foreground flex items-center gap-1.5 uppercase tracking-wider">
+                <span className="font-medium text-foreground flex items-center gap-1.5">
                   <KeyRound className="size-3.5" />
                   Authorized Demo Key
                 </span>
@@ -133,16 +137,16 @@ export default function AdminLoginPage() {
                   variant="link"
                   size="sm"
                   onClick={handleFillCredentials}
-                  className="h-auto p-0 text-foreground hover:underline font-semibold text-xs uppercase tracking-wider"
+                  className="h-auto p-0 text-foreground hover:underline font-medium text-sm"
                 >
                   Autofill
                 </Button>
               </div>
-              <div className="text-xs font-mono text-muted-foreground">
-                Email: director@etoile-atelier.com
+              <div className="text-xs text-muted-foreground">
+                Email: <code>{BRAND.contact.adminEmail}</code>
               </div>
-              <div className="text-xs font-mono text-muted-foreground">
-                Password: AtelierDirector2026!
+              <div className="text-xs text-muted-foreground">
+                Password: <code>{BRAND.contact.adminDefaultPassword}</code>
               </div>
             </div>
           </CardContent>

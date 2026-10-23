@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, ShieldCheck, Check } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
+import { BRAND } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -81,22 +83,27 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   };
 
   return (
-    <div className="min-h-svh bg-background text-foreground">
-      {/* Top Breadcrumb Header: Official Shadcn Breadcrumb */}
-      <div className="border-b border-border/60 bg-background py-4 px-6 lg:px-12">
-        <div className="container mx-auto flex items-center justify-between">
+    <div className="w-full bg-background text-foreground">
+      {/* Top Breadcrumb Navigation */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="bg-secondary/40 py-4 px-6 md:px-12 xl:px-16"
+      >
+        <div className="flex items-center justify-between">
           <Button
             render={<Link href="/collections" />}
             nativeButton={false}
             variant="ghost"
             size="sm"
-            className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground h-auto p-0"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground h-auto p-0"
           >
             <ArrowLeft className="size-4" />
             <span>Salon Collection</span>
           </Button>
           <Breadcrumb>
-            <BreadcrumbList className="text-xs uppercase tracking-wider">
+            <BreadcrumbList className="text-sm">
               <BreadcrumbItem>
                 <BreadcrumbLink render={<Link href="/" />}>Atelier</BreadcrumbLink>
               </BreadcrumbItem>
@@ -106,33 +113,49 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-semibold text-foreground truncate max-w-48 sm:max-w-none">
+                <BreadcrumbPage className="font-medium text-foreground truncate max-w-48 sm:max-w-none">
                   {product.title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      </div>
+      </motion.div>
 
-      <main className="container mx-auto px-6 py-12 lg:px-12 lg:py-20">
+      <div className="px-6 md:px-12 xl:px-16 py-12 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
           {/* Left: Gallery with High Resolution Artistry */}
-          <div className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="space-y-4"
+          >
             <div className="relative overflow-hidden bg-secondary border border-border">
               <AspectRatio ratio={4 / 5} className="w-full">
-                {activeImage?.url && (
-                  <Image
-                    src={activeImage.url}
-                    alt={activeImage.alt || product.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                    className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
-                  />
-                )}
-                <div className="absolute top-4 left-4 z-10">
-                  <Badge variant="outline" className="bg-background/95 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground border-border">
+                <AnimatePresence mode="wait">
+                  {activeImage?.url && (
+                    <motion.div
+                      key={activeImage.url}
+                      initial={{ opacity: 0, scale: 1.02 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0 size-full"
+                    >
+                      <Image
+                        src={activeImage.url}
+                        alt={activeImage.alt || product.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        priority
+                        className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className="absolute top-4 left-4 z-10 pointer-events-none">
+                  <Badge variant="outline" className="bg-background/95 px-3 py-1.5 text-xs font-medium text-foreground border-border">
                     {product.stockStatus === "in_stock" ? "Available in Salon" : "Bespoke Made to Order"}
                   </Badge>
                 </div>
@@ -163,11 +186,16 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 ))}
               </ToggleGroup>
             )}
-          </div>
+          </motion.div>
 
           {/* Right: Jewelry Details & Specifications */}
           <div className="space-y-8">
-            <div className="space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-3"
+            >
               <span className="text-xs uppercase tracking-widest text-muted-foreground block font-mono">
                 {product.collection} Salon Series • Reference {product.sku}
               </span>
@@ -184,10 +212,15 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </span>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Metallurgy Selector */}
-            <div className="space-y-3 pt-2 border-t border-border/50">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-3 pt-2 border-t border-border/50"
+            >
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
                 Selected Alloy: <strong className="text-foreground">{selectedMetal}</strong>
               </span>
@@ -196,10 +229,15 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 selectedMetal={selectedMetal}
                 onSelect={setSelectedMetal}
               />
-            </div>
+            </motion.div>
 
             {/* Gemological Specs Summary */}
-            <div className="space-y-3 py-4 border-y border-border/50 text-sm">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-3 py-4 border-y border-border/50 text-sm"
+            >
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <span className="text-muted-foreground block text-xs uppercase tracking-wider">Primary Gemstones</span>
@@ -226,20 +264,30 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Craft Narrative */}
-            <div className="space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-3"
+            >
               <h3 className="font-heading text-lg font-normal text-foreground">
                 Artisanal Metallurgy &amp; Provenance
               </h3>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {product.description}
               </p>
-            </div>
+            </motion.div>
 
             {/* Action Buttons & Viewing Dialog */}
-            <div className="space-y-4 pt-4">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              className="space-y-4 pt-4"
+            >
               <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
                 <DialogTrigger
                   render={
@@ -378,20 +426,20 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </DialogPortal>
               </Dialog>
 
-              <div className="flex items-center justify-between text-xs tracking-wider uppercase text-muted-foreground pt-3 border-t border-border/50">
+              <div className="flex items-center justify-between text-sm text-muted-foreground pt-4">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="size-4 text-foreground" />
-                  Insured Global Transport
+                  {BRAND.trustBadges[0]}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Check className="size-4 text-foreground" />
-                  Kimberley Audited Gemstones
+                  {BRAND.trustBadges[1]}
                 </span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

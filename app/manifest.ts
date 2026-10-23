@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { BRAND } from "@/lib/data";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Étoile Atelier — Haute Joaillerie",
-    short_name: "Étoile Atelier",
-    description: "Curated fine jewelry, rare stones, and bespoke commissions.",
+    name: `${BRAND.name} — Haute Joaillerie`,
+    short_name: BRAND.name,
+    description: BRAND.description,
     start_url: "/",
     display: "standalone",
     background_color: "#0c0a09",

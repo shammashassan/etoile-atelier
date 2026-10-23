@@ -6,6 +6,7 @@ const options = {
   maxPoolSize: 5,
   minPoolSize: 0,
   maxIdleTimeMS: 30000,
+  serverSelectionTimeoutMS: 5000,
 };
 
 let client: MongoClient;

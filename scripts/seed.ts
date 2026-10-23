@@ -1,11 +1,15 @@
+try {
+  process.loadEnvFile();
+} catch {}
+
 import { MongoClient } from "mongodb";
-import { INITIAL_PRODUCTS, INITIAL_SETTINGS } from "../lib/data";
+import { INITIAL_PRODUCTS, INITIAL_SETTINGS, BRAND } from "../lib/data";
 import { auth } from "../lib/auth";
 
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/jewelry";
 
 async function seed() {
-  console.log("Connecting to MongoDB for seeding:", uri);
+  console.log("Connecting to MongoDB for seeding:", uri.replace(/:([^:@]+)@/, ":****@"));
   const client = new MongoClient(uri);
 
   try {
@@ -30,6 +34,8 @@ async function seed() {
       console.log("Seeding atelier settings...");
       await settingsCollection.insertOne(INITIAL_SETTINGS as unknown as Parameters<typeof settingsCollection.insertOne>[0]);
       console.log("Settings seeded successfully.");
+    } else {
+      console.log(`Settings collection already has ${settingsCount} items. Skipping.`);
     }
 
     // 3. Create indexes
@@ -44,8 +50,8 @@ async function seed() {
       console.log("Verifying Atelier Director admin account...");
       await auth.api.signUpEmail({
         body: {
-          email: "director@etoile-atelier.com",
-          password: "AtelierDirector2026!",
+          email: BRAND.contact.adminEmail,
+          password: BRAND.contact.adminDefaultPassword,
           name: "Director Vivienne",
         },
       });
@@ -54,10 +60,13 @@ async function seed() {
       console.log("Director admin account already active.");
     }
 
+    console.log("Database seed & verification completed successfully!");
   } catch (error) {
     console.error("Error during seed:", error);
+    process.exit(1);
   } finally {
     await client.close();
+    process.exit(0);
   }
 }
 

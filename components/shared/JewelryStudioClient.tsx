@@ -4,15 +4,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
-import { cn } from "@/lib/utils";
+import { BRAND } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Toggle } from "@/components/ui/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
 interface JewelryStudioClientProps {
   products: Product[];
@@ -29,11 +25,11 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
   const [isLoupeActive, setIsLoupeActive] = useState<boolean>(false);
 
   const activeProduct = products.find((p) => p.slug === selectedSlug) || products[0];
-  const primaryImage = activeProduct.images.find((img) => img.isPrimary) || activeProduct.images[0];
+  const primaryImage = activeProduct?.images.find((img) => img.isPrimary) || activeProduct?.images[0];
 
   const lightingProfiles: Record<
     LightingMode,
-    { label: string; temp: string; filter: string; toneName: string; desc: string; badgeColor: string }
+    { label: string; temp: string; filter: string; toneName: string; desc: string }
   > = {
     daylight: {
       label: "Natural Daylight",
@@ -41,15 +37,13 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
       filter: "brightness(1.04) contrast(1.08) saturate(1.05)",
       toneName: "Diamond Scintillation Standard",
       desc: "Reveals genuine diamond color grade and brilliant optical dispersion under direct northern light.",
-      badgeColor: "bg-sky-950/60 text-sky-200 border-sky-800/40",
     },
     candlelight: {
       label: "Salon Candlelight",
       temp: "2700K",
       filter: "brightness(0.98) contrast(1.12) sepia(0.22) saturate(1.25)",
-      toneName: "Place Vendôme Evening Gala",
+      toneName: `${BRAND.headquarters.district} Evening Gala`,
       desc: "Warm incandescent atmosphere accentuating fire dispersion and precious metal lusters.",
-      badgeColor: "bg-amber-950/60 text-amber-200 border-amber-800/40",
     },
     bench: {
       label: "Jeweler's Bench",
@@ -57,11 +51,14 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
       filter: "brightness(1.1) contrast(1.18) saturate(0.95)",
       toneName: "Master Craftsman Inspection",
       desc: "High-CRI precision illumination for examining micro-pavé prongs and clarity inclusions.",
-      badgeColor: "bg-stone-800/80 text-stone-200 border-stone-700/40",
     },
   };
 
   const currentProfile = lightingProfiles[lighting];
+
+  if (!activeProduct) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -72,32 +69,33 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
       className="w-full text-foreground"
     >
       {/* Studio Header */}
-      <div className="mb-14 max-w-3xl">
-        <h2 className="font-heading text-3xl sm:text-5xl font-normal tracking-tight text-foreground">
+      <div className="mb-10 sm:mb-14 max-w-3xl">
+        <span className="text-xs font-mono uppercase tracking-[0.25em] text-muted-foreground block mb-3">
+          Interactive Gemological Bench
+        </span>
+        <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-foreground leading-tight">
           Atelier Optical &amp; Metallurgy Studio
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground max-w-2xl">
+        <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground max-w-2xl">
           Examine gemstones under calibrated salon lighting spectra, rotate incident light across hand-cut facets, and inspect micro-pavé metallurgy.
         </p>
       </div>
 
-      <div className="grid gap-12 lg:grid-cols-12 items-start">
-        {/* Left Column: Interactive Visualizer Frame (7 cols) */}
+      <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 items-start">
+        {/* Left Column: Visualizer Canvas + Light Controls + Gemological Dossier (7 cols) */}
         <div className="lg:col-span-7 flex flex-col gap-6">
-          <AspectRatio ratio={4 / 3} className="overflow-hidden bg-card/60 border border-border">
-            {/* Master Jewel Artwork */}
+          {/* Master Jewel Artwork Display */}
+          <div className="relative aspect-4/3 w-full overflow-hidden bg-card/60 border border-border/40">
             <motion.div
               key={`${activeProduct.slug}-${alloy}`}
               initial={{ opacity: 0.6, scale: 0.98 }}
               animate={{ opacity: 1, scale: isLoupeActive ? 1.55 : 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative h-full w-full [filter:var(--studio-filter)] [transform-origin:var(--studio-origin)]"
-              style={
-                {
-                  "--studio-filter": currentProfile.filter,
-                  "--studio-origin": "50% 50%",
-                } as React.CSSProperties
-              }
+              className="relative h-full w-full"
+              style={{
+                filter: currentProfile.filter,
+                transformOrigin: "50% 50%",
+              }}
             >
               {primaryImage && (
                 <Image
@@ -112,246 +110,278 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
 
               {/* Dynamic Facet Refraction Glint based on Light Angle */}
               <div
-                className="pointer-events-none absolute inset-0 mix-blend-overlay transition-opacity duration-300 [background:var(--glint-bg)] opacity-80"
-                style={
-                  {
-                    "--glint-bg": `linear-gradient(${90 + lightAngle}deg, transparent 35%, rgba(255,255,255,0.4) 50%, transparent 65%)`,
-                  } as React.CSSProperties
-                }
+                className="pointer-events-none absolute inset-0 mix-blend-overlay transition-opacity duration-300"
+                style={{
+                  background: `linear-gradient(${90 + lightAngle}deg, transparent 35%, rgba(255,255,255,0.4) 50%, transparent 65%)`,
+                  opacity: 0.8,
+                }}
               />
             </motion.div>
 
             {/* Specimen Tag overlay */}
-            <div className="absolute top-4 left-4 z-10">
-              <Badge variant="outline" className="bg-background/90 px-3.5 py-1.5 text-xs font-medium tracking-wider uppercase text-foreground border-border">
-                {activeProduct.caratWeight ? `${activeProduct.caratWeight} ct` : "Fine Specimen"} • {activeProduct.gemstones[0]}
-              </Badge>
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-background/90 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-foreground backdrop-blur-sm border border-border/30">
+              {activeProduct.caratWeight ? `${activeProduct.caratWeight} ct` : "Fine Specimen"} • {activeProduct.gemstones[0]}
             </div>
 
             {/* Loupe Toggle Indicator */}
             {isLoupeActive && (
-              <div className="absolute bottom-4 left-4 z-10">
-                <Badge className="bg-primary text-primary-foreground px-3.5 py-1.5 text-xs font-semibold tracking-wider uppercase">
-                  10× Gemological Loupe Active
-                </Badge>
+              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 bg-primary text-primary-foreground px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium">
+                10× Gemological Loupe Active
               </div>
             )}
-          </AspectRatio>
+          </div>
 
           {/* Interactive Bench Controls: Angle Slider & Loupe Toggle */}
-          <div className="bg-card p-6 md:p-8 flex flex-col gap-6 border border-border">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="bg-card p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 border border-border/40">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div>
-                <span className="text-base font-medium text-foreground block">
+                <span className="text-sm sm:text-base font-medium text-foreground block">
                   Incident Light Angle
                 </span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-xs sm:text-sm text-muted-foreground">
                   Rotate illumination vector across facets ({lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`})
                 </span>
               </div>
-              <div className="w-full sm:w-56">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 <Slider
                   min={-45}
                   max={45}
-                  step={1}
                   value={[lightAngle]}
-                  onValueChange={(val) => {
-                    const next = Array.isArray(val) ? val[0] : val;
-                    if (typeof next === "number") setLightAngle(next);
-                  }}
+                  onValueChange={(v) => setLightAngle((v as number[])[0])}
                   aria-label="Incident light angle"
+                  className="w-full sm:w-48 xl:w-56"
                 />
+                <span className="text-xs font-mono text-muted-foreground w-10 text-right sm:hidden">
+                  {lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`}
+                </span>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border/50">
-              <span className="text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border/30">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 Calibrated Spectrum: <strong className="text-foreground font-medium">{currentProfile.toneName} ({currentProfile.temp})</strong>
               </span>
-              <Toggle
-                pressed={isLoupeActive}
-                onPressedChange={setIsLoupeActive}
-                variant="outline"
-                className={cn(
-                  "h-auto px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors border",
-                  isLoupeActive
-                    ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-                    : "bg-secondary text-foreground border-border hover:bg-muted"
-                )}
+              <Button
+                type="button"
+                variant={isLoupeActive ? "default" : "secondary"}
+                size="sm"
+                onClick={() => setIsLoupeActive(!isLoupeActive)}
+                className="w-full sm:w-auto rounded-none text-xs sm:text-sm"
               >
                 {isLoupeActive ? "Exit 10× Magnification" : "Engage 10× Gemological Loupe"}
-              </Toggle>
+              </Button>
+            </div>
+          </div>
+
+          {/* Gemological Specifications Dossier (Balances Column Height & Eliminates Empty Void) */}
+          <div className="bg-card p-5 sm:p-6 md:p-8 border border-border/40">
+            <div className="flex items-baseline justify-between mb-5 pb-3 border-b border-border/30">
+              <div>
+                <span className="text-[11px] uppercase tracking-widest text-muted-foreground block">
+                  Laboratory Specifications
+                </span>
+                <h3 className="font-heading text-xl sm:text-2xl font-normal text-foreground mt-0.5">
+                  Gemological Dossier
+                </h3>
+              </div>
+              <span className="text-xs font-mono px-2.5 py-1 bg-secondary text-muted-foreground">
+                GIA Verified
+              </span>
+            </div>
+
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm sm:text-base">
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                <dt className="text-muted-foreground text-xs sm:text-sm">Primary Gemstone</dt>
+                <dd className="font-medium text-foreground">{activeProduct.gemstones.join(", ")}</dd>
+              </div>
+              {activeProduct.caratWeight && (
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                  <dt className="text-muted-foreground text-xs sm:text-sm">Total Carat Weight</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.caratWeight} ct</dd>
+                </div>
+              )}
+              {activeProduct.clarity && (
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                  <dt className="text-muted-foreground text-xs sm:text-sm">Clarity Certification</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.clarity}</dd>
+                </div>
+              )}
+              {activeProduct.cutGrade && (
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                  <dt className="text-muted-foreground text-xs sm:text-sm">Cut Proportion</dt>
+                  <dd className="font-medium text-foreground">{activeProduct.cutGrade} Symmetry</dd>
+                </div>
+              )}
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                <dt className="text-muted-foreground text-xs sm:text-sm">Mounting Metallurgy</dt>
+                <dd className="font-medium text-foreground">{alloy}</dd>
+              </div>
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
+                <dt className="text-muted-foreground text-xs sm:text-sm">Provenance &amp; Ethics</dt>
+                <dd className="font-medium text-foreground">Kimberley Process Audited</dd>
+              </div>
+            </dl>
+
+            <div className="mt-5 pt-3 border-t border-border/20 flex items-center gap-2 text-xs text-muted-foreground">
+              <ShieldCheck className="size-4 text-primary shrink-0" />
+              <span>Stamped with official French State Master Jeweler Assay hallmark.</span>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Specimen Selection & Gemological Dossier (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-8">
-          {/* Specimen Selector using official Shadcn ToggleGroup */}
+        {/* Right Column: Specimen Selection + Spectra + Metallurgy + Acquisition Console (5 cols) */}
+        <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8">
+          {/* Specimen Selector */}
           <div>
-            <span className="text-base font-medium text-foreground block mb-3">
-              Select Salon Masterpiece
-            </span>
-            <ToggleGroup
-              value={[selectedSlug]}
-              onValueChange={(vals) => {
-                if (vals[0]) setSelectedSlug(vals[0]);
-              }}
-              className="grid grid-cols-2 gap-2.5 w-full"
-            >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm sm:text-base font-medium text-foreground">
+                Select Salon Masterpiece
+              </span>
+              <span className="text-xs text-muted-foreground sm:hidden">
+                Swipe to browse ({products.length})
+              </span>
+            </div>
+
+            {/* Mobile Horizontal Carousel */}
+            <div className="flex sm:hidden gap-2.5 overflow-x-auto pb-2 scrollbar-none snap-x -mx-1 px-1">
               {products.map((item) => (
-                <ToggleGroupItem
+                <button
                   key={item.slug}
-                  value={item.slug}
-                  variant="outline"
-                  className={cn(
-                    "h-auto p-3.5 flex flex-col items-start justify-start text-left tracking-normal normal-case border",
-                    item.slug === activeProduct.slug
-                      ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-                      : "bg-card text-foreground border-border hover:bg-secondary"
-                  )}
+                  type="button"
+                  onClick={() => setSelectedSlug(item.slug)}
+                  className={`snap-start shrink-0 w-44 p-3 text-left transition-all border ${item.slug === activeProduct.slug
+                      ? "bg-primary text-primary-foreground font-medium border-primary"
+                      : "bg-card text-foreground hover:bg-secondary border-border/40"
+                    }`}
                 >
-                  <span className="text-sm font-medium block line-clamp-1 w-full">
+                  <span className="text-sm block line-clamp-1">
                     {item.title}
                   </span>
                   <span className="text-xs opacity-85 block mt-1">
                     ${item.price.toLocaleString()}
                   </span>
-                </ToggleGroupItem>
+                </button>
               ))}
-            </ToggleGroup>
+            </div>
+
+            {/* Desktop 2-Column Grid */}
+            <div className="hidden sm:grid grid-cols-2 gap-2.5">
+              {products.map((item) => (
+                <button
+                  key={item.slug}
+                  type="button"
+                  onClick={() => setSelectedSlug(item.slug)}
+                  className={`p-3.5 text-left transition-all border ${item.slug === activeProduct.slug
+                      ? "bg-primary text-primary-foreground font-medium border-primary"
+                      : "bg-card text-foreground hover:bg-secondary border-border/40"
+                    }`}
+                >
+                  <span className="text-sm sm:text-base block line-clamp-1">
+                    {item.title}
+                  </span>
+                  <span className="text-xs sm:text-sm opacity-85 block mt-1">
+                    ${item.price.toLocaleString()}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Illumination Spectra Selector using official Shadcn ToggleGroup */}
+          {/* Illumination Spectra Selector */}
           <div>
-            <span className="text-base font-medium text-foreground block mb-3">
+            <span className="text-sm sm:text-base font-medium text-foreground block mb-3">
               Calibrated Illumination Spectrum
             </span>
-            <ToggleGroup
-              value={[lighting]}
-              onValueChange={(vals) => {
-                if (vals[0]) setLighting(vals[0] as LightingMode);
-              }}
-              orientation="vertical"
-              className="flex flex-col gap-2.5 w-full"
-            >
+            <div className="flex flex-col gap-2.5">
               {(Object.keys(lightingProfiles) as LightingMode[]).map((mode) => {
                 const prof = lightingProfiles[mode];
                 const isActive = lighting === mode;
                 return (
-                  <ToggleGroupItem
+                  <button
                     key={mode}
-                    value={mode}
-                    variant="outline"
-                    className={cn(
-                      "h-auto p-4 flex items-baseline justify-between w-full text-left tracking-normal normal-case border",
-                      isActive
-                        ? "bg-secondary text-foreground pl-5 font-medium border-border"
-                        : "bg-card text-muted-foreground hover:text-foreground pl-4 border-border"
-                    )}
+                    type="button"
+                    onClick={() => setLighting(mode)}
+                    className={`p-3.5 sm:p-4 text-left transition-all flex items-baseline justify-between border ${isActive
+                        ? "bg-secondary text-foreground pl-4 sm:pl-5 font-medium border-primary/50"
+                        : "bg-card text-muted-foreground hover:text-foreground pl-3 sm:pl-4 border-border/40"
+                      }`}
                   >
-                    <div className="flex flex-col text-left">
-                      <span className="text-sm font-medium block text-foreground">
+                    <div>
+                      <span className="text-sm sm:text-base font-medium block text-foreground">
                         {prof.label}
                       </span>
-                      <span className="text-xs text-muted-foreground mt-0.5 block whitespace-normal">
+                      <span className="text-xs sm:text-sm text-muted-foreground mt-0.5 block line-clamp-2 sm:line-clamp-none">
                         {prof.desc}
                       </span>
                     </div>
-                    <span className="text-xs shrink-0 ml-4 font-normal">
+                    <span className="text-xs sm:text-sm shrink-0 ml-3 sm:ml-4 font-normal text-muted-foreground">
                       {prof.temp}
                     </span>
-                  </ToggleGroupItem>
+                  </button>
                 );
               })}
-            </ToggleGroup>
+            </div>
           </div>
 
-          {/* Metallurgy Alloy Selector using official Shadcn ToggleGroup */}
+          {/* Metallurgy Alloy Selector */}
           <div>
-            <span className="text-base font-medium text-foreground block mb-3">
+            <span className="text-sm sm:text-base font-medium text-foreground block mb-3">
               Precious Metal Alloy
             </span>
-            <ToggleGroup
-              value={[alloy]}
-              onValueChange={(vals) => {
-                if (vals[0]) setAlloy(vals[0] as AlloyOption);
-              }}
-              className="grid grid-cols-3 gap-2.5 w-full"
-            >
+            <div className="grid grid-cols-3 gap-2">
               {(["Platinum 950", "18k Yellow Gold", "18k Rose Gold"] as AlloyOption[]).map((m) => (
-                <ToggleGroupItem
+                <button
                   key={m}
-                  value={m}
-                  variant="outline"
-                  className={cn(
-                    "h-auto py-3 px-3 text-xs text-center tracking-normal normal-case border",
-                    alloy === m
-                      ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90 font-medium"
-                      : "bg-card text-foreground border-border hover:bg-secondary"
-                  )}
+                  type="button"
+                  onClick={() => setAlloy(m)}
+                  className={`py-2.5 sm:py-3 px-1.5 sm:px-3 text-xs sm:text-sm text-center transition-colors truncate border ${alloy === m
+                      ? "bg-primary text-primary-foreground font-medium border-primary"
+                      : "bg-card text-foreground hover:bg-secondary border-border/40"
+                    }`}
+                  title={m}
                 >
                   {m}
-                </ToggleGroupItem>
+                </button>
               ))}
-            </ToggleGroup>
+            </div>
           </div>
 
-          {/* Gemological Specifications Dossier wrapped in official Shadcn Card */}
-          <Card className="border border-border bg-card">
-            <CardHeader className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-border/50 pb-4">
-              <CardTitle className="font-heading text-xl font-normal text-foreground uppercase tracking-wider">
-                Gemological Dossier
-              </CardTitle>
-              <span className="font-heading text-xl font-light text-foreground">
-                ${activeProduct.price.toLocaleString()}
+          {/* Salon Acquisition Card */}
+          <div className="bg-card p-5 sm:p-6 md:p-8 border border-border/40 flex flex-col gap-5">
+            <div className="flex items-baseline justify-between pb-3 border-b border-border/30">
+              <div>
+                <span className="text-[11px] uppercase tracking-widest text-muted-foreground block">
+                  Atelier Valuation
+                </span>
+                <span className="font-heading text-2xl sm:text-3xl font-normal text-foreground mt-0.5 block">
+                  ${activeProduct.price.toLocaleString()}
+                </span>
+              </div>
+              <span className="text-xs font-mono text-emerald-500 flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Available in Salon
               </span>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <dl className="space-y-3.5 text-sm">
-                <div className="flex justify-between py-1 border-b border-border/30">
-                  <dt className="text-muted-foreground">Primary Gemstone</dt>
-                  <dd className="font-medium text-foreground">{activeProduct.gemstones.join(", ")}</dd>
-                </div>
-                {activeProduct.caratWeight && (
-                  <div className="flex justify-between py-1 border-b border-border/30">
-                    <dt className="text-muted-foreground">Total Carat Weight</dt>
-                    <dd className="font-medium text-foreground">{activeProduct.caratWeight} ct</dd>
-                  </div>
-                )}
-                {activeProduct.clarity && (
-                  <div className="flex justify-between py-1 border-b border-border/30">
-                    <dt className="text-muted-foreground">Clarity Certification</dt>
-                    <dd className="font-medium text-foreground">{activeProduct.clarity} (GIA Verified)</dd>
-                  </div>
-                )}
-                {activeProduct.cutGrade && (
-                  <div className="flex justify-between py-1 border-b border-border/30">
-                    <dt className="text-muted-foreground">Cut Proportion Grade</dt>
-                    <dd className="font-medium text-foreground">{activeProduct.cutGrade} Symmetry</dd>
-                  </div>
-                )}
-                <div className="flex justify-between py-1 border-b border-border/30">
-                  <dt className="text-muted-foreground">Mounting Metallurgy</dt>
-                  <dd className="font-medium text-foreground">{alloy}</dd>
-                </div>
-                <div className="flex justify-between py-1">
-                  <dt className="text-muted-foreground">Ethical Provenance</dt>
-                  <dd className="font-medium text-foreground">Kimberley Audited • Place Vendôme</dd>
-                </div>
-              </dl>
-            </CardContent>
-            <CardFooter className="pt-2">
-              <Button
-                render={<Link href={`/products/${activeProduct.slug}`} />}
-                nativeButton={false}
-                size="lg"
-                className="w-full text-xs font-semibold tracking-wider uppercase bg-primary text-primary-foreground hover:bg-primary/90"
+            </div>
+
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Handcrafted in solid {alloy}. Accompanied by full gemological passport, complimentary insured international transport, and private salon viewing privileges.
+            </p>
+
+            <div className="flex flex-col gap-3 pt-2">
+              <Link href={`/products/${activeProduct.slug}`} className="block w-full">
+                <Button size="lg" className="w-full text-sm sm:text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12">
+                  Acquire Piece or Private Viewing
+                  <ArrowRight className="size-4 ml-1.5" />
+                </Button>
+              </Link>
+              <Link
+                href="/consultation"
+                className="text-center text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4 py-1"
               >
-                Acquire or Request Private Viewing
-              </Button>
-            </CardFooter>
-          </Card>
+                Or arrange bespoke custom commission
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>

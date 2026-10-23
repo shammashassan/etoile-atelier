@@ -72,8 +72,7 @@ export function MaskedLineHeadline({
         >
           <motion.span
             initial={{ y: "105%" }}
-            whileInView={{ y: "0%" }}
-            viewport={{ once: true }}
+            animate={{ y: "0%" }}
             transition={{
               duration: 0.95,
               delay: idx * 0.12 + 0.08,

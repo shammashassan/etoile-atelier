@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export default function ProductDetailError({
+export default function ProductError({
   error,
   reset,
 }: {
@@ -12,23 +12,23 @@ export default function ProductDetailError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Product detail error:", error);
+    console.error("Product detail error caught:", error);
   }, [error]);
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-4 text-center p-6">
+    <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center px-4 py-20">
       <h2 className="font-heading text-2xl tracking-wide text-foreground">
-        Unable to load jewelry presentation
+        Unable to Load High Jewelry Piece
       </h2>
-      <p className="max-w-md text-xs text-muted-foreground">
-        An error occurred while loading this piece from the atelier catalog.
+      <p className="max-w-md text-sm text-muted-foreground">
+        We encountered an error retrieving this archival dossier from our vault.
       </p>
-      <div className="flex gap-3">
-        <Button variant="outline" size="sm" onClick={() => reset()}>
-          Retry
+      <div className="flex gap-4 mt-2">
+        <Button variant="outline" onClick={() => reset()}>
+          Try Again
         </Button>
-        <Link href="/">
-          <Button size="sm">Return to Atelier</Button>
+        <Link href="/collections">
+          <Button variant="default">Return to Salon Collections</Button>
         </Link>
       </div>
     </div>

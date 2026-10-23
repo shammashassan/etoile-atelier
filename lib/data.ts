@@ -1,14 +1,237 @@
 import { type Product } from "./schemas/product";
 import { type SiteSettings } from "./schemas/settings";
 
-export const INITIAL_SETTINGS: SiteSettings = {
-  atelierName: "Étoile Atelier",
+/**
+ * Global Brand Identity & Static Atelier Specifications
+ * Central source of truth for all brand copy, contacts, locations, and metadata.
+ */
+export const BRAND = {
+  name: "Étoile Atelier",
+  legalName: "Étoile Atelier S.A.S.",
+  shortName: "Étoile Atelier",
   tagline: "Fine Jewelry & Haute Joaillerie",
-  announcementBar: "Complimentary insured global shipping & private atelier consultation",
-  contactEmail: "concierge@etoile-atelier.com",
-  contactPhone: "+1 (800) 458-9214",
+  subtitle: "Place Vendôme • Haute Joaillerie",
+  fullSubtitle: "Haute Joaillerie & Fine Lapidary Arts • Place Vendôme • Established 1924",
+  establishedYear: 1924,
+  establishedText: "Established 1924 • Place Vendôme",
+
+  description:
+    "Handcrafted fine jewelry, ethical diamonds, and bespoke atelier creations sculpted in Place Vendôme.",
+  heroHeadline: ["Rare Gemstones,", "Sculpted by Hand."],
+  heroDescription:
+    "Handcrafted in our Place Vendôme workshops with unheated Ceylon sapphires, Muzo emeralds, and certified natural diamonds set in solid Platinum 950.",
+  collectionsDescription:
+    "Explore our permanent and seasonal jewelry collections — archival solitaires, pavé necklaces, rare Ceylon sapphires, and bespoke cuffs sculpted in Platinum 950.",
+  consultationDescription:
+    "Schedule a private appointment at our Place Vendôme atelier or request a remote gemological consultation for custom bridal and haute joaillerie commissions.",
+  adminPortalDescription:
+    "Internal production CMS, inventory controls, and private consultation inquiries.",
+  announcement:
+    "Complimentary insured global shipping & private atelier consultation",
+
   currency: "USD",
-  locations: ["Paris (Place Vendôme)", "Geneva", "London (Bond St)", "New York (Madison Ave)"],
+  url: "https://etoile-atelier.com",
+
+  contact: {
+    email: "concierge@etoile-atelier.com",
+    phone: "+1 (800) 458-9214",
+    phoneDisplay: "+1 (800) 458-9214",
+    adminEmail: "director@etoile-atelier.com",
+    adminDefaultPassword: "AtelierDirector2026!",
+  },
+
+  headquarters: {
+    street: "12 Place Vendôme",
+    city: "Paris",
+    postalCode: "75001",
+    country: "France",
+    district: "Place Vendôme",
+    fullAddress: "12 Place Vendôme, 75001 Paris, France",
+  },
+
+  cities: ["Paris", "Geneva", "London", "New York"],
+  citiesSummary: "Paris • Geneva • London • New York",
+
+  salons: [
+    {
+      id: "paris",
+      name: "Paris Vendôme Salon",
+      city: "Paris",
+      district: "Place Vendôme",
+      address: "12 Place Vendôme, 75001 Paris",
+      phone: "+33 1 42 68 00 00",
+      telHref: "tel:+33142680000",
+      schedule: "By Private Appointment Only",
+      ctaLabel: "Request Paris Salon",
+      callCtaLabel: "Call Paris Concierge",
+    },
+    {
+      id: "geneva",
+      name: "Geneva Rhône Salon",
+      city: "Geneva",
+      district: "Rue du Rhône",
+      address: "Rue du Rhône 42, 1204 Genève",
+      phone: "+41 22 819 1200",
+      telHref: "tel:+41228191200",
+      schedule: "Tuesday – Saturday",
+      ctaLabel: "Request Geneva Salon",
+      callCtaLabel: "Call Geneva Concierge",
+    },
+    {
+      id: "london",
+      name: "London Mayfair Salon",
+      city: "London",
+      district: "Mayfair",
+      address: "14 New Bond Street, Mayfair, London",
+      phone: "+44 20 7946 0912",
+      telHref: "tel:+442079460912",
+      schedule: "Monday – Friday",
+      ctaLabel: "Request London Salon",
+      callCtaLabel: "Call London Concierge",
+    },
+    {
+      id: "new-york",
+      name: "New York Madison Salon",
+      city: "New York",
+      district: "Madison Ave",
+      address: "680 Madison Avenue, New York, NY",
+      phone: "+1 212 555 0198",
+      telHref: "tel:+12125550198",
+      schedule: "By Private Appointment Only",
+      ctaLabel: "Request New York Salon",
+      callCtaLabel: "Call New York Concierge",
+    },
+  ],
+
+  navigation: {
+    main: [
+      { label: "Collections", href: "/collections" },
+      { label: "Bespoke Salon", href: "/consultation" },
+      { label: "Optical Studio", href: "/#studio", hideMobile: true },
+      { label: "Vendôme Vault", href: "/#vault", hideMobile: true },
+    ],
+    admin: [
+      { label: "Atelier Overview", href: "/admin", icon: "LayoutDashboard" },
+      { label: "Jewelry Collection", href: "/admin/products", icon: "Gem" },
+      { label: "Bespoke Inquiries", href: "/admin/inquiries", icon: "CalendarCheck" },
+      { label: "Atelier Settings", href: "/admin/settings", icon: "Settings" },
+    ],
+  },
+
+  commitments: [
+    {
+      id: "provenance",
+      title: "Conflict-Free & Certified Provenance",
+      description:
+        "Every stone is hand-selected and accompanied by full GIA or SSEF gemological certificates verifying natural unheated origin.",
+    },
+    {
+      id: "viewing-salons",
+      title: "Private Viewing Salons",
+      description:
+        "Experience stones in person at our salons in Paris (Place Vendôme), London (New Bond St), Geneva, or New York (Madison Ave).",
+    },
+    {
+      id: "timeline",
+      title: "6 to 8 Week Artisan Timeline",
+      description:
+        "Hand-forged by master jewelers with weekly photographic progress dossiers delivered directly to your private concierge.",
+    },
+  ],
+
+  editorialNotes: [
+    {
+      title: "Dual Gemological Certification",
+      description:
+        "Every solitaire is documented with concurrent GIA and LFG Paris laboratory dossiers detailing origin, clarity, and unheated status.",
+    },
+    {
+      title: "Place Vendôme Handover",
+      description:
+        "Hand delivery arranged via armored courier worldwide or personal handover in our private salon suite.",
+    },
+  ],
+
+  governance: [
+    "Solid Platinum 950 Metallurgy",
+    "18-Karat Recycled Gold",
+    "Kimberley Process Audited",
+    "GIA & LFG Double Certification",
+  ],
+
+  trustBadges: [
+    "Insured Global Transport",
+    "Kimberley Audited Gemstones",
+  ],
+
+  discretionNotice:
+    "All inquiries are held in strict discretion under Swiss and French banking-level data privacy.",
+
+  faqProtocols: [
+    {
+      id: "protocol-1",
+      question: "What should I anticipate during my private salon viewing?",
+      answer:
+        "You will be received in an individual salon suite with dedicated gemological consultation. Our senior gemologist will present unmounted stones, loose diamonds under 10× binocular loupes, and archival mounting sketches tailored to your preferences. Vintage Champagne and refreshments are served throughout.",
+    },
+    {
+      id: "protocol-2",
+      question: "Can I bring my own family heirloom gemstones for resetting?",
+      answer:
+        "Yes. Our lapidaries and master jewelers frequently reset archival family stones. We conduct a non-destructive gemological evaluation, check girdle integrity, and design a custom Platinum 950 or 18k gold setting sculpted around the exact dimensions of your gemstone.",
+    },
+    {
+      id: "protocol-3",
+      question: "What gemological certifications accompany bespoke commissions?",
+      answer:
+        "All solitaire diamonds and colored gemstones are accompanied by premier independent laboratory reports from GIA (Gemological Institute of America) or SSEF (Swiss Gemmological Institute), certifying color grade, clarity, carat weight, and untreated geographical origin.",
+    },
+    {
+      id: "protocol-4",
+      question: "How are discretion, non-disclosure, and insured worldwide delivery handled?",
+      answer:
+        "All private commissions remain strictly confidential under Swiss privacy protocol. Finished pieces can be collected in person at any of our four global salons, or dispatched via armored logistics (Malca-Amit / Brinks) with 100% door-to-door insurance.",
+    },
+  ],
+
+  museumProvenance: {
+    title:
+      "Archival Historical Imagery: The Metropolitan Museum of Art Open Access (CC0)",
+    summary:
+      "Drawing of the “Koh-I-Noor Diamond” (1851, R. S. Garrard & Co., Acc. 363608), Double Ring (ca. 1895, Marcus & Co., Acc. 16835), Duchess of Devonshire Portrait Diamond (19th c., Acc. 811876), Sapphire Necklace (18th c., Acc. 446767), and Imperial Gold Ring (11th–13th c., Acc. 451108) via The Metropolitan Museum of Art (CC0 Public Domain).",
+  },
+
+  seo: {
+    keywords: [
+      "haute joaillerie",
+      "fine jewelry",
+      "bespoke jewelry",
+      "Place Vendôme",
+      "ethical diamonds",
+      "sapphires",
+      "emeralds",
+      "atelier",
+    ],
+    defaultTitle: "Étoile Atelier | Haute Joaillerie & Fine Jewelry",
+    titleTemplate: "%s | Étoile Atelier",
+    homeTitle: "Étoile Atelier | Haute Joaillerie & Fine Jewelry — Place Vendôme",
+    collectionsTitle: "Haute Joaillerie Collections",
+    consultationTitle: "Private Atelier Consultation & Bespoke Commissions",
+    adminTitle: "Atelier Management | Étoile Atelier",
+    ogImageAlt: "Étoile Atelier | Haute Joaillerie • Place Vendôme",
+  },
+} as const;
+
+export type BrandDetails = typeof BRAND;
+
+export const INITIAL_SETTINGS: SiteSettings = {
+  atelierName: BRAND.name,
+  tagline: BRAND.tagline,
+  announcementBar: BRAND.announcement,
+  contactEmail: BRAND.contact.email,
+  contactPhone: BRAND.contact.phone,
+  currency: BRAND.currency,
+  locations: BRAND.salons.map((s) => `${s.city} (${s.district})`),
   updatedAt: new Date("2026-01-01"),
 };
 

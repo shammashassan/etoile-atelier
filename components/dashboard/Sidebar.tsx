@@ -24,6 +24,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/dashboard/NavUser";
+import { EtoileMark } from "@/components/shared/Logo";
+import { BRAND } from "@/lib/data";
 
 const NAV_ITEMS = [
   { label: "Atelier Overview", href: "/admin", icon: LayoutDashboard },
@@ -48,7 +50,7 @@ export function DashboardSidebar() {
 
   const defaultUser = {
     name: session?.user?.name || "Atelier Director",
-    email: session?.user?.email || "director@etoile-atelier.com",
+    email: session?.user?.email || BRAND.contact.adminEmail,
     avatar: session?.user?.image || undefined,
   };
 
@@ -63,15 +65,15 @@ export function DashboardSidebar() {
               render={<Link href="/admin" />}
               className="h-10 data-open:bg-sidebar-accent group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:mx-auto"
             >
-              <div className="flex size-8 shrink-0 items-center justify-center border border-sidebar-border bg-sidebar-primary text-sidebar-primary-foreground font-serif text-sm font-semibold">
-                É
+              <div className="flex size-8 shrink-0 items-center justify-center border border-sidebar-border bg-sidebar-primary text-sidebar-primary-foreground">
+                <EtoileMark size={18} showHalo={false} className="text-sidebar-primary-foreground" />
               </div>
               <div className="flex flex-col text-left group-data-[collapsible=icon]:hidden">
                 <span className="font-heading text-sm font-normal tracking-widest uppercase text-sidebar-foreground">
-                  Étoile
+                  {BRAND.name}
                 </span>
-                <span className="text-xs tracking-widest uppercase text-sidebar-foreground/70">
-                  Haute Joaillerie
+                <span className="text-[10px] tracking-widest uppercase text-sidebar-foreground/70">
+                  {BRAND.headquarters.district}
                 </span>
               </div>
             </SidebarMenuButton>

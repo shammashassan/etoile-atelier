@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Noto_Sans, Playfair_Display } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { BRAND } from "@/lib/data";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -23,9 +24,40 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.BETTER_AUTH_URL || "https://etoile-atelier.com"),
-  title: "Étoile Atelier | Haute Joaillerie & Fine Jewelry",
-  description: "Handcrafted fine jewelry, ethical diamonds, and bespoke atelier creations.",
+  metadataBase: new URL(process.env.BETTER_AUTH_URL || BRAND.url),
+  title: {
+    default: BRAND.seo.defaultTitle,
+    template: BRAND.seo.titleTemplate,
+  },
+  description: BRAND.description,
+  applicationName: BRAND.name,
+  authors: [{ name: BRAND.name }],
+  creator: BRAND.name,
+  keywords: [...BRAND.seo.keywords],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: BRAND.url,
+    siteName: BRAND.name,
+    title: BRAND.seo.defaultTitle,
+    description: BRAND.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: BRAND.seo.defaultTitle,
+    description: BRAND.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -33,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={cn(
-        "h-full antialiased font-sans",
+        "h-full antialiased font-sans scroll-smooth",
         geistSans.variable,
         notoSans.variable,
         playfairDisplay.variable

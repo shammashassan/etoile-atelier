@@ -3,6 +3,7 @@
 import React, { useTransition, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 import { useQueryState, parseAsString } from "nuqs";
 import { Search, X, ArrowRight } from "lucide-react";
 import { type Product, CATEGORIES, METALS } from "@/lib/schemas/product";
@@ -11,7 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Toggle } from "@/components/ui/toggle";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Separator } from "@/components/ui/separator";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Empty,
@@ -29,6 +39,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CardTilt } from "@/components/shared/motion/CardTilt";
+import {
+  MaskedLineHeadline,
+  MotionSection,
+} from "@/components/shared/motion/MotionSection";
 
 interface CollectionsFilterClientProps {
   initialProducts: Product[];
@@ -103,17 +118,34 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
   return (
     <div className="space-y-16">
       {/* Editorial Page Header */}
-      <header className="max-w-3xl">
-        <h1 className="font-heading text-4xl font-normal tracking-tight text-foreground sm:text-6xl">
-          The Salon Collection
-        </h1>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+      <motion.header
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-3xl"
+      >
+        <MaskedLineHeadline
+          lines={["The Salon Collection"]}
+          tag="h1"
+          className="text-4xl font-normal tracking-tight text-foreground sm:text-6xl"
+        />
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-4 text-base leading-relaxed text-muted-foreground"
+        >
           Exceptional solitary diamonds, archival cuffs, and master-crafted necklaces forged from recycled 18-karat gold and certified Platinum 950.
-        </p>
-      </header>
+        </motion.p>
+      </motion.header>
 
       {/* Filter and Search Navigation: Pure flat, architectural */}
-      <div className="space-y-6 bg-secondary/50 p-6 sm:p-8 border border-border/50">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        className="space-y-6 bg-secondary/50 p-6 sm:p-8 border border-border/50"
+      >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Search Input */}
           <div className="relative flex-1 max-w-md">
@@ -137,15 +169,15 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
             )}
           </div>
 
-          {/* Secondary Controls (Metal, Stock, Sort) */}
-          <div className="flex flex-wrap items-center gap-3">
+          {/* Secondary Controls (Metal, Stock, Sort) - Full width on mobile */}
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 w-full lg:w-auto">
             <Select
               value={metal}
               onValueChange={(val) => {
                 if (val) startTransition(() => { void setMetal(val); });
               }}
             >
-              <SelectTrigger className="w-44 text-xs uppercase tracking-wider bg-background rounded-none border-border">
+              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background rounded-none border-border">
                 <SelectValue placeholder="Precious Metal" />
               </SelectTrigger>
               <SelectContent>
@@ -166,7 +198,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 if (val) startTransition(() => { void setSort(val); });
               }}
             >
-              <SelectTrigger className="w-44 text-xs uppercase tracking-wider bg-background rounded-none border-border">
+              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background rounded-none border-border">
                 <SelectValue placeholder="Sort Order" />
               </SelectTrigger>
               <SelectContent>
@@ -187,9 +219,9 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               }
               variant="outline"
               className={cn(
-                "h-10 px-4 text-xs font-semibold tracking-wider uppercase border border-border transition-colors",
+                "h-10 w-full sm:w-auto px-4 text-xs tracking-wider uppercase font-normal border border-border transition-colors justify-center",
                 inStockOnly === "true"
-                  ? "bg-foreground text-background border-foreground hover:bg-foreground/90 hover:text-background"
+                  ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
                   : "bg-background text-foreground hover:bg-muted"
               )}
             >
@@ -202,7 +234,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 variant="link"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-muted-foreground hover:text-foreground"
+                className="text-xs text-muted-foreground hover:text-foreground self-start sm:self-auto"
               >
                 Reset Filters
               </Button>
@@ -210,51 +242,53 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
           </div>
         </div>
 
-        {/* Category Filter Tabs using official Shadcn Tabs */}
-        <div className="border-t border-border/50 pt-4">
-          <Tabs
-            value={category}
-            onValueChange={(val) => {
-              if (val) startTransition(() => { void setCategory(val); });
+        {/* Category Filter using official Shadcn ToggleGroup & Separator */}
+        <div className="pt-2">
+          <Separator className="my-4 bg-border/60" />
+          <ToggleGroup
+            value={[category]}
+            onValueChange={(vals) => {
+              if (vals[0]) startTransition(() => { void setCategory(vals[0]); });
             }}
+            className="flex flex-wrap gap-2 justify-start"
           >
-            <TabsList variant="line" className="h-auto flex-wrap justify-start gap-1 bg-transparent p-0">
-              <TabsTrigger
-                value="all"
-                className={cn(
-                  "px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0",
-                  category === "all"
-                    ? "bg-foreground text-background font-medium hover:text-background"
-                    : "bg-background text-muted-foreground hover:text-foreground"
-                )}
-              >
-                All Masterpieces ({initialProducts.length})
-              </TabsTrigger>
-              {CATEGORIES.map((cat) => {
-                const count = initialProducts.filter((p) => p.category === cat).length;
-                const isSelected = category.toLowerCase() === cat.toLowerCase();
-                return (
-                  <TabsTrigger
-                    key={cat}
-                    value={cat}
-                    className={cn(
-                      "px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0",
-                      isSelected
-                        ? "bg-foreground text-background font-medium hover:text-background"
-                        : "bg-background text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {cat} ({count})
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-          </Tabs>
+            <ToggleGroupItem
+              value="all"
+              variant="outline"
+              className={cn(
+                "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors",
+                category === "all"
+                  ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
+                  : "bg-background text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+              )}
+            >
+              All Masterpieces ({initialProducts.length})
+            </ToggleGroupItem>
+            {CATEGORIES.map((cat) => {
+              const count = initialProducts.filter((p) => p.category === cat).length;
+              const isSelected = category.toLowerCase() === cat.toLowerCase();
+              return (
+                <ToggleGroupItem
+                  key={cat}
+                  value={cat}
+                  variant="outline"
+                  className={cn(
+                    "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors",
+                    isSelected
+                      ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
+                      : "bg-background text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  {cat} ({count})
+                </ToggleGroupItem>
+              );
+            })}
+          </ToggleGroup>
         </div>
-      </div>
+      </motion.div>
 
       {/* Results Counter */}
-      <div className="flex items-center justify-between text-xs tracking-wider uppercase text-muted-foreground">
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
         <span>
           Showing {filteredProducts.length} {filteredProducts.length === 1 ? "salon piece" : "salon pieces"}
         </span>
@@ -278,97 +312,119 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               type="button"
               onClick={resetFilters}
               size="sm"
-              className="bg-foreground text-background hover:bg-foreground/90 uppercase tracking-wider text-xs font-semibold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium"
             >
               Clear Filters
             </Button>
           </EmptyContent>
         </Empty>
       ) : (
-        <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProducts.map((product) => {
-            const primaryImage =
-              product.images.find((img) => img.isPrimary) || product.images[0];
-            return (
-              <div key={product.slug} className="group flex flex-col gap-4">
-                <Link
-                  href={`/products/${product.slug}`}
-                  className="block relative overflow-hidden bg-secondary"
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence>
+            {filteredProducts.map((product, idx) => {
+              const primaryImage =
+                product.images.find((img) => img.isPrimary) || product.images[0];
+              return (
+                <motion.div
+                  key={product.slug}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                    delay: Math.min((idx % 6) * 0.04, 0.2),
+                  }}
+                  className="h-full"
                 >
-                  <AspectRatio ratio={4 / 5} className="w-full">
-                    {primaryImage?.url && (
-                      <Image
-                        src={primaryImage.url}
-                        alt={primaryImage.alt || product.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-104"
-                      />
-                    )}
-                    {/* Discreet status tag */}
-                    <div className="absolute top-3 left-3 z-10">
-                      <Badge variant="outline" className="bg-background/95 px-3 py-1 text-xs font-medium uppercase tracking-wider border-border">
-                        {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
-                      </Badge>
-                    </div>
-                  </AspectRatio>
-                </Link>
+                  <CardTilt maxTilt={3.5} className="h-full">
+                    <Card
+                      className="group flex flex-col justify-between h-full overflow-hidden border border-border/60 bg-card py-0 hover:border-foreground/30 transition-colors"
+                    >
+                      <div>
+                        <Link
+                          href={`/products/${product.slug}`}
+                          className="block relative overflow-hidden bg-secondary"
+                        >
+                          <AspectRatio ratio={4 / 5} className="w-full">
+                            {primaryImage?.url && (
+                              <Image
+                                src={primaryImage.url}
+                                alt={primaryImage.alt || product.title}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-104"
+                              />
+                            )}
+                            {/* Discreet status tag */}
+                            <div className="absolute top-3 left-3 z-10">
+                              <Badge variant="outline" className="bg-background/95 px-3 py-1 text-xs font-medium border-border">
+                                {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
+                              </Badge>
+                            </div>
+                          </AspectRatio>
+                        </Link>
 
-                <div className="flex flex-col gap-2 pt-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="font-heading text-xl font-normal text-foreground group-hover:underline"
-                    >
-                      {product.title}
-                    </Link>
-                    <span className="font-heading text-base font-light text-foreground shrink-0">
-                      ${product.price.toLocaleString()}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                    {product.metals[0]} • {product.gemstones[0]} {product.caratWeight ? `(${product.caratWeight} ct)` : ""}
-                  </p>
-                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                    {product.shortDescription}
-                  </p>
-                  <div className="mt-3">
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-foreground hover:underline underline-offset-4"
-                    >
-                      Inspect Details &amp; Gemology
-                      <ArrowRight className="size-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                        <CardHeader className="p-6 pb-2">
+                          <div className="flex items-baseline justify-between gap-2">
+                            <CardTitle className="font-heading text-xl font-normal text-foreground group-hover:underline">
+                              <Link href={`/products/${product.slug}`}>
+                                {product.title}
+                              </Link>
+                            </CardTitle>
+                            <span className="font-heading text-base font-light text-foreground shrink-0">
+                              ${product.price.toLocaleString()}
+                            </span>
+                          </div>
+                          <CardDescription className="text-sm text-muted-foreground">
+                            {product.metals[0]} • {product.gemstones[0]} {product.caratWeight ? `(${product.caratWeight} ct)` : ""}
+                          </CardDescription>
+                        </CardHeader>
+
+                        <CardContent className="px-6 py-2">
+                          <p className="text-base text-muted-foreground line-clamp-2 leading-relaxed">
+                            {product.shortDescription}
+                          </p>
+                        </CardContent>
+                      </div>
+
+                      <CardFooter className="px-6 pb-6 pt-4 border-t border-border/40 mt-4">
+                        <Link
+                          href={`/products/${product.slug}`}
+                          className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:underline underline-offset-4"
+                        >
+                          Inspect Details &amp; Gemology
+                          <ArrowRight className="size-3.5" />
+                        </Link>
+                      </CardFooter>
+                    </Card>
+                  </CardTilt>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       )}
 
-      {/* Bespoke Commission Banner: Architectural, High Contrast */}
-      <section className="bg-secondary/40 p-8 sm:p-12 border border-border/50">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+      {/* Bespoke Commission Banner: Architectural, High Contrast Card */}
+      <MotionSection>
+        <div className="bg-secondary p-8 sm:p-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-xl space-y-2">
-            <h2 className="font-heading text-2xl font-normal text-foreground sm:text-3xl">
+            <h3 className="font-heading text-2xl font-normal text-foreground sm:text-3xl">
               Commission a Custom Heirloom
-            </h2>
+            </h3>
             <p className="text-base leading-relaxed text-muted-foreground">
               Our master gemologists source rare untreated stones and sculpt custom one-of-a-kind heirlooms tailored to your private vision.
             </p>
           </div>
-          <Button
-            render={<Link href="/consultation" />}
-            nativeButton={false}
-            size="lg"
-            className="bg-foreground text-background shrink-0 hover:bg-foreground/90 uppercase tracking-wider text-xs font-semibold"
+          <Link
+            href="/consultation"
+            className="bg-primary text-primary-foreground px-6 py-3.5 text-base font-medium shrink-0 hover:bg-primary/90 transition-transform active:scale-[0.98]"
           >
             Book Bespoke Consultation
-          </Button>
+          </Link>
         </div>
-      </section>
+      </MotionSection>
     </div>
   );
 }

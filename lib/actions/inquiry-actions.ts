@@ -68,3 +68,21 @@ export async function updateInquiryStatusAction(
     };
   }
 }
+
+export async function deleteInquiryAction(id: string): Promise<ActionResult> {
+  try {
+    const col = await getInquiriesCollection();
+    await col.deleteOne({
+      _id: new ObjectId(id) as unknown as string,
+    });
+
+    updateTag("inquiries");
+    return { success: true, data: { id } };
+  } catch (error) {
+    console.error("deleteInquiryAction error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to delete inquiry",
+    };
+  }
+}

@@ -1,10 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Gem, DollarSign, CalendarCheck, Clock, Plus, ArrowUpRight } from "lucide-react";
 import { getInventoryStats, getProducts } from "@/lib/queries/products";
 import { getInquiries } from "@/lib/queries/inquiries";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "Overview",
+};
 
 export default async function AdminOverviewPage() {
   const [stats, products, inquiries] = await Promise.all([
@@ -28,12 +33,10 @@ export default async function AdminOverviewPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/admin/products/new">
-            <Button size="sm">
-              <Plus data-icon="inline-start" />
-              Add New Piece
-            </Button>
-          </Link>
+          <Button render={<Link href="/admin/products/new" />} nativeButton={false} size="sm">
+            <Plus data-icon="inline-start" />
+            Add New Piece
+          </Button>
         </div>
       </div>
 
@@ -130,9 +133,15 @@ export default async function AdminOverviewPage() {
                   Latest pieces in the showcase
                 </p>
               </div>
-              <Link href="/admin/products" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <Button
+                variant="link"
+                size="sm"
+                render={<Link href="/admin/products" />}
+                nativeButton={false}
+                className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+              >
                 View All <ArrowUpRight className="size-3" />
-              </Link>
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -173,9 +182,15 @@ export default async function AdminOverviewPage() {
                   Private viewing and commission requests
                 </p>
               </div>
-              <Link href="/admin/inquiries" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <Button
+                variant="link"
+                size="sm"
+                render={<Link href="/admin/inquiries" />}
+                nativeButton={false}
+                className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+              >
                 Manage <ArrowUpRight className="size-3" />
-              </Link>
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
