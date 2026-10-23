@@ -1,0 +1,14 @@
+# Étoile Atelier Architecture & Design System
+
+> Luxury jewelry e-commerce platform built with Next.js App Router, Tailwind CSS v4, Base UI, and shadcn/ui.
+
+## Stack
+- Framework: Next.js (App Router) + React 19
+- Primitive Library: Base UI (@base-ui/react)
+- Component Library: shadcn/ui (style: base-sera, taupe palette)
+- Styling: Tailwind CSS v4 with @theme inline and strict token invariance
+- Typography: Playfair Display (Serif headings) + Noto Sans (Body)
+- Database: Native MongoDB Driver (maxPoolSize: 5, minPoolSize: 0, maxIdleTimeMS: 30000)
+- Validation: Zod across all boundaries
+- State: Nuqs for URL state management
+- Animation: Motion (Framer Motion)
