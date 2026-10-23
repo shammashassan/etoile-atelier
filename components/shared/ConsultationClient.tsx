@@ -113,6 +113,7 @@ export function ConsultationClient() {
           </Button>
           <Button
             render={<Link href="/collections" />}
+            nativeButton={false}
             size="sm"
           >
             Explore Salon Pieces

@@ -151,6 +151,7 @@ export default function AdminLoginPage() {
         <div className="text-center">
           <Button
             render={<Link href="/" />}
+            nativeButton={false}
             variant="link"
             size="sm"
             className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"

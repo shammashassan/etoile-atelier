@@ -344,6 +344,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
             <CardFooter className="pt-2">
               <Button
                 render={<Link href={`/products/${activeProduct.slug}`} />}
+                nativeButton={false}
                 size="lg"
                 className="w-full text-xs font-semibold tracking-wider uppercase bg-primary text-primary-foreground hover:bg-primary/90"
               >

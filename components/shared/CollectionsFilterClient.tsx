@@ -361,6 +361,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
           </div>
           <Button
             render={<Link href="/consultation" />}
+            nativeButton={false}
             size="lg"
             className="bg-foreground text-background shrink-0 hover:bg-foreground/90 uppercase tracking-wider text-xs font-semibold"
           >

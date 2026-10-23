@@ -87,6 +87,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         <div className="container mx-auto flex items-center justify-between">
           <Button
             render={<Link href="/collections" />}
+            nativeButton={false}
             variant="ghost"
             size="sm"
             className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground h-auto p-0"

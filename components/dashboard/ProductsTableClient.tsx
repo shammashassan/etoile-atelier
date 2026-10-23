@@ -98,7 +98,7 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
             Manage your fine jewelry catalog, diamonds, metallurgy, and availability
           </p>
         </div>
-        <Button render={<Link href="/admin/products/new" />} size="sm">
+        <Button render={<Link href="/admin/products/new" />} nativeButton={false} size="sm">
           <Plus data-icon="inline-start" />
           Add New Piece
         </Button>
@@ -257,6 +257,7 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
                         </Button>
                         <Button
                           render={<Link href={`/admin/products/${product._id || product.slug}`} />}
+                          nativeButton={false}
                           variant="ghost"
                           size="icon-xs"
                           title="Edit Masterpiece"
@@ -265,6 +266,7 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
                         </Button>
                         <Button
                           render={<Link href={`/products/${product.slug}`} target="_blank" />}
+                          nativeButton={false}
                           variant="ghost"
                           size="icon-xs"
                           title="View Public Page"
