@@ -12,11 +12,13 @@ const eslintConfig = defineConfig([
       "components/dashboard/**/*.{ts,tsx}",
       "components/shared/**/*.{ts,tsx}",
     ],
+    ignores: [
+      "components/shared/motion/**",
+    ],
     plugins: {
       shadcn,
     },
     rules: {
-      "shadcn/no-restyle": "warn",
       "shadcn/no-raw-colors": "warn",
       "shadcn/no-arbitrary-values": "warn",
       "shadcn/no-inline-styles": "warn",
