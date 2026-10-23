@@ -66,7 +66,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="w-full text-foreground"
+      className="w-full max-w-full min-w-0 text-foreground"
     >
       {/* Studio Header */}
       <div className="mb-10 sm:mb-14 max-w-3xl">
@@ -81,11 +81,11 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 items-start">
+      <div className="grid gap-8 lg:gap-12 lg:grid-cols-12 items-start w-full min-w-0 max-w-full">
         {/* Left Column: Visualizer Canvas + Light Controls + Gemological Dossier (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
+        <div className="lg:col-span-7 flex flex-col gap-6 w-full min-w-0">
           {/* Master Jewel Artwork Display */}
-          <div className="relative aspect-4/3 w-full overflow-hidden bg-card/60 border border-border/40">
+          <div className="relative aspect-4/3 w-full max-w-full overflow-hidden bg-card/60 border border-border/40">
             <motion.div
               key={`${activeProduct.slug}-${alloy}`}
               initial={{ opacity: 0.6, scale: 0.98 }}
@@ -119,46 +119,46 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
             </motion.div>
 
             {/* Specimen Tag overlay */}
-            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-background/90 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-foreground backdrop-blur-sm border border-border/30">
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-background/90 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-foreground backdrop-blur-sm border border-border/30 max-w-[calc(100%-1.5rem)] truncate">
               {activeProduct.caratWeight ? `${activeProduct.caratWeight} ct` : "Fine Specimen"} • {activeProduct.gemstones[0]}
             </div>
 
             {/* Loupe Toggle Indicator */}
             {isLoupeActive && (
-              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 bg-primary text-primary-foreground px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium">
+              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 bg-primary text-primary-foreground px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium max-w-[calc(100%-1.5rem)] truncate">
                 10× Gemological Loupe Active
               </div>
             )}
           </div>
 
           {/* Interactive Bench Controls: Angle Slider & Loupe Toggle */}
-          <div className="bg-card p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 border border-border/40">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-              <div>
+          <div className="bg-card p-4 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 border border-border/40 w-full min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 w-full min-w-0">
+              <div className="min-w-0">
                 <span className="text-sm sm:text-base font-medium text-foreground block">
                   Incident Light Angle
                 </span>
-                <span className="text-xs sm:text-sm text-muted-foreground">
+                <span className="text-xs sm:text-sm text-muted-foreground block">
                   Rotate illumination vector across facets ({lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`})
                 </span>
               </div>
-              <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-3 w-full sm:w-auto min-w-0">
                 <Slider
                   min={-45}
                   max={45}
                   value={[lightAngle]}
                   onValueChange={(v) => setLightAngle((v as number[])[0])}
                   aria-label="Incident light angle"
-                  className="w-full sm:w-48 xl:w-56"
+                  className="flex-1 min-w-0 sm:w-48 xl:w-56"
                 />
-                <span className="text-xs font-mono text-muted-foreground w-10 text-right sm:hidden">
+                <span className="text-xs font-mono text-muted-foreground w-10 text-right shrink-0 sm:hidden">
                   {lightAngle > 0 ? `+${lightAngle}°` : `${lightAngle}°`}
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border/30">
-              <span className="text-xs sm:text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border/30 w-full min-w-0">
+              <span className="text-xs sm:text-sm text-muted-foreground break-words min-w-0">
                 Calibrated Spectrum: <strong className="text-foreground font-medium">{currentProfile.toneName} ({currentProfile.temp})</strong>
               </span>
               <Button
@@ -166,7 +166,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                 variant={isLoupeActive ? "default" : "secondary"}
                 size="sm"
                 onClick={() => setIsLoupeActive(!isLoupeActive)}
-                className="w-full sm:w-auto rounded-none text-xs sm:text-sm"
+                className="w-full sm:w-auto rounded-none text-xs sm:text-sm shrink-0"
               >
                 {isLoupeActive ? "Exit 10× Magnification" : "Engage 10× Gemological Loupe"}
               </Button>
@@ -174,51 +174,51 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
           </div>
 
           {/* Gemological Specifications Dossier (Balances Column Height & Eliminates Empty Void) */}
-          <div className="bg-card p-5 sm:p-6 md:p-8 border border-border/40">
-            <div className="flex items-baseline justify-between mb-5 pb-3 border-b border-border/30">
-              <div>
+          <div className="bg-card p-4 sm:p-6 md:p-8 border border-border/40 w-full min-w-0">
+            <div className="flex items-baseline justify-between mb-5 pb-3 border-b border-border/30 gap-2">
+              <div className="min-w-0">
                 <span className="text-[11px] uppercase tracking-widest text-muted-foreground block">
                   Laboratory Specifications
                 </span>
-                <h3 className="font-heading text-xl sm:text-2xl font-normal text-foreground mt-0.5">
+                <h3 className="font-heading text-xl sm:text-2xl font-normal text-foreground mt-0.5 truncate">
                   Gemological Dossier
                 </h3>
               </div>
-              <span className="text-xs font-mono px-2.5 py-1 bg-secondary text-muted-foreground">
+              <span className="text-xs font-mono px-2.5 py-1 bg-secondary text-muted-foreground shrink-0">
                 GIA Verified
               </span>
             </div>
 
-            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm sm:text-base">
-              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                <dt className="text-muted-foreground text-xs sm:text-sm">Primary Gemstone</dt>
-                <dd className="font-medium text-foreground">{activeProduct.gemstones.join(", ")}</dd>
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm sm:text-base w-full min-w-0">
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Primary Gemstone</dt>
+                <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">{activeProduct.gemstones.join(", ")}</dd>
               </div>
               {activeProduct.caratWeight && (
-                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                  <dt className="text-muted-foreground text-xs sm:text-sm">Total Carat Weight</dt>
-                  <dd className="font-medium text-foreground">{activeProduct.caratWeight} ct</dd>
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                  <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Total Carat Weight</dt>
+                  <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">{activeProduct.caratWeight} ct</dd>
                 </div>
               )}
               {activeProduct.clarity && (
-                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                  <dt className="text-muted-foreground text-xs sm:text-sm">Clarity Certification</dt>
-                  <dd className="font-medium text-foreground">{activeProduct.clarity}</dd>
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                  <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Clarity Certification</dt>
+                  <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">{activeProduct.clarity}</dd>
                 </div>
               )}
               {activeProduct.cutGrade && (
-                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                  <dt className="text-muted-foreground text-xs sm:text-sm">Cut Proportion</dt>
-                  <dd className="font-medium text-foreground">{activeProduct.cutGrade} Symmetry</dd>
+                <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                  <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Cut Proportion</dt>
+                  <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">{activeProduct.cutGrade} Symmetry</dd>
                 </div>
               )}
-              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                <dt className="text-muted-foreground text-xs sm:text-sm">Mounting Metallurgy</dt>
-                <dd className="font-medium text-foreground">{alloy}</dd>
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Mounting Metallurgy</dt>
+                <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">{alloy}</dd>
               </div>
-              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20">
-                <dt className="text-muted-foreground text-xs sm:text-sm">Provenance &amp; Ethics</dt>
-                <dd className="font-medium text-foreground">Kimberley Process Audited</dd>
+              <div className="flex justify-between sm:flex-col sm:gap-0.5 py-1 border-b sm:border-0 border-border/20 gap-2 min-w-0">
+                <dt className="text-muted-foreground text-xs sm:text-sm shrink-0">Provenance &amp; Ethics</dt>
+                <dd className="font-medium text-foreground text-right sm:text-left min-w-0 break-words">Kimberley Process Audited</dd>
               </div>
             </dl>
 
@@ -230,20 +230,20 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
         </div>
 
         {/* Right Column: Specimen Selection + Spectra + Metallurgy + Acquisition Console (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8">
+        <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8 w-full min-w-0">
           {/* Specimen Selector */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm sm:text-base font-medium text-foreground">
+          <div className="w-full min-w-0">
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <span className="text-sm sm:text-base font-medium text-foreground truncate">
                 Select Salon Masterpiece
               </span>
-              <span className="text-xs text-muted-foreground sm:hidden">
+              <span className="text-xs text-muted-foreground shrink-0 sm:hidden">
                 Swipe to browse ({products.length})
               </span>
             </div>
 
             {/* Mobile Horizontal Carousel */}
-            <div className="flex sm:hidden gap-2.5 overflow-x-auto pb-2 scrollbar-none snap-x -mx-1 px-1">
+            <div className="flex sm:hidden gap-2.5 overflow-x-auto pb-2 scrollbar-none snap-x w-full max-w-full touch-pan-x overscroll-x-contain">
               {products.map((item) => (
                 <button
                   key={item.slug}
@@ -265,7 +265,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
             </div>
 
             {/* Desktop 2-Column Grid */}
-            <div className="hidden sm:grid grid-cols-2 gap-2.5">
+            <div className="hidden sm:grid grid-cols-2 gap-2.5 w-full">
               {products.map((item) => (
                 <button
                   key={item.slug}
@@ -288,11 +288,11 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
           </div>
 
           {/* Illumination Spectra Selector */}
-          <div>
+          <div className="w-full min-w-0">
             <span className="text-sm sm:text-base font-medium text-foreground block mb-3">
               Calibrated Illumination Spectrum
             </span>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 w-full">
               {(Object.keys(lightingProfiles) as LightingMode[]).map((mode) => {
                 const prof = lightingProfiles[mode];
                 const isActive = lighting === mode;
@@ -301,12 +301,12 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                     key={mode}
                     type="button"
                     onClick={() => setLighting(mode)}
-                    className={`p-3.5 sm:p-4 text-left transition-all flex items-baseline justify-between border ${isActive
+                    className={`p-3.5 sm:p-4 text-left transition-all flex items-baseline justify-between border w-full min-w-0 ${isActive
                         ? "bg-secondary text-foreground pl-4 sm:pl-5 font-medium border-primary/50"
                         : "bg-card text-muted-foreground hover:text-foreground pl-3 sm:pl-4 border-border/40"
                       }`}
                   >
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <span className="text-sm sm:text-base font-medium block text-foreground">
                         {prof.label}
                       </span>
@@ -324,17 +324,17 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
           </div>
 
           {/* Metallurgy Alloy Selector */}
-          <div>
+          <div className="w-full min-w-0">
             <span className="text-sm sm:text-base font-medium text-foreground block mb-3">
               Precious Metal Alloy
             </span>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 w-full">
               {(["Platinum 950", "18k Yellow Gold", "18k Rose Gold"] as AlloyOption[]).map((m) => (
                 <button
                   key={m}
                   type="button"
                   onClick={() => setAlloy(m)}
-                  className={`py-2.5 sm:py-3 px-1.5 sm:px-3 text-xs sm:text-sm text-center transition-colors truncate border ${alloy === m
+                  className={`py-2.5 sm:py-3 px-1 sm:px-3 text-xs sm:text-sm text-center transition-colors truncate border min-w-0 ${alloy === m
                       ? "bg-primary text-primary-foreground font-medium border-primary"
                       : "bg-card text-foreground hover:bg-secondary border-border/40"
                     }`}
@@ -347,9 +347,9 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
           </div>
 
           {/* Salon Acquisition Card */}
-          <div className="bg-card p-5 sm:p-6 md:p-8 border border-border/40 flex flex-col gap-5">
-            <div className="flex items-baseline justify-between pb-3 border-b border-border/30">
-              <div>
+          <div className="bg-card p-4 sm:p-6 md:p-8 border border-border/40 flex flex-col gap-5 w-full min-w-0">
+            <div className="flex items-baseline justify-between pb-3 border-b border-border/30 gap-2">
+              <div className="min-w-0">
                 <span className="text-[11px] uppercase tracking-widest text-muted-foreground block">
                   Atelier Valuation
                 </span>
@@ -357,7 +357,7 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
                   ${activeProduct.price.toLocaleString()}
                 </span>
               </div>
-              <span className="text-xs font-mono text-emerald-500 flex items-center gap-1.5">
+              <span className="text-xs font-mono text-emerald-500 flex items-center gap-1.5 shrink-0">
                 <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Available in Salon
               </span>
@@ -367,11 +367,11 @@ export function JewelryStudioClient({ products }: JewelryStudioClientProps) {
               Handcrafted in solid {alloy}. Accompanied by full gemological passport, complimentary insured international transport, and private salon viewing privileges.
             </p>
 
-            <div className="flex flex-col gap-3 pt-2">
+            <div className="flex flex-col gap-3 pt-2 w-full">
               <Link href={`/products/${activeProduct.slug}`} className="block w-full">
-                <Button size="lg" className="w-full text-sm sm:text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12">
-                  Acquire Piece or Private Viewing
-                  <ArrowRight className="size-4 ml-1.5" />
+                <Button size="lg" className="w-full text-xs sm:text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 whitespace-normal text-center">
+                  <span>Acquire Piece or Private Viewing</span>
+                  <ArrowRight className="size-4 ml-1.5 shrink-0" />
                 </Button>
               </Link>
               <Link

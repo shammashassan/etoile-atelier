@@ -120,7 +120,7 @@ export default async function Home() {
       </section>
 
       {/* ── CHAPTER 2: THE OPTICAL & METALLURGY BENCH (Dark Gemological Slate Field) ── */}
-      <section id="studio" className="dark bg-background text-foreground px-6 md:px-12 xl:px-16 py-20 lg:py-32 scroll-mt-24 md:scroll-mt-32">
+      <section id="studio" className="dark bg-background text-foreground px-4 sm:px-6 md:px-12 xl:px-16 py-20 lg:py-32 scroll-mt-24 md:scroll-mt-32 w-full max-w-full overflow-hidden">
         <JewelryStudioClient products={products} />
       </section>
 
