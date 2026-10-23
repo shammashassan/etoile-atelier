@@ -8,8 +8,6 @@ import {
   Gem,
   CalendarCheck,
   Settings,
-  ExternalLink,
-  LogOut,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import {
@@ -25,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { NavUser } from "@/components/dashboard/NavUser";
 
 const NAV_ITEMS = [
   { label: "Atelier Overview", href: "/admin", icon: LayoutDashboard },
@@ -47,15 +46,22 @@ export function DashboardSidebar() {
     }
   };
 
+  const defaultUser = {
+    name: session?.user?.name || "Atelier Director",
+    email: session?.user?.email || "director@etoile-atelier.com",
+    avatar: session?.user?.image || undefined,
+  };
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-3 py-3">
-        <SidebarMenu>
-          <SidebarMenuItem>
+      {/* Sidebar Header: h-16 to align border-b perfectly with page header */}
+      <SidebarHeader className="h-16 flex flex-row items-center justify-between border-b border-sidebar-border px-3 group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:justify-center">
+        <SidebarMenu className="w-full">
+          <SidebarMenuItem className="flex justify-center">
             <SidebarMenuButton
               size="lg"
               render={<Link href="/admin" />}
-              className="gap-3 data-open:bg-sidebar-accent"
+              className="h-10 data-open:bg-sidebar-accent group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:mx-auto"
             >
               <div className="flex size-8 shrink-0 items-center justify-center border border-sidebar-border bg-sidebar-primary text-sidebar-primary-foreground font-serif text-sm font-semibold">
                 É
@@ -106,41 +112,8 @@ export function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-3 space-y-2">
-        {session?.user && (
-          <div className="rounded border border-sidebar-border/80 bg-sidebar-accent/50 p-2.5 space-y-0.5 group-data-[collapsible=icon]:hidden">
-            <span className="font-heading text-xs font-semibold text-sidebar-foreground block truncate">
-              {session.user.name}
-            </span>
-            <span className="text-xs text-sidebar-foreground/70 block truncate font-mono">
-              {session.user.email}
-            </span>
-          </div>
-        )}
-
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              render={<Link href="/" target="_blank" />}
-              tooltip="View Public Storefront"
-              className="text-xs uppercase tracking-wider text-sidebar-foreground/80 hover:text-sidebar-foreground"
-            >
-              <ExternalLink className="size-4 shrink-0" />
-              <span>Public Storefront</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={handleSignOut}
-              tooltip="Sign Out"
-              className="text-xs uppercase tracking-wider text-destructive hover:bg-destructive/10 hover:text-destructive"
-            >
-              <LogOut className="size-4 shrink-0" />
-              <span>Sign Out</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarFooter className="border-t border-sidebar-border p-2">
+        <NavUser user={defaultUser} onSignOut={handleSignOut} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

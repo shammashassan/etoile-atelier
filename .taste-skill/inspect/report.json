@@ -1,27 +1,28 @@
 {
  "url": "http://localhost:3005",
- "at": "2026-10-23T18:40:11.270Z",
+ "at": "2026-10-23T19:19:28.075Z",
  "allow": [],
  "viewports": [
   {
    "width": 1440,
    "height": 900,
    "load": "load",
-   "screens": 7,
+   "screens": 8,
    "filled": [
-    0.46,
-    0.77,
-    0.87,
-    0.5,
-    0.72,
     0.55,
-    0.63
+    0.59,
+    0.99,
+    1,
+    1,
+    0.99,
+    1,
+    1
    ],
    "motion": {
-    "elements": 22,
-    "css": 3,
+    "elements": 25,
+    "css": 7,
     "transitions": 0,
-    "scripted": 19,
+    "scripted": 18,
     "videos": 0,
     "playingVideos": 0
    },
@@ -31,10 +32,10 @@
      "h": 900
     },
     "page": {
-     "height": 5712,
-     "screens": 6.3,
-     "words": 538,
-     "img": 11,
+     "height": 7163,
+     "screens": 8,
+     "words": 702,
+     "img": 10,
      "video": 0,
      "canvas": 0,
      "svg": 2,
@@ -43,7 +44,7 @@
      "overflowCulprits": [],
      "uiFragments": 0,
      "uiAbuse": false,
-     "realPictures": 8,
+     "realPictures": 10,
      "videoCount": 0,
      "uiPictures": 0,
      "pictureSamples": [
@@ -52,9 +53,9 @@
       "image?url=%2Fassets%2Fdrawing-of-the-koh-i-noor-",
       "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
       "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=%2Fassets%2Fdouble-ring.jpg&w=640&q=75",
-      "image?url=%2Fassets%2Fnecklace.jpg&w=640&q=75",
-      "image?url=%2Fassets%2Fduchess-of-devonshire-port"
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=%2Fassets%2Fdouble-ring.jpg&w=640&q=75"
      ],
      "blendText": 0,
      "sideScrollers": 0,
@@ -71,14 +72,14 @@
      "font": "Playfair Display",
      "weight": 400,
      "tracking": -0.025,
-     "leading": 1,
+     "leading": 1.05,
      "upper": false,
      "italic": false,
      "mono": false,
      "align": "left",
      "position": "left",
-     "widthRatio": 0.59,
-     "top": 216,
+     "widthRatio": 0.52,
+     "top": 210,
      "tag": "h1",
      "kind": "heading"
     },
@@ -91,6 +92,27 @@
     },
     "headings": [
      {
+      "text": "ÉTOILE ATELIER",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": 0.1,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.2,
+      "top": 68,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
       "text": "Rare Gemstones, Sculpted by Hand.",
       "words": 5,
       "chars": 33,
@@ -100,14 +122,14 @@
       "font": "Playfair Display",
       "weight": 400,
       "tracking": -0.025,
-      "leading": 1,
+      "leading": 1.05,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "left",
-      "widthRatio": 0.59,
-      "top": 216,
+      "widthRatio": 0.52,
+      "top": 210,
       "tag": "h1",
       "kind": "heading"
      },
@@ -128,7 +150,7 @@
       "align": "left",
       "position": "left",
       "widthRatio": 0.47,
-      "top": 1429,
+      "top": 1460,
       "tag": "h2",
       "kind": "heading"
      },
@@ -142,35 +164,35 @@
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0,
-      "leading": 1,
+      "leading": 1.25,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "left",
-      "widthRatio": 0.41,
-      "top": 2967,
+      "widthRatio": 0.27,
+      "top": 2998,
       "tag": "h2",
       "kind": "heading"
      },
      {
-      "text": "Atelier Heritage & Metallurgy",
-      "words": 4,
-      "chars": 29,
-      "lines": 1,
-      "size": 48,
-      "vw": 3.3,
+      "text": "The Place Vendôme Vault: Lapidary Provenance",
+      "words": 6,
+      "chars": 44,
+      "lines": 2,
+      "size": 60,
+      "vw": 4.2,
       "font": "Playfair Display",
       "weight": 400,
-      "tracking": 0,
+      "tracking": -0.025,
       "leading": 1,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "left",
-      "widthRatio": 0.47,
-      "top": 4020,
+      "widthRatio": 0.6,
+      "top": 4311,
       "tag": "h2",
       "kind": "heading"
      },
@@ -178,20 +200,20 @@
       "text": "Private Salon Appointments",
       "words": 3,
       "chars": 26,
-      "lines": 1,
+      "lines": 2,
       "size": 48,
       "vw": 3.3,
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0,
-      "leading": 1,
+      "leading": 1.25,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "left",
-      "widthRatio": 0.43,
-      "top": 4924,
+      "widthRatio": 0.35,
+      "top": 5815,
       "tag": "h2",
       "kind": "heading"
      },
@@ -200,29 +222,29 @@
       "words": 2,
       "chars": 14,
       "lines": 1,
-      "size": 30,
-      "vw": 2.1,
+      "size": 128,
+      "vw": 8.9,
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0.1,
-      "leading": 1.2,
+      "leading": 1,
       "upper": true,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "left",
-      "widthRatio": 0.19,
-      "top": 5356,
+      "position": "center",
+      "widthRatio": 0.91,
+      "top": 6419,
       "tag": "span",
       "kind": "heading"
      }
     ],
     "headingSummary": {
-     "count": 6,
+     "count": 7,
      "maxLines": 2,
      "over2Lines": 0,
      "statements": 0,
-     "centered": 0,
+     "centered": 1,
      "medianWords": 3,
      "mixedFontHeadings": 0
     },
@@ -230,12 +252,12 @@
      "families": [
       {
        "family": "Noto Sans",
-       "share": 0.88,
+       "share": 0.89,
        "mono": false
       },
       {
        "family": "Playfair Display",
-       "share": 0.12,
+       "share": 0.11,
        "mono": false
       }
      ],
@@ -249,82 +271,130 @@
       30,
       36,
       48,
-      72
+      60,
+      72,
+      128
      ],
-     "sizeCount": 9,
+     "sizeCount": 11,
      "notLoaded": [],
      "body": {
       "font": "Noto Sans",
-      "size": 16,
-      "leading": 1.63,
+      "size": 14,
+      "leading": 1.43,
       "weight": 400,
       "tracking": 0,
-      "contrast": 11.9
+      "contrast": 9.9
      },
      "measureChars": 74,
      "max": {
-      "size": 72,
-      "vw": 5,
+      "size": 128,
+      "vw": 8.9,
       "font": "Playfair Display",
-      "text": "Rare Gemstones, Sculpted by Hand."
+      "text": "Étoile Atelier"
      },
      "monoShare": 0,
      "monoProseShare": 0,
      "monoFamilies": [],
      "monoSamples": [],
-     "microLabels": 0,
-     "microLabelShare": 0,
-     "microSamples": [],
-     "upperShare": 0.02,
-     "centerShare": 0.04,
+     "microLabels": 5,
+     "microLabelShare": 0.025,
+     "microSamples": [
+      "Haute Joaillerie & Fine Lapidary Arts • ",
+      "Salons",
+      "Acquisitions",
+      "Atelier Governance",
+      "Private Access"
+     ],
+     "upperShare": 0.04,
+     "centerShare": 0.03,
      "smallText": 0
     },
     "eyebrows": [],
     "numbered": [],
     "color": {
-     "bodyBg": "#f5f7f8",
+     "bodyBg": "#f5f3ef",
      "bodyBgHsl": {
-      "h": 200,
-      "s": 0.18,
-      "l": 0.97
+      "h": 40,
+      "s": 0.23,
+      "l": 0.95
      },
      "dark": false,
      "sectionBgs": [
       {
-       "color": "#f5f7f8",
+       "color": "#f5f3ef",
        "top": 0,
        "hsl": {
-        "h": 200,
-        "s": 0.18,
-        "l": 0.97
+        "h": 40,
+        "s": 0.23,
+        "l": 0.95
        }
       },
       {
-       "color": "#e9ebed",
-       "top": 1579,
+       "color": "#e8e2d9",
+       "top": 1332,
        "hsl": {
-        "h": 210,
-        "s": 0.1,
-        "l": 0.92
+        "h": 36,
+        "s": 0.25,
+        "l": 0.88
+       }
+      },
+      {
+       "color": "#fdfcfb",
+       "top": 2870,
+       "hsl": {
+        "h": 30,
+        "s": 0.33,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#060403",
+       "top": 4167,
+       "hsl": {
+        "h": 20,
+        "s": 0.33,
+        "l": 0.02
+       }
+      },
+      {
+       "color": "#dfd8ce",
+       "top": 5687,
+       "hsl": {
+        "h": 35,
+        "s": 0.21,
+        "l": 0.84
+       }
+      },
+      {
+       "color": "#0d0907",
+       "top": 6323,
+       "hsl": {
+        "h": 20,
+        "s": 0.3,
+        "l": 0.04
        }
       }
      ],
      "textColors": [
       {
        "color": "#37312f",
-       "share": 0.7
+       "share": 0.39
+      },
+      {
+       "color": "#a9a39e",
+       "share": 0.27
       },
       {
        "color": "#070505",
-       "share": 0.26
+       "share": 0.22
       },
       {
-       "color": "#f5f7f8",
-       "share": 0.03
+       "color": "#f5f3f0",
+       "share": 0.04
       },
       {
-       "color": "#f7f9fa",
-       "share": 0.01
+       "color": "#a9a29e",
+       "share": 0.04
       }
      ],
      "button": {
@@ -334,7 +404,7 @@
        "s": 0.17,
        "l": 0.02
       },
-      "fg": "#f5f7f8"
+      "fg": "#f5f3ef"
      },
      "lowContrast": []
     },
@@ -348,7 +418,487 @@
      "mono": 0,
      "upper": 1,
      "heroLabels": [
-      "Book Salon Viewing"
+      "Book Private Viewing"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 1,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 10,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 1870
+      },
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 5819
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.18
+     },
+     {
+      "type": "img",
+      "ratio": 0.09
+     },
+     {
+      "type": "img",
+      "ratio": 0.08
+     }
+    ],
+    "nav": {
+     "links": 7,
+     "fixed": true,
+     "height": 102,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "playfair display",
+     "noto sans"
+    ]
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 9,
+   "filled": [
+    0.42,
+    0.88,
+    0.98,
+    1,
+    1,
+    1,
+    0.98,
+    1,
+    1
+   ],
+   "motion": {
+    "elements": 23,
+    "css": 10,
+    "transitions": 0,
+    "scripted": 13,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 9090,
+     "screens": 8.9,
+     "words": 700,
+     "img": 10,
+     "video": 0,
+     "canvas": 0,
+     "svg": 2,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 10,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=%2Fassets%2Fdrawing-of-the-koh-i-noor-",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=%2Fassets%2Fdouble-ring.jpg&w=828&q=75"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": []
+    },
+    "hero": {
+     "text": "Rare Gemstones, Sculpted by Hand.",
+     "words": 5,
+     "chars": 33,
+     "lines": 2,
+     "size": 60,
+     "vw": 7.8,
+     "font": "Playfair Display",
+     "weight": 400,
+     "tracking": -0.025,
+     "leading": 1.05,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.88,
+     "top": 270,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Rare Gemstones, Sculpted by Hand.",
+     "words": 5,
+     "lines": 2,
+     "size": 60,
+     "font": "Playfair Display"
+    },
+    "headings": [
+     {
+      "text": "ÉTOILE ATELIER",
+      "words": 2,
+      "chars": 14,
+      "lines": 2,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": 0.1,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "right",
+      "widthRatio": 0.23,
+      "top": 88,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Rare Gemstones, Sculpted by Hand.",
+      "words": 5,
+      "chars": 33,
+      "lines": 2,
+      "size": 60,
+      "vw": 7.8,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 270,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Atelier Optical & Metallurgy Studio",
+      "words": 5,
+      "chars": 35,
+      "lines": 1,
+      "size": 36,
+      "vw": 4.7,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.11,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 1230,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Salon Acquisitions",
+      "words": 2,
+      "chars": 18,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 3380,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "The Place Vendôme Vault: Lapidary Provenance",
+      "words": 6,
+      "chars": 44,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 4971,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Private Salon Appointments",
+      "words": 3,
+      "chars": 26,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": 0,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 7348,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "ÉTOILE ATELIER",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 72,
+      "vw": 9.4,
+      "font": "Playfair Display",
+      "weight": 400,
+      "tracking": 0.1,
+      "leading": 1,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 8222,
+      "tag": "span",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Noto Sans",
+       "share": 0.89,
+       "mono": false
+      },
+      {
+       "family": "Playfair Display",
+       "share": 0.11,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      36,
+      48,
+      60,
+      72
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Noto Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.9
+     },
+     "measureChars": 74,
+     "max": {
+      "size": 72,
+      "vw": 9.4,
+      "font": "Playfair Display",
+      "text": "Étoile Atelier"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 5,
+     "microLabelShare": 0.025,
+     "microSamples": [
+      "Haute Joaillerie & Fine Lapidary Arts • ",
+      "Salons",
+      "Acquisitions",
+      "Atelier Governance",
+      "Private Access"
+     ],
+     "upperShare": 0.05,
+     "centerShare": 0.03,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f5f3ef",
+     "bodyBgHsl": {
+      "h": 40,
+      "s": 0.23,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f5f3ef",
+       "top": 0,
+       "hsl": {
+        "h": 40,
+        "s": 0.23,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#e8e2d9",
+       "top": 1134,
+       "hsl": {
+        "h": 36,
+        "s": 0.25,
+        "l": 0.88
+       }
+      },
+      {
+       "color": "#fdfcfb",
+       "top": 3284,
+       "hsl": {
+        "h": 30,
+        "s": 0.33,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#060403",
+       "top": 4875,
+       "hsl": {
+        "h": 20,
+        "s": 0.33,
+        "l": 0.02
+       }
+      },
+      {
+       "color": "#0d0907",
+       "top": 5231,
+       "hsl": {
+        "h": 20,
+        "s": 0.3,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#dfd8ce",
+       "top": 7252,
+       "hsl": {
+        "h": 35,
+        "s": 0.21,
+        "l": 0.84
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#37312f",
+       "share": 0.39
+      },
+      {
+       "color": "#a9a39e",
+       "share": 0.27
+      },
+      {
+       "color": "#070505",
+       "share": 0.22
+      },
+      {
+       "color": "#f5f3f0",
+       "share": 0.04
+      },
+      {
+       "color": "#a9a29e",
+       "share": 0.04
+      }
+     ],
+     "button": {
+      "bg": "#e8e2d9",
+      "hsl": {
+       "h": 36,
+       "s": 0.25,
+       "l": 0.88
+      },
+      "fg": "#070505"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 13,
+     "inHero": 1,
+     "radius": 0,
+     "height": 68,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 1,
+     "heroLabels": [
+      "Book Private Viewing"
      ]
     },
     "surfaces": {
@@ -372,413 +922,23 @@
      "textShadow": 0,
      "cardRows": [
       {
-       "count": 3,
+       "count": 4,
        "iconTopped": false,
        "rounded": false,
-       "top": 1839
+       "top": 7654
       }
      ]
     },
     "heroMedia": [
      {
       "type": "img",
-      "ratio": 0.18
+      "ratio": 0.12
      }
     ],
     "nav": {
      "links": 6,
      "fixed": true,
-     "height": 80,
-     "floatingPill": false,
-     "blur": false
-    },
-    "fontsLoaded": [
-     "playfair display",
-     "noto sans"
-    ]
-   },
-   "consoleErrors": []
-  },
-  {
-   "width": 768,
-   "height": 1024,
-   "load": "load",
-   "screens": 8,
-   "filled": [
-    0.54,
-    0.98,
-    0.86,
-    0.64,
-    0.59,
-    0.99,
-    0.93,
-    0.59
-   ],
-   "motion": {
-    "elements": 20,
-    "css": 4,
-    "transitions": 0,
-    "scripted": 16,
-    "videos": 0,
-    "playingVideos": 0
-   },
-   "metrics": {
-    "viewport": {
-     "w": 768,
-     "h": 1024
-    },
-    "page": {
-     "height": 8189,
-     "screens": 8,
-     "words": 536,
-     "img": 11,
-     "video": 0,
-     "canvas": 0,
-     "svg": 2,
-     "sections": 5,
-     "horizontalOverflow": 0,
-     "overflowCulprits": [],
-     "uiFragments": 0,
-     "uiAbuse": false,
-     "realPictures": 8,
-     "videoCount": 0,
-     "uiPictures": 0,
-     "pictureSamples": [
-      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=%2Fassets%2Fdrawing-of-the-koh-i-noor-",
-      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=%2Fassets%2Fdouble-ring.jpg&w=828&q=75",
-      "image?url=%2Fassets%2Fnecklace.jpg&w=828&q=75",
-      "image?url=%2Fassets%2Fduchess-of-devonshire-port"
-     ],
-     "blendText": 0,
-     "sideScrollers": 0,
-     "brokenImages": [],
-     "emoji": []
-    },
-    "hero": {
-     "text": "Rare Gemstones, Sculpted by Hand.",
-     "words": 5,
-     "chars": 33,
-     "lines": 2,
-     "size": 60,
-     "vw": 7.8,
-     "font": "Playfair Display",
-     "weight": 400,
-     "tracking": -0.025,
-     "leading": 1,
-     "upper": false,
-     "italic": false,
-     "mono": false,
-     "align": "left",
-     "position": "center",
-     "widthRatio": 0.94,
-     "top": 184,
-     "tag": "h1",
-     "kind": "heading"
-    },
-    "h1": {
-     "text": "Rare Gemstones, Sculpted by Hand.",
-     "words": 5,
-     "lines": 2,
-     "size": 60,
-     "font": "Playfair Display"
-    },
-    "headings": [
-     {
-      "text": "Rare Gemstones, Sculpted by Hand.",
-      "words": 5,
-      "chars": 33,
-      "lines": 2,
-      "size": 60,
-      "vw": 7.8,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": -0.025,
-      "leading": 1,
-      "upper": false,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "center",
-      "widthRatio": 0.94,
-      "top": 184,
-      "tag": "h1",
-      "kind": "heading"
-     },
-     {
-      "text": "Atelier Optical & Metallurgy Studio",
-      "words": 5,
-      "chars": 35,
-      "lines": 1,
-      "size": 36,
-      "vw": 4.7,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": -0.025,
-      "leading": 1.11,
-      "upper": false,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "center",
-      "widthRatio": 0.88,
-      "top": 1121,
-      "tag": "h2",
-      "kind": "heading"
-     },
-     {
-      "text": "Salon Acquisitions",
-      "words": 2,
-      "chars": 18,
-      "lines": 1,
-      "size": 48,
-      "vw": 6.3,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": 0,
-      "leading": 1,
-      "upper": false,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "left",
-      "widthRatio": 0.72,
-      "top": 3283,
-      "tag": "h2",
-      "kind": "heading"
-     },
-     {
-      "text": "Atelier Heritage & Metallurgy",
-      "words": 4,
-      "chars": 29,
-      "lines": 1,
-      "size": 48,
-      "vw": 6.3,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": 0,
-      "leading": 1,
-      "upper": false,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "center",
-      "widthRatio": 0.88,
-      "top": 4731,
-      "tag": "h2",
-      "kind": "heading"
-     },
-     {
-      "text": "Private Salon Appointments",
-      "words": 3,
-      "chars": 26,
-      "lines": 1,
-      "size": 48,
-      "vw": 6.3,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": 0,
-      "leading": 1,
-      "upper": false,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "center",
-      "widthRatio": 0.94,
-      "top": 7205,
-      "tag": "h2",
-      "kind": "heading"
-     },
-     {
-      "text": "ÉTOILE ATELIER",
-      "words": 2,
-      "chars": 14,
-      "lines": 1,
-      "size": 30,
-      "vw": 3.9,
-      "font": "Playfair Display",
-      "weight": 400,
-      "tracking": 0.1,
-      "leading": 1.2,
-      "upper": true,
-      "italic": false,
-      "mono": false,
-      "align": "left",
-      "position": "left",
-      "widthRatio": 0.36,
-      "top": 7833,
-      "tag": "span",
-      "kind": "heading"
-     }
-    ],
-    "headingSummary": {
-     "count": 6,
-     "maxLines": 2,
-     "over2Lines": 0,
-     "statements": 0,
-     "centered": 0,
-     "medianWords": 3,
-     "mixedFontHeadings": 0
-    },
-    "type": {
-     "families": [
-      {
-       "family": "Noto Sans",
-       "share": 0.88,
-       "mono": false
-      },
-      {
-       "family": "Playfair Display",
-       "share": 0.12,
-       "mono": false
-      }
-     ],
-     "familyCount": 2,
-     "sizes": [
-      14,
-      16,
-      18,
-      20,
-      24,
-      30,
-      36,
-      48,
-      60
-     ],
-     "sizeCount": 9,
-     "notLoaded": [],
-     "body": {
-      "font": "Noto Sans",
-      "size": 16,
-      "leading": 1.63,
-      "weight": 400,
-      "tracking": 0,
-      "contrast": 11.9
-     },
-     "measureChars": 74,
-     "max": {
-      "size": 60,
-      "vw": 7.8,
-      "font": "Playfair Display",
-      "text": "Rare Gemstones, Sculpted by Hand."
-     },
-     "monoShare": 0,
-     "monoProseShare": 0,
-     "monoFamilies": [],
-     "monoSamples": [],
-     "microLabels": 0,
-     "microLabelShare": 0,
-     "microSamples": [],
-     "upperShare": 0.02,
-     "centerShare": 0.04,
-     "smallText": 0
-    },
-    "eyebrows": [],
-    "numbered": [],
-    "color": {
-     "bodyBg": "#f5f7f8",
-     "bodyBgHsl": {
-      "h": 200,
-      "s": 0.18,
-      "l": 0.97
-     },
-     "dark": false,
-     "sectionBgs": [
-      {
-       "color": "#f5f7f8",
-       "top": 0,
-       "hsl": {
-        "h": 200,
-        "s": 0.18,
-        "l": 0.97
-       }
-      },
-      {
-       "color": "#e9ebed",
-       "top": 1271,
-       "hsl": {
-        "h": 210,
-        "s": 0.1,
-        "l": 0.92
-       }
-      }
-     ],
-     "textColors": [
-      {
-       "color": "#37312f",
-       "share": 0.7
-      },
-      {
-       "color": "#070505",
-       "share": 0.26
-      },
-      {
-       "color": "#f5f7f8",
-       "share": 0.03
-      },
-      {
-       "color": "#f7f9fa",
-       "share": 0.01
-      }
-     ],
-     "button": {
-      "bg": "#e9ebed",
-      "hsl": {
-       "h": 210,
-       "s": 0.1,
-       "l": 0.92
-      },
-      "fg": "#070505"
-     },
-     "lowContrast": []
-    },
-    "buttons": {
-     "count": 14,
-     "inHero": 1,
-     "radius": 0,
-     "height": 40,
-     "withShadow": 0,
-     "withGradient": 0,
-     "mono": 0,
-     "upper": 1,
-     "heroLabels": [
-      "Book Salon Viewing"
-     ]
-    },
-    "surfaces": {
-     "shadowStatic": 0,
-     "shadowOverlay": 0,
-     "shadowSamples": [],
-     "gradients": 0,
-     "scrims": 1,
-     "gradientSamples": [],
-     "gradientText": 0,
-     "hairlines": 0,
-     "hairlineSamples": [],
-     "outlinedBoxes": 0,
-     "dashed": 0,
-     "blurred": 0,
-     "roundedBoxes": 0,
-     "boxRadius": 0,
-     "squareMedia": 7,
-     "roundedMedia": 0,
-     "mediaRadius": 0,
-     "textShadow": 0,
-     "cardRows": []
-    },
-    "heroMedia": [
-     {
-      "type": "img",
-      "ratio": 0.14
-     }
-    ],
-    "nav": {
-     "links": 5,
-     "fixed": true,
-     "height": 80,
+     "height": 158,
      "floatingPill": false,
      "blur": false
     },
@@ -793,25 +953,26 @@
    "width": 390,
    "height": 844,
    "load": "load",
-   "screens": 11,
+   "screens": 12,
    "filled": [
-    0.67,
-    0.78,
-    0.89,
-    0.73,
-    0.84,
-    0.63,
-    0.79,
-    0.98,
-    0.69,
-    0.69,
-    0.8
+    0.53,
+    0.72,
+    0.81,
+    0.91,
+    0.94,
+    1,
+    0.95,
+    1,
+    0.97,
+    1,
+    1,
+    1
    ],
    "motion": {
-    "elements": 20,
-    "css": 4,
+    "elements": 19,
+    "css": 9,
     "transitions": 0,
-    "scripted": 16,
+    "scripted": 10,
     "videos": 0,
     "playingVideos": 0
    },
@@ -821,10 +982,10 @@
      "h": 844
     },
     "page": {
-     "height": 8547,
-     "screens": 10.1,
-     "words": 524,
-     "img": 11,
+     "height": 10951,
+     "screens": 13,
+     "words": 685,
+     "img": 10,
      "video": 0,
      "canvas": 0,
      "svg": 2,
@@ -833,7 +994,7 @@
      "overflowCulprits": [],
      "uiFragments": 0,
      "uiAbuse": false,
-     "realPictures": 8,
+     "realPictures": 10,
      "videoCount": 0,
      "uiPictures": 0,
      "pictureSamples": [
@@ -842,9 +1003,9 @@
       "image?url=%2Fassets%2Fdrawing-of-the-koh-i-noor-",
       "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
       "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
-      "image?url=%2Fassets%2Fdouble-ring.jpg&w=640&q=75",
-      "image?url=%2Fassets%2Fnecklace.jpg&w=640&q=75",
-      "image?url=%2Fassets%2Fduchess-of-devonshire-port"
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=https%3A%2F%2Fimages.unsplash.com%2Fph",
+      "image?url=%2Fassets%2Fdouble-ring.jpg&w=640&q=75"
      ],
      "blendText": 0,
      "sideScrollers": 0,
@@ -861,14 +1022,14 @@
      "font": "Playfair Display",
      "weight": 400,
      "tracking": -0.025,
-     "leading": 1.11,
+     "leading": 1.05,
      "upper": false,
      "italic": false,
      "mono": false,
      "align": "left",
      "position": "center",
      "widthRatio": 0.88,
-     "top": 204,
+     "top": 262,
      "tag": "h1",
      "kind": "heading"
     },
@@ -896,8 +1057,8 @@
       "mono": false,
       "align": "center",
       "position": "left",
-      "widthRatio": 0.5,
-      "top": 59,
+      "widthRatio": 0.54,
+      "top": 88,
       "tag": "span",
       "kind": "heading"
      },
@@ -911,14 +1072,14 @@
       "font": "Playfair Display",
       "weight": 400,
       "tracking": -0.025,
-      "leading": 1.11,
+      "leading": 1.05,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "center",
       "widthRatio": 0.88,
-      "top": 204,
+      "top": 262,
       "tag": "h1",
       "kind": "heading"
      },
@@ -939,7 +1100,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.88,
-      "top": 1919,
+      "top": 2017,
       "tag": "h2",
       "kind": "heading"
      },
@@ -960,7 +1121,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.9,
-      "top": 3489,
+      "top": 3588,
       "tag": "div",
       "kind": "heading"
      },
@@ -974,14 +1135,14 @@
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0,
-      "leading": 1.2,
+      "leading": 1.25,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "center",
       "widthRatio": 0.88,
-      "top": 4145,
+      "top": 4244,
       "tag": "h2",
       "kind": "heading"
      },
@@ -1002,20 +1163,41 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.77,
-      "top": 4712,
+      "top": 5092,
       "tag": "a",
       "kind": "heading"
      },
      {
-      "text": "Atelier Heritage & Metallurgy",
-      "words": 4,
-      "chars": 29,
+      "text": "$16,800",
+      "words": 1,
+      "chars": 7,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Playfair Display",
+      "weight": 300,
+      "tracking": 0,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "right",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 5184,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "The Place Vendôme Vault: Lapidary Provenance",
+      "words": 6,
+      "chars": 44,
       "lines": 2,
       "size": 30,
       "vw": 7.7,
       "font": "Playfair Display",
       "weight": 400,
-      "tracking": 0,
+      "tracking": -0.025,
       "leading": 1.2,
       "upper": false,
       "italic": false,
@@ -1023,7 +1205,7 @@
       "align": "left",
       "position": "center",
       "widthRatio": 0.88,
-      "top": 5464,
+      "top": 6161,
       "tag": "h2",
       "kind": "heading"
      },
@@ -1037,14 +1219,14 @@
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0,
-      "leading": 1.2,
+      "leading": 1.25,
       "upper": false,
       "italic": false,
       "mono": false,
       "align": "left",
       "position": "center",
       "widthRatio": 0.88,
-      "top": 7293,
+      "top": 8313,
       "tag": "h2",
       "kind": "heading"
      },
@@ -1053,25 +1235,25 @@
       "words": 2,
       "chars": 14,
       "lines": 1,
-      "size": 30,
-      "vw": 7.7,
+      "size": 36,
+      "vw": 9.2,
       "font": "Playfair Display",
       "weight": 400,
       "tracking": 0.1,
-      "leading": 1.2,
+      "leading": 1.11,
       "upper": true,
       "italic": false,
       "mono": false,
       "align": "left",
-      "position": "left",
-      "widthRatio": 0.7,
-      "top": 8051,
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 9662,
       "tag": "span",
       "kind": "heading"
      }
     ],
     "headingSummary": {
-     "count": 9,
+     "count": 10,
      "maxLines": 2,
      "over2Lines": 0,
      "statements": 0,
@@ -1083,12 +1265,12 @@
      "families": [
       {
        "family": "Noto Sans",
-       "share": 0.88,
+       "share": 0.89,
        "mono": false
       },
       {
        "family": "Playfair Display",
-       "share": 0.12,
+       "share": 0.11,
        "mono": false
       }
      ],
@@ -1106,76 +1288,122 @@
      "notLoaded": [],
      "body": {
       "font": "Noto Sans",
-      "size": 16,
-      "leading": 1.63,
+      "size": 14,
+      "leading": 1.43,
       "weight": 400,
       "tracking": 0,
-      "contrast": 11.9
+      "contrast": 9.9
      },
      "measureChars": 49,
      "max": {
       "size": 36,
       "vw": 9.2,
       "font": "Playfair Display",
-      "text": "Rare Gemstones, Sculpted by Hand."
+      "text": "Rare Gemstones,"
      },
      "monoShare": 0,
      "monoProseShare": 0,
      "monoFamilies": [],
      "monoSamples": [],
-     "microLabels": 0,
-     "microLabelShare": 0,
-     "microSamples": [],
-     "upperShare": 0.02,
-     "centerShare": 0.04,
+     "microLabels": 5,
+     "microLabelShare": 0.026,
+     "microSamples": [
+      "Haute Joaillerie & Fine Lapidary Arts • ",
+      "Salons",
+      "Acquisitions",
+      "Atelier Governance",
+      "Private Access"
+     ],
+     "upperShare": 0.05,
+     "centerShare": 0.03,
      "smallText": 0
     },
     "eyebrows": [],
     "numbered": [],
     "color": {
-     "bodyBg": "#f5f7f8",
+     "bodyBg": "#f5f3ef",
      "bodyBgHsl": {
-      "h": 200,
-      "s": 0.18,
-      "l": 0.97
+      "h": 40,
+      "s": 0.23,
+      "l": 0.95
      },
      "dark": false,
      "sectionBgs": [
       {
-       "color": "#f5f7f8",
+       "color": "#f5f3ef",
        "top": 0,
        "hsl": {
-        "h": 200,
-        "s": 0.18,
-        "l": 0.97
+        "h": 40,
+        "s": 0.23,
+        "l": 0.95
        }
       },
       {
-       "color": "#e9ebed",
-       "top": 528,
+       "color": "#e8e2d9",
+       "top": 602,
        "hsl": {
-        "h": 210,
-        "s": 0.1,
-        "l": 0.92
+        "h": 36,
+        "s": 0.25,
+        "l": 0.88
+       }
+      },
+      {
+       "color": "#fdfcfb",
+       "top": 4148,
+       "hsl": {
+        "h": 30,
+        "s": 0.33,
+        "l": 0.99
+       }
+      },
+      {
+       "color": "#060403",
+       "top": 6065,
+       "hsl": {
+        "h": 20,
+        "s": 0.33,
+        "l": 0.02
+       }
+      },
+      {
+       "color": "#0d0907",
+       "top": 6449,
+       "hsl": {
+        "h": 20,
+        "s": 0.3,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#dfd8ce",
+       "top": 8217,
+       "hsl": {
+        "h": 35,
+        "s": 0.21,
+        "l": 0.84
        }
       }
      ],
      "textColors": [
       {
        "color": "#37312f",
-       "share": 0.7
+       "share": 0.38
+      },
+      {
+       "color": "#a9a39e",
+       "share": 0.28
       },
       {
        "color": "#070505",
-       "share": 0.27
+       "share": 0.23
       },
       {
-       "color": "#f5f7f8",
-       "share": 0.03
+       "color": "#f5f3f0",
+       "share": 0.05
       },
       {
-       "color": "#f7f9fa",
-       "share": 0.01
+       "color": "#a9a29e",
+       "share": 0.04
       }
      ],
      "button": {
@@ -1185,7 +1413,7 @@
        "s": 0.17,
        "l": 0.02
       },
-      "fg": "#f5f7f8"
+      "fg": "#f5f3ef"
      },
      "lowContrast": []
     },
@@ -1199,7 +1427,7 @@
      "mono": 0,
      "upper": 1,
      "heroLabels": [
-      "Book Salon Viewing"
+      "Book Private Viewing"
      ]
     },
     "surfaces": {
@@ -1217,22 +1445,29 @@
      "blurred": 0,
      "roundedBoxes": 0,
      "boxRadius": 0,
-     "squareMedia": 8,
+     "squareMedia": 10,
      "roundedMedia": 0,
      "mediaRadius": 0,
      "textShadow": 0,
-     "cardRows": []
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 8686
+      }
+     ]
     },
     "heroMedia": [
      {
       "type": "img",
-      "ratio": 0.33
+      "ratio": 0.31
      }
     ],
     "nav": {
      "links": 2,
      "fixed": true,
-     "height": 80,
+     "height": 150,
      "floatingPill": false,
      "blur": false
     },
@@ -1245,6 +1480,56 @@
   }
  ],
  "findings": [
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "5 tiny uppercase letter-spaced labels (e.g. \"Haute Joaillerie & Fine Lapidary Arts • \", \"Salons\", \"Acquisitions\", \"Atelier Governance\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "card-rows",
+   "width": 1440,
+   "message": "2 rows of identical boxed cards.",
+   "fix": "Vary the composition; not every section is a card grid."
+  },
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (page background #f5f3ef, section #f5f3ef, section #e8e2d9).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "11 different font sizes (14, 16, 18, 20, 24, 30, 36, 48, 60, 72, 128).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
   {
    "level": "WARN",
    "id": "no-footage",
