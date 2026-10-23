@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Settings, Sparkles } from "lucide-react";
 import { getProducts } from "@/lib/queries/products";
 import { getSiteSettings } from "@/lib/queries/settings";
 import { CollectionsFilterClient } from "@/components/shared/CollectionsFilterClient";
-import { Button } from "@/components/ui/button";
 
 export default async function CollectionsPage() {
   const [products, settings] = await Promise.all([
@@ -13,73 +11,82 @@ export default async function CollectionsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {/* Editorial Announcement Bar */}
-      <div className="border-b border-border bg-muted/40 py-2.5 text-center text-xs tracking-widest uppercase text-muted-foreground px-4">
-        {settings.announcementBar}
+      {/* Top Quiet Bar */}
+      <div className="bg-secondary px-6 py-2 text-xs text-muted-foreground flex justify-between items-center">
+        <span>{settings.announcementBar}</span>
+        <span className="hidden sm:inline">Paris • Geneva • London • New York</span>
       </div>
 
-      {/* Main Luxury Header */}
-      <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
+      {/* Main Luxury Header: Flat, Architectural */}
+      <header className="sticky top-0 z-40 bg-background border-b border-border/60">
         <div className="container mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
-          <nav className="hidden items-center gap-8 text-xs font-medium uppercase tracking-widest text-muted-foreground md:flex">
+          <nav className="flex items-center gap-8 text-xs tracking-wider text-muted-foreground">
             <Link href="/" className="transition-colors hover:text-foreground">
               Home
             </Link>
-            <Link href="/collections" className="text-foreground transition-colors">
+            <Link href="/collections" className="text-foreground transition-colors font-medium">
               Collections
             </Link>
             <Link href="/consultation" className="transition-colors hover:text-foreground">
-              Bespoke
-            </Link>
-            <Link href="/admin" className="transition-colors hover:text-foreground flex items-center gap-1.5 text-primary font-semibold">
-              <Settings className="size-3.5" />
-              Atelier CMS
+              Bespoke Salon
             </Link>
           </nav>
 
-          <Link href="/" className="flex flex-col items-center">
-            <span className="font-heading text-2xl font-normal tracking-widest uppercase text-foreground">
+          <Link href="/" className="text-center group">
+            <span className="font-heading text-2xl font-normal tracking-widest uppercase text-foreground block">
               {settings.atelierName}
             </span>
-            <span className="text-xs tracking-widest uppercase text-muted-foreground">
-              {settings.tagline}
+            <span className="text-[10px] tracking-widest uppercase text-muted-foreground block -mt-0.5">
+              Haute Joaillerie
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:inline-flex">
-              <Link href="/admin/login">
-                <Button variant="ghost" size="sm">
-                  Director Portal
-                </Button>
-              </Link>
-            </div>
-            <Link href="/consultation">
-              <Button size="sm">
-                <Sparkles data-icon="inline-start" />
-                Book Viewing
-              </Button>
+          <div className="flex items-center gap-6 text-xs">
+            <Link
+              href="/admin/login"
+              className="hidden md:inline text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Director Portal
+            </Link>
+            <Link
+              href="/consultation"
+              className="bg-foreground text-background px-4 py-2 text-xs font-medium transition-colors hover:bg-foreground/90"
+            >
+              Book Salon Viewing
             </Link>
           </div>
         </div>
       </header>
 
       {/* Main Collections Content */}
-      <main className="flex-1 container mx-auto px-6 py-10 lg:px-12">
+      <main className="flex-1 container mx-auto px-6 py-12 lg:px-12 lg:py-16">
         <CollectionsFilterClient initialProducts={products} />
       </main>
 
       {/* Luxury Footer */}
-      <footer className="border-t border-border bg-background py-16 text-center text-xs tracking-wider uppercase text-muted-foreground">
-        <div className="container mx-auto px-6 flex flex-col items-center gap-6">
-          <span className="font-heading text-lg tracking-widest text-foreground">
-            {settings.atelierName}
-          </span>
-          <p className="max-w-md text-xs leading-relaxed lowercase text-muted-foreground">
-            {settings.locations.join(" • ")}
-          </p>
-          <div className="text-xs text-muted-foreground/60">
-            © 2026 {settings.atelierName}. All rights reserved.
+      <footer className="bg-secondary/80 px-6 py-16 lg:px-12 text-foreground">
+        <div className="container mx-auto flex flex-col md:flex-row md:items-baseline justify-between gap-6">
+          <div>
+            <span className="font-heading text-2xl font-normal tracking-widest uppercase">
+              {settings.atelierName}
+            </span>
+            <p className="text-xs text-muted-foreground mt-1">
+              Place Vendôme • Geneva • London • New York
+            </p>
+          </div>
+          <div className="flex gap-8 text-xs text-muted-foreground">
+            <Link href="/" className="hover:text-foreground transition-colors">
+              Home
+            </Link>
+            <Link href="/collections" className="hover:text-foreground transition-colors">
+              Collections
+            </Link>
+            <Link href="/consultation" className="hover:text-foreground transition-colors">
+              Bespoke Salon
+            </Link>
+            <Link href="/admin/login" className="hover:text-foreground transition-colors">
+              Director Portal
+            </Link>
           </div>
         </div>
       </footer>

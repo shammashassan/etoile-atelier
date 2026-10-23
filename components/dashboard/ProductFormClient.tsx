@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, UploadCloud } from "lucide-react";
 import Link from "next/link";
 import {
   ProductSchema,
@@ -29,6 +29,8 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const isEditing = Boolean(initialProduct?._id);
 
   const {
@@ -70,6 +72,41 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
   const imagesValue = watch("images");
   const selectedMetals = watch("metals") || [];
   const selectedGemstones = watch("gemstones") || [];
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setServerError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success && data.url) {
+        setValue("images.0.url", data.url);
+        if (!watch("images.0.alt")) {
+          setValue("images.0.alt", `${watch("title") || "Jewelry piece"} photograph`);
+        }
+      } else {
+        setServerError(data.error || "Image upload failed");
+      }
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : "Image upload network error");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
 
   // Auto-slug generator from title if slug is empty or matching
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -340,13 +377,44 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
               <CardTitle>High-Resolution Imagery</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Local File Upload Button */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border border-dashed border-border p-4 bg-muted/10">
+                <div className="space-y-0.5">
+                  <span className="text-xs font-medium text-foreground block">
+                    Upload Photograph from Device
+                  </span>
+                  <span className="text-xs text-muted-foreground block">
+                    Saved directly to production asset storage (JPEG, PNG, WEBP up to 10MB)
+                  </span>
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={isUploading}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <UploadCloud data-icon="inline-start" />
+                    {isUploading ? "Uploading File..." : "Choose Image File"}
+                  </Button>
+                </div>
+              </div>
+
               <div>
                 <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
-                  Primary Image URL *
+                  Primary Image URL or Asset Path *
                 </label>
                 <Input
                   {...register("images.0.url")}
-                  placeholder="https://images.unsplash.com/..."
+                  placeholder="https://images.unsplash.com/... or /uploads/..."
                 />
                 {errors.images?.[0]?.url && (
                   <p className="text-xs text-destructive mt-1">{errors.images[0].url.message}</p>
@@ -379,8 +447,8 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
                     <span className="text-xs font-medium text-foreground block">
                       Primary Asset Preview
                     </span>
-                    <span className="text-xs text-muted-foreground block">
-                      Rendered in High-Res Unsplash format on public storefront
+                    <span className="text-xs text-muted-foreground block truncate max-w-sm font-mono">
+                      {imagesValue[0].url}
                     </span>
                   </div>
                 </div>

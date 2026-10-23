@@ -3,12 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Sparkles, ShieldCheck, Check } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Check } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { CardTilt } from "@/components/shared/motion/CardTilt";
 import { MetalSelector } from "@/components/shared/motion/MetalSelector";
 import { SuccessCheckmark } from "@/components/shared/motion/SuccessCheckmark";
 import { submitInquiryAction } from "@/lib/actions/inquiry-actions";
@@ -62,15 +60,15 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Top Breadcrumb Header */}
-      <div className="border-b border-border bg-background/80 py-4 px-6 lg:px-12 backdrop-blur-md">
+      {/* Top Breadcrumb Header: Flat, clean */}
+      <div className="border-b border-border/60 bg-background py-4 px-6 lg:px-12">
         <div className="container mx-auto flex items-center justify-between">
           <Link
             href="/collections"
-            className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="size-3.5" />
-            <span>All Collections</span>
+            <span>Salon Collection</span>
           </Link>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Link href="/" className="hover:text-foreground">Atelier</Link>
@@ -83,28 +81,24 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       </div>
 
       <main className="container mx-auto px-6 py-12 lg:px-12 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left: Gallery with 3D CardTilt */}
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
+          {/* Left: Gallery with High Resolution Artistry */}
           <div className="space-y-4">
-            <CardTilt maxTilt={8} perspective={1200} className="w-full">
-              <div className="relative aspect-square w-full overflow-hidden border border-border bg-muted/20">
-                {activeImage?.url && (
-                  <Image
-                    src={activeImage.url}
-                    alt={activeImage.alt || product.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                    className="object-cover transition-transform duration-700 ease-out hover:scale-105"
-                  />
-                )}
-                <div className="absolute top-4 left-4 z-10">
-                  <Badge variant={product.stockStatus === "in_stock" ? "default" : "secondary"}>
-                    {product.stockStatus.replace("_", " ")}
-                  </Badge>
-                </div>
+            <div className="relative aspect-4/5 w-full overflow-hidden bg-secondary">
+              {activeImage?.url && (
+                <Image
+                  src={activeImage.url}
+                  alt={activeImage.alt || product.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                  className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
+                />
+              )}
+              <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-xs text-foreground">
+                {product.stockStatus === "in_stock" ? "Available in Salon" : "Bespoke Made to Order"}
               </div>
-            </CardTilt>
+            </div>
 
             {/* Thumbnail selector */}
             {product.images.length > 1 && (
@@ -114,8 +108,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     key={img.url}
                     type="button"
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`relative size-20 overflow-hidden border transition-all ${
-                      activeImageIdx === idx ? "border-primary ring-1 ring-primary" : "border-border opacity-70 hover:opacity-100"
+                    className={`relative size-20 overflow-hidden bg-secondary transition-all ${
+                      activeImageIdx === idx ? "ring-2 ring-foreground" : "opacity-60 hover:opacity-100"
                     }`}
                   >
                     <Image src={img.url} alt={img.alt} fill sizes="80px" className="object-cover" />
@@ -127,11 +121,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
           {/* Right: Jewelry Details & Specifications */}
           <div className="space-y-8">
-            <div className="space-y-2">
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                {product.collection} Collection • SKU: {product.sku}
-              </div>
-              <h1 className="font-heading text-3xl font-light tracking-wide text-foreground sm:text-4xl lg:text-5xl">
+            <div className="space-y-3">
+              <span className="text-xs text-muted-foreground block">
+                {product.collection} Salon Series • Reference {product.sku}
+              </span>
+              <h1 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-5xl">
                 {product.title}
               </h1>
               <div className="pt-2 flex items-baseline gap-4">
@@ -149,8 +143,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             {/* Metal Selection */}
             {product.metals.length > 0 && (
               <div className="space-y-3">
-                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground block">
-                  Select Precious Metal
+                <span className="text-xs font-medium text-muted-foreground block">
+                  Select Precious Metal Alloy
                 </span>
                 <MetalSelector
                   metals={product.metals}
@@ -161,18 +155,18 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             )}
 
             {/* Short Narrative */}
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="text-base leading-relaxed text-muted-foreground">
               {product.description}
             </p>
 
-            {/* Specifications Matrix */}
-            <div className="border-y border-border py-6 space-y-3">
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground block">
-                Atelier Specifications
+            {/* Gemological Specifications Matrix */}
+            <div className="bg-secondary/40 p-6 space-y-4">
+              <span className="text-xs font-medium text-foreground block">
+                Atelier Gemological Specifications
               </span>
               <div className="grid grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="text-muted-foreground block">Gemstone</span>
+                  <span className="text-muted-foreground block">Primary Gemstone</span>
                   <span className="font-medium text-foreground">{product.gemstones.join(", ")}</span>
                 </div>
                 {product.caratWeight && (
@@ -183,13 +177,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 )}
                 {product.clarity && (
                   <div>
-                    <span className="text-muted-foreground block">Clarity Grade</span>
-                    <span className="font-medium text-foreground">{product.clarity}</span>
+                    <span className="text-muted-foreground block">Clarity Certification</span>
+                    <span className="font-medium text-foreground">{product.clarity} (GIA Verified)</span>
                   </div>
                 )}
                 {product.cutGrade && (
                   <div>
-                    <span className="text-muted-foreground block">Cut Quality</span>
+                    <span className="text-muted-foreground block">Cut Symmetry</span>
                     <span className="font-medium text-foreground">{product.cutGrade}</span>
                   </div>
                 )}
@@ -199,19 +193,18 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             {/* CTA and Consultation Trigger */}
             <div className="space-y-4 pt-2">
               <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
-                <DialogTrigger render={<Button size="lg" className="w-full" />}>
-                  <Sparkles data-icon="inline-start" />
-                  Book Private Atelier Viewing
+                <DialogTrigger render={<Button size="lg" className="w-full text-xs font-medium" />}>
+                  Request Private Salon Viewing
                 </DialogTrigger>
 
                 <DialogPortal>
                   <DialogOverlay />
-                  <DialogContent className="max-w-md">
+                  <DialogContent className="max-w-md bg-background border border-border">
                     <DialogHeader>
-                      <DialogTitle className="font-heading text-xl font-light tracking-wide">
+                      <DialogTitle className="font-heading text-xl font-normal">
                         Private Atelier Consultation
                       </DialogTitle>
-                      <DialogDescription className="text-xs">
+                      <DialogDescription className="text-xs text-muted-foreground">
                         Schedule a private viewing of {product.title} with an atelier gemologist.
                       </DialogDescription>
                     </DialogHeader>
@@ -241,7 +234,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                     ) : (
                       <form onSubmit={handleBookingSubmit} className="space-y-4 pt-2">
                         <div>
-                          <label className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                          <label className="text-xs text-muted-foreground block mb-1">
                             Your Full Name *
                           </label>
                           <Input
@@ -249,12 +242,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             onChange={(e) => setFullName(e.target.value)}
                             required
                             placeholder="Lady Evelyn Sinclair"
+                            className="text-xs"
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                            <label className="text-xs text-muted-foreground block mb-1">
                               Email Address *
                             </label>
                             <Input
@@ -263,10 +257,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                               onChange={(e) => setEmail(e.target.value)}
                               required
                               placeholder="evelyn@sinclair.com"
+                              className="text-xs"
                             />
                           </div>
                           <div>
-                            <label className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                            <label className="text-xs text-muted-foreground block mb-1">
                               Telephone *
                             </label>
                             <Input
@@ -275,12 +270,13 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                               onChange={(e) => setPhone(e.target.value)}
                               required
                               placeholder="+1 (555) 019-2831"
+                              className="text-xs"
                             />
                           </div>
                         </div>
 
                         <div>
-                          <label className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                          <label className="text-xs text-muted-foreground block mb-1">
                             Preferred Viewing Date *
                           </label>
                           <Input
@@ -288,11 +284,12 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             value={preferredDate}
                             onChange={(e) => setPreferredDate(e.target.value)}
                             required
+                            className="text-xs"
                           />
                         </div>
 
                         <div>
-                          <label className="text-xs uppercase tracking-wider text-muted-foreground block mb-1">
+                          <label className="text-xs text-muted-foreground block mb-1">
                             Special Requests / Sizing Details
                           </label>
                           <Textarea
@@ -300,6 +297,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                             onChange={(e) => setNotes(e.target.value)}
                             rows={3}
                             placeholder="Ring size 6.5, interest in matching band..."
+                            className="text-xs"
                           />
                         </div>
 
@@ -322,14 +320,14 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </DialogPortal>
               </Dialog>
 
-              <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground pt-2">
+              <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border/50">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="size-4 text-primary" />
-                  Insured Delivery
+                  <ShieldCheck className="size-4 text-foreground" />
+                  Insured Global Transport
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Check className="size-4 text-primary" />
-                  GIA / IGI Certified
+                  <Check className="size-4 text-foreground" />
+                  Kimberley Audited Gemstones
                 </span>
               </div>
             </div>

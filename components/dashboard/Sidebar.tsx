@@ -25,6 +25,7 @@ const NAV_ITEMS = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   const handleSignOut = async () => {
     try {
@@ -79,6 +80,17 @@ export function DashboardSidebar() {
 
       {/* Storefront Link & Sign Out */}
       <div className="border-t border-border p-4 space-y-2">
+        {session?.user && (
+          <div className="rounded border border-border/80 bg-muted/40 p-2.5 space-y-0.5">
+            <span className="font-heading text-xs font-semibold text-foreground block truncate">
+              {session.user.name}
+            </span>
+            <span className="text-xs text-muted-foreground block truncate font-mono">
+              {session.user.email}
+            </span>
+          </div>
+        )}
+
         <Link
           href="/"
           target="_blank"

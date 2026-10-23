@@ -16,7 +16,7 @@ export default async function AdminOverviewPage() {
   const recentInquiries = inquiries.slice(0, 5);
 
   return (
-    <div className="space-y-8">
+    <div data-ui="admin-overview" className="space-y-8">
       {/* Page Title & Quick CTA */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { INITIAL_PRODUCTS, INITIAL_SETTINGS } from "../lib/data";
+import { auth } from "../lib/auth";
 
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/jewelry";
 
@@ -37,6 +38,21 @@ async function seed() {
     await productsCollection.createIndex({ featured: 1 });
     await productsCollection.createIndex({ stockStatus: 1 });
     console.log("Indexes created successfully.");
+
+    // 4. Seed Director Admin Account via Better Auth
+    try {
+      console.log("Verifying Atelier Director admin account...");
+      await auth.api.signUpEmail({
+        body: {
+          email: "director@etoile-atelier.com",
+          password: "AtelierDirector2026!",
+          name: "Director Vivienne",
+        },
+      });
+      console.log("Director admin account initialized successfully.");
+    } catch {
+      console.log("Director admin account already active.");
+    }
 
   } catch (error) {
     console.error("Error during seed:", error);

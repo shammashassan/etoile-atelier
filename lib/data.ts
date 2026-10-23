@@ -96,7 +96,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Very Good",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1611591475879-1f4153ff2406?auto=format&fit=crop&w=1200&q=85",
+        url: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1200&q=85",
         alt: "Aura Sculpted Diamond Cuff bracelet in yellow gold",
         isPrimary: true,
       },

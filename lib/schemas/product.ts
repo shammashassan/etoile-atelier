@@ -32,7 +32,7 @@ export const STOCK_STATUSES = [
 ] as const;
 
 export const ProductImageSchema = z.object({
-  url: z.string().url("Must be a valid image URL"),
+  url: z.string().min(1, "Image URL or asset path is required"),
   alt: z.string().min(1, "Alt text is required"),
   isPrimary: z.boolean(),
 });
