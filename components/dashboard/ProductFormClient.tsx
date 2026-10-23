@@ -15,16 +15,21 @@ import {
   CATEGORIES,
   STOCK_STATUSES,
 } from "@/lib/schemas/product";
-import { createProductAction } from "@/lib/actions/product-actions";
+import { createProductAction, updateProductAction } from "@/lib/actions/product-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-export function ProductFormClient() {
+interface ProductFormClientProps {
+  initialProduct?: Product;
+}
+
+export function ProductFormClient({ initialProduct }: ProductFormClientProps = {}) {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isEditing = Boolean(initialProduct?._id);
 
   const {
     register,
@@ -34,7 +39,7 @@ export function ProductFormClient() {
     formState: { errors },
   } = useForm<Product>({
     resolver: zodResolver(ProductSchema),
-    defaultValues: {
+    defaultValues: initialProduct || {
       title: "",
       slug: "",
       sku: "ETO-",
@@ -111,7 +116,10 @@ export function ProductFormClient() {
     setServerError(null);
 
     try {
-      const res = await createProductAction(data);
+      const res = isEditing && initialProduct?._id
+        ? await updateProductAction(initialProduct._id, data)
+        : await createProductAction(data);
+
       if (res.success) {
         router.push("/admin/products");
       } else {
@@ -136,10 +144,12 @@ export function ProductFormClient() {
           </Link>
           <div>
             <h1 className="font-heading text-2xl font-light tracking-wide text-foreground">
-              Catalog New Atelier Piece
+              {isEditing ? `Edit: ${initialProduct?.title || "Masterpiece"}` : "Catalog New Atelier Piece"}
             </h1>
             <p className="text-xs uppercase tracking-widest text-muted-foreground">
-              Define craftsmanship specs, metallurgy, and high-resolution assets
+              {isEditing
+                ? "Update craftsmanship specifications, pricing, and availability"
+                : "Define craftsmanship specs, metallurgy, and high-resolution assets"}
             </p>
           </div>
         </div>
@@ -152,7 +162,11 @@ export function ProductFormClient() {
           </Link>
           <Button type="submit" size="sm" disabled={isSubmitting}>
             <Save data-icon="inline-start" />
-            {isSubmitting ? "Preserving..." : "Save to Catalog"}
+            {isSubmitting
+              ? "Preserving..."
+              : isEditing
+              ? "Update Masterpiece"
+              : "Save to Catalog"}
           </Button>
         </div>
       </div>

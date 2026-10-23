@@ -66,16 +66,18 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       <div className="border-b border-border bg-background/80 py-4 px-6 lg:px-12 backdrop-blur-md">
         <div className="container mx-auto flex items-center justify-between">
           <Link
-            href="/"
+            href="/collections"
             className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="size-3.5" />
-            <span>Return to Atelier</span>
+            <span>All Collections</span>
           </Link>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span>{product.collection}</span>
+            <Link href="/" className="hover:text-foreground">Atelier</Link>
             <span>/</span>
-            <span className="text-foreground">{product.category}</span>
+            <Link href="/collections" className="hover:text-foreground">{product.category}</Link>
+            <span>/</span>
+            <span className="text-foreground">{product.title}</span>
           </div>
         </div>
       </div>

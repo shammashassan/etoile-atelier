@@ -27,11 +27,11 @@ export default async function Home() {
       <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div className="container mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
           <nav className="hidden items-center gap-8 text-xs font-medium uppercase tracking-widest text-muted-foreground md:flex">
-            <Link href="#collections" className="transition-colors hover:text-foreground">
+            <Link href="/collections" className="transition-colors hover:text-foreground">
               Collections
             </Link>
-            <Link href="#craft" className="transition-colors hover:text-foreground">
-              Atelier
+            <Link href="/consultation" className="transition-colors hover:text-foreground">
+              Bespoke
             </Link>
             <Link href="/admin" className="transition-colors hover:text-foreground flex items-center gap-1.5 text-primary font-semibold">
               <Settings className="size-3.5" />
@@ -56,7 +56,7 @@ export default async function Home() {
                 </Button>
               </Link>
             </div>
-            <Link href="#collections">
+            <Link href="/collections">
               <Button size="sm">
                 <Sparkles data-icon="inline-start" />
                 View Collection
@@ -87,15 +87,15 @@ export default async function Home() {
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link href="#collections">
+              <Link href="/collections">
                 <Button size="lg">
                   Explore Masterpieces
                   <ArrowRight data-icon="inline-end" />
                 </Button>
               </Link>
-              <Link href="/admin">
+              <Link href="/consultation">
                 <Button variant="outline" size="lg">
-                  Access Atelier CMS
+                  Book Bespoke Consultation
                 </Button>
               </Link>
             </div>

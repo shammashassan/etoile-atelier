@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.BETTER_AUTH_URL || "https://etoile-atelier.com"),
   title: "Étoile Atelier | Fine Jewelry & Haute Joaillerie",
   description: "Handcrafted fine jewelry, ethical diamonds, and bespoke atelier creations.",
 };

@@ -14,6 +14,10 @@ const eslintConfig = defineConfig([
     ],
     ignores: [
       "components/shared/motion/**",
+      "app/icon.tsx",
+      "app/apple-icon.tsx",
+      "app/opengraph-image.tsx",
+      "app/twitter-image.tsx",
     ],
     plugins: {
       shadcn,

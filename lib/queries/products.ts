@@ -1,12 +1,15 @@
 import { cacheTag, cacheLife } from "next/cache";
+import { ObjectId } from "mongodb";
 import { getProductsCollection } from "@/lib/db/collections";
 import { INITIAL_PRODUCTS } from "@/lib/data";
-import { type Product } from "@/lib/schemas/product";
+import { type Product, METALS } from "@/lib/schemas/product";
 
 export async function getProducts(filters?: {
   category?: string;
+  metal?: string;
   stockStatus?: string;
   search?: string;
+  sort?: "price-asc" | "price-desc" | "newest";
 }): Promise<Product[]> {
   "use cache";
   cacheTag("products");
@@ -19,6 +22,9 @@ export async function getProducts(filters?: {
     if (filters?.category && filters.category !== "all") {
       query.category = filters.category;
     }
+    if (filters?.metal && filters.metal !== "all") {
+      query.metals = filters.metal;
+    }
     if (filters?.stockStatus && filters.stockStatus !== "all") {
       query.stockStatus = filters.stockStatus;
     }
@@ -26,9 +32,16 @@ export async function getProducts(filters?: {
       query.title = { $regex: filters.search.trim(), $options: "i" };
     }
 
-    const docs = await col.find(query).sort({ createdAt: -1 }).toArray();
+    let sortOption: Record<string, 1 | -1> = { createdAt: -1 };
+    if (filters?.sort === "price-asc") {
+      sortOption = { price: 1 };
+    } else if (filters?.sort === "price-desc") {
+      sortOption = { price: -1 };
+    }
 
-    if (docs.length === 0 && !filters?.category && !filters?.stockStatus && !filters?.search) {
+    const docs = await col.find(query).sort(sortOption).toArray();
+
+    if (docs.length === 0 && !filters?.category && !filters?.stockStatus && !filters?.search && !filters?.metal) {
       return INITIAL_PRODUCTS;
     }
 
@@ -42,6 +55,9 @@ export async function getProducts(filters?: {
     if (filters?.category && filters.category !== "all") {
       items = items.filter((p) => p.category.toLowerCase() === filters.category?.toLowerCase());
     }
+    if (filters?.metal && filters.metal !== "all") {
+      items = items.filter((p) => p.metals.includes(filters.metal as (typeof METALS)[number]));
+    }
     if (filters?.stockStatus && filters.stockStatus !== "all") {
       items = items.filter((p) => p.stockStatus === filters.stockStatus);
     }
@@ -49,7 +65,36 @@ export async function getProducts(filters?: {
       const q = filters.search.toLowerCase();
       items = items.filter((p) => p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
     }
+    if (filters?.sort === "price-asc") {
+      items.sort((a, b) => a.price - b.price);
+    } else if (filters?.sort === "price-desc") {
+      items.sort((a, b) => b.price - a.price);
+    }
     return items;
+  }
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
+  "use cache";
+  cacheTag(`product-id-${id}`, "products");
+  cacheLife("hours");
+
+  try {
+    const col = await getProductsCollection();
+    let doc = null;
+    if (ObjectId.isValid(id)) {
+      doc = await col.findOne({ _id: new ObjectId(id) as unknown as string });
+    }
+    if (!doc) {
+      return INITIAL_PRODUCTS.find((p) => p._id === id || p.slug === id) || null;
+    }
+    return {
+      ...doc,
+      _id: doc._id?.toString(),
+    } as Product;
+  } catch (error) {
+    console.warn("MongoDB fallback in getProductById:", error);
+    return INITIAL_PRODUCTS.find((p) => p._id === id || p.slug === id) || null;
   }
 }
 

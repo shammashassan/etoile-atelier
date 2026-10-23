@@ -4,7 +4,7 @@ import React, { useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useQueryState, parseAsString } from "nuqs";
-import { Search, Plus, Trash2, Star, Eye } from "lucide-react";
+import { Search, Plus, Trash2, Star, Eye, Pencil } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
 import { deleteProductAction, toggleFeaturedAction } from "@/lib/actions/product-actions";
 import {
@@ -207,6 +207,11 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
                         >
                           <Star className={`size-3.5 ${product.featured ? "fill-primary text-primary" : "text-muted-foreground"}`} />
                         </Button>
+                        <Link href={`/admin/products/${product._id || product.slug}`}>
+                          <Button variant="ghost" size="icon-xs" title="Edit Masterpiece">
+                            <Pencil className="size-3.5 text-muted-foreground" />
+                          </Button>
+                        </Link>
                         <Link href={`/products/${product.slug}`} target="_blank">
                           <Button variant="ghost" size="icon-xs" title="View Public Page">
                             <Eye className="size-3.5 text-muted-foreground" />
