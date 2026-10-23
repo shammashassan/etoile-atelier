@@ -15,7 +15,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center px-4">
+    <div className="flex min-h-96 flex-col items-center justify-center gap-4 text-center px-4">
       <h2 className="font-heading text-2xl tracking-wider text-foreground">
         Something went wrong
       </h2>

@@ -56,18 +56,20 @@ export default function Home() {
           </nav>
 
           <div className="flex flex-col items-center">
-            <span className="font-heading text-2xl font-normal tracking-[0.25em] uppercase text-foreground">
+            <span className="font-heading text-2xl font-normal tracking-widest uppercase text-foreground">
               Étoile
             </span>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+            <span className="text-xs tracking-widest uppercase text-muted-foreground">
               Fine Jewelry
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
-              Sign In
-            </Button>
+            <div className="hidden sm:inline-flex">
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+            </div>
             <Button size="sm">
               <Sparkles data-icon="inline-start" />
               Book Viewing
@@ -80,7 +82,7 @@ export default function Home() {
       <main className="flex-1">
         <section className="relative overflow-hidden border-b border-border py-24 sm:py-32">
           <div className="container mx-auto px-6 text-center lg:px-12">
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <Gem className="size-3.5" />
               Autumn / Winter Atelier
             </span>
@@ -118,29 +120,35 @@ export default function Home() {
 
             <div className="grid gap-8 md:grid-cols-3">
               {collections.map((item) => (
-                <Card key={item.name} className="flex flex-col justify-between border-border bg-card">
-                  <CardHeader>
-                    <div className="text-[10px] font-semibold tracking-widest uppercase text-muted-foreground">
-                      {item.tag} • {item.category}
-                    </div>
-                    <CardTitle className="font-heading text-2xl font-light tracking-wide mt-2">
-                      {item.name}
-                    </CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-muted-foreground mt-2">
-                      {item.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="h-40 flex items-center justify-center border-y border-border/60 bg-muted/20 my-4">
-                    <span className="text-xs tracking-widest uppercase text-muted-foreground/70 font-mono">
-                      [ High-Res Gallery Preview ]
-                    </span>
-                  </CardContent>
-                  <CardFooter className="pt-2">
-                    <Button variant="outline" size="sm" className="w-full">
-                      View Collection
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <div key={item.name} className="flex flex-col justify-between">
+                  <Card>
+                    <CardHeader>
+                      <div className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
+                        {item.tag} • {item.category}
+                      </div>
+                      <CardTitle>
+                        {item.name}
+                      </CardTitle>
+                      <CardDescription>
+                        {item.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-40 flex items-center justify-center border-y border-border/60 bg-muted/20 my-4">
+                        <span className="text-xs tracking-widest uppercase text-muted-foreground/70 font-mono">
+                          [ High-Res Gallery Preview ]
+                        </span>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="w-full">
+                        <Button variant="outline" size="sm">
+                          View Collection
+                        </Button>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>
@@ -195,13 +203,13 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-border bg-background py-16 text-center text-xs tracking-wider uppercase text-muted-foreground">
         <div className="container mx-auto px-6 flex flex-col items-center gap-6">
-          <span className="font-heading text-lg tracking-[0.2em] text-foreground">
+          <span className="font-heading text-lg tracking-widest text-foreground">
             Étoile Atelier
           </span>
           <p className="max-w-md text-xs leading-relaxed lowercase text-muted-foreground">
             paris • london • new york • geneva
           </p>
-          <div className="text-[11px] text-muted-foreground/60">
+          <div className="text-xs text-muted-foreground/60">
             © 2026 Étoile Atelier. All rights reserved.
           </div>
         </div>
