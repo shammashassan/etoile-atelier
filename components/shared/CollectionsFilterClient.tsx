@@ -6,10 +6,25 @@ import Image from "next/image";
 import { useQueryState, parseAsString } from "nuqs";
 import { Search, X, ArrowRight } from "lucide-react";
 import { type Product, CATEGORIES, METALS } from "@/lib/schemas/product";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Toggle } from "@/components/ui/toggle";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "@/components/ui/empty";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -87,7 +102,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
 
   return (
     <div className="space-y-16">
-      {/* Editorial Page Header: Two lines or fewer headline, no eyebrows */}
+      {/* Editorial Page Header */}
       <header className="max-w-3xl">
         <h1 className="font-heading text-4xl font-normal tracking-tight text-foreground sm:text-6xl">
           The Salon Collection
@@ -97,8 +112,8 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
         </p>
       </header>
 
-      {/* Filter and Search Navigation: Pure flat, zero glass */}
-      <div className="space-y-6 bg-secondary/50 p-6 sm:p-8">
+      {/* Filter and Search Navigation: Pure flat, architectural */}
+      <div className="space-y-6 bg-secondary/50 p-6 sm:p-8 border border-border/50">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Search Input */}
           <div className="relative flex-1 max-w-md">
@@ -107,16 +122,18 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search gemstones, designs, metals..."
-              className="pl-10 text-sm bg-background rounded-none border-border"
+              className="pl-10 text-xs bg-background rounded-none border-border"
             />
             {search && (
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-xs"
                 onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3.5" />
-              </button>
+              </Button>
             )}
           </div>
 
@@ -124,122 +141,149 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
           <div className="flex flex-wrap items-center gap-3">
             <Select
               value={metal}
-              onValueChange={(val) => startTransition(() => { void setMetal(val); })}
+              onValueChange={(val) => {
+                if (val) startTransition(() => { void setMetal(val); });
+              }}
             >
-              <SelectTrigger className="w-44 text-sm bg-background rounded-none border-border">
+              <SelectTrigger className="w-44 text-xs uppercase tracking-wider bg-background rounded-none border-border">
                 <SelectValue placeholder="Precious Metal" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Metallurgy</SelectItem>
-                {METALS.map((m) => (
-                  <SelectItem key={m} value={m}>
-                    {m}
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectItem value="all">All Metallurgy</SelectItem>
+                  {METALS.map((m) => (
+                    <SelectItem key={m} value={m}>
+                      {m}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
 
             <Select
               value={sort}
-              onValueChange={(val) => startTransition(() => { void setSort(val); })}
+              onValueChange={(val) => {
+                if (val) startTransition(() => { void setSort(val); });
+              }}
             >
-              <SelectTrigger className="w-44 text-sm bg-background rounded-none border-border">
+              <SelectTrigger className="w-44 text-xs uppercase tracking-wider bg-background rounded-none border-border">
                 <SelectValue placeholder="Sort Order" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Recent Releases</SelectItem>
-                <SelectItem value="price-asc">Acquisition: Low to High</SelectItem>
-                <SelectItem value="price-desc">Acquisition: High to Low</SelectItem>
+                <SelectGroup>
+                  <SelectItem value="newest">Recent Releases</SelectItem>
+                  <SelectItem value="price-asc">Acquisition: Low to High</SelectItem>
+                  <SelectItem value="price-desc">Acquisition: High to Low</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
 
-            <button
-              type="button"
-              onClick={() =>
+            <Toggle
+              pressed={inStockOnly === "true"}
+              onPressedChange={(pressed) =>
                 startTransition(() => {
-                  void setInStockOnly(inStockOnly === "true" ? "false" : "true");
+                  void setInStockOnly(pressed ? "true" : "false");
                 })
               }
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
+              variant="outline"
+              className={cn(
+                "h-10 px-4 text-xs font-semibold tracking-wider uppercase border border-border transition-colors",
                 inStockOnly === "true"
-                  ? "bg-foreground text-background"
+                  ? "bg-foreground text-background border-foreground hover:bg-foreground/90 hover:text-background"
                   : "bg-background text-foreground hover:bg-muted"
-              }`}
+              )}
             >
               Available in Salon
-            </button>
+            </Toggle>
 
             {hasActiveFilters && (
-              <button
+              <Button
                 type="button"
+                variant="link"
+                size="sm"
                 onClick={resetFilters}
-                className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground underline underline-offset-4"
+                className="text-xs text-muted-foreground hover:text-foreground"
               >
                 Reset Filters
-              </button>
+              </Button>
             )}
           </div>
         </div>
 
-        {/* Category Filter Tabs: Square, architectural */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none border-t border-border/50 pt-4">
-          <button
-            type="button"
-            onClick={() => startTransition(() => { void setCategory("all"); })}
-            className={`px-4 py-2 text-sm transition-colors shrink-0 ${
-              category === "all"
-                ? "bg-foreground text-background font-medium"
-                : "bg-background text-muted-foreground hover:text-foreground"
-            }`}
+        {/* Category Filter Tabs using official Shadcn Tabs */}
+        <div className="border-t border-border/50 pt-4">
+          <Tabs
+            value={category}
+            onValueChange={(val) => {
+              if (val) startTransition(() => { void setCategory(val); });
+            }}
           >
-            All Masterpieces ({initialProducts.length})
-          </button>
-          {CATEGORIES.map((cat) => {
-            const count = initialProducts.filter((p) => p.category === cat).length;
-            const isSelected = category.toLowerCase() === cat.toLowerCase();
-            return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => startTransition(() => { void setCategory(cat); })}
-                className={`px-4 py-2 text-sm transition-colors shrink-0 ${
-                  isSelected
-                    ? "bg-foreground text-background font-medium"
+            <TabsList variant="line" className="h-auto flex-wrap justify-start gap-1 bg-transparent p-0">
+              <TabsTrigger
+                value="all"
+                className={cn(
+                  "px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0",
+                  category === "all"
+                    ? "bg-foreground text-background font-medium hover:text-background"
                     : "bg-background text-muted-foreground hover:text-foreground"
-                }`}
+                )}
               >
-                {cat} ({count})
-              </button>
-            );
-          })}
+                All Masterpieces ({initialProducts.length})
+              </TabsTrigger>
+              {CATEGORIES.map((cat) => {
+                const count = initialProducts.filter((p) => p.category === cat).length;
+                const isSelected = category.toLowerCase() === cat.toLowerCase();
+                return (
+                  <TabsTrigger
+                    key={cat}
+                    value={cat}
+                    className={cn(
+                      "px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0",
+                      isSelected
+                        ? "bg-foreground text-background font-medium hover:text-background"
+                        : "bg-background text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {cat} ({count})
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+          </Tabs>
         </div>
       </div>
 
       {/* Results Counter */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <div className="flex items-center justify-between text-xs tracking-wider uppercase text-muted-foreground">
         <span>
           Showing {filteredProducts.length} {filteredProducts.length === 1 ? "salon piece" : "salon pieces"}
         </span>
         {isPending && <span>Updating salon inventory...</span>}
       </div>
 
-      {/* Product Grid: Asymmetric, High-Fashion Editorial */}
+      {/* Product Grid / Empty State */}
       {filteredProducts.length === 0 ? (
-        <div className="flex min-h-64 flex-col items-center justify-center bg-secondary/30 p-12 text-center">
-          <h3 className="font-heading text-2xl font-light text-foreground mb-2">
-            No Archival Pieces Found
-          </h3>
-          <p className="max-w-md text-sm text-muted-foreground mb-6">
-            We could not find any jewelry matching your precise criteria. Adjust your search or contact our concierge for bespoke commissions.
-          </p>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="bg-foreground text-background px-4 py-2 text-sm font-medium"
-          >
-            Clear Filters
-          </button>
-        </div>
+        <Empty className="border border-dashed border-border bg-secondary/30 p-12">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Search className="size-5 text-muted-foreground" />
+            </EmptyMedia>
+            <EmptyTitle>No Archival Pieces Found</EmptyTitle>
+            <EmptyDescription>
+              We could not find any jewelry matching your precise criteria. Adjust your search or contact our concierge for bespoke commissions.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button
+              type="button"
+              onClick={resetFilters}
+              size="sm"
+              className="bg-foreground text-background hover:bg-foreground/90 uppercase tracking-wider text-xs font-semibold"
+            >
+              Clear Filters
+            </Button>
+          </EmptyContent>
+        </Empty>
       ) : (
         <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProducts.map((product) => {
@@ -249,21 +293,25 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               <div key={product.slug} className="group flex flex-col gap-4">
                 <Link
                   href={`/products/${product.slug}`}
-                  className="relative aspect-4/5 w-full overflow-hidden bg-secondary block"
+                  className="block relative overflow-hidden bg-secondary"
                 >
-                  {primaryImage?.url && (
-                    <Image
-                      src={primaryImage.url}
-                      alt={primaryImage.alt || product.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-1000 ease-out group-hover:scale-104"
-                    />
-                  )}
-                  {/* Discreet status tag */}
-                  <div className="absolute top-3 left-3 bg-background/95 px-3 py-1 text-sm text-foreground">
-                    {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
-                  </div>
+                  <AspectRatio ratio={4 / 5} className="w-full">
+                    {primaryImage?.url && (
+                      <Image
+                        src={primaryImage.url}
+                        alt={primaryImage.alt || product.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-104"
+                      />
+                    )}
+                    {/* Discreet status tag */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <Badge variant="outline" className="bg-background/95 px-3 py-1 text-xs font-medium uppercase tracking-wider border-border">
+                        {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
+                      </Badge>
+                    </div>
+                  </AspectRatio>
                 </Link>
 
                 <div className="flex flex-col gap-2 pt-1">
@@ -278,7 +326,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                       ${product.price.toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
                     {product.metals[0]} • {product.gemstones[0]} {product.caratWeight ? `(${product.caratWeight} ct)` : ""}
                   </p>
                   <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
@@ -287,7 +335,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                   <div className="mt-3">
                     <Link
                       href={`/products/${product.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:underline underline-offset-4"
+                      className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-foreground hover:underline underline-offset-4"
                     >
                       Inspect Details &amp; Gemology
                       <ArrowRight className="size-3.5" />
@@ -301,7 +349,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
       )}
 
       {/* Bespoke Commission Banner: Architectural, High Contrast */}
-      <section className="bg-secondary/40 p-8 sm:p-12">
+      <section className="bg-secondary/40 p-8 sm:p-12 border border-border/50">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-xl space-y-2">
             <h2 className="font-heading text-2xl font-normal text-foreground sm:text-3xl">
@@ -311,12 +359,13 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               Our master gemologists source rare untreated stones and sculpt custom one-of-a-kind heirlooms tailored to your private vision.
             </p>
           </div>
-          <Link
-            href="/consultation"
-            className="bg-foreground text-background px-6 py-3.5 text-sm font-medium shrink-0 hover:bg-foreground/90 transition-colors"
+          <Button
+            render={<Link href="/consultation" />}
+            size="lg"
+            className="bg-foreground text-background shrink-0 hover:bg-foreground/90 uppercase tracking-wider text-xs font-semibold"
           >
             Book Bespoke Consultation
-          </Link>
+          </Button>
         </div>
       </section>
     </div>

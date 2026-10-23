@@ -5,8 +5,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Check } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
 import { MetalSelector } from "@/components/shared/motion/MetalSelector";
 import { SuccessCheckmark } from "@/components/shared/motion/SuccessCheckmark";
 import { submitInquiryAction } from "@/lib/actions/inquiry-actions";
@@ -60,23 +82,35 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   return (
     <div className="min-h-svh bg-background text-foreground">
-      {/* Top Breadcrumb Header: Flat, clean */}
+      {/* Top Breadcrumb Header: Official Shadcn Breadcrumb */}
       <div className="border-b border-border/60 bg-background py-4 px-6 lg:px-12">
         <div className="container mx-auto flex items-center justify-between">
-          <Link
-            href="/collections"
-            className="flex items-center gap-2 text-sm tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+          <Button
+            render={<Link href="/collections" />}
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground h-auto p-0"
           >
             <ArrowLeft className="size-4" />
             <span>Salon Collection</span>
-          </Link>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-foreground">Atelier</Link>
-            <span>/</span>
-            <Link href="/collections" className="hover:text-foreground">{product.category}</Link>
-            <span>/</span>
-            <span className="text-foreground">{product.title}</span>
-          </div>
+          </Button>
+          <Breadcrumb>
+            <BreadcrumbList className="text-xs uppercase tracking-wider">
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>Atelier</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/collections" />}>{product.category}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="font-semibold text-foreground truncate max-w-48 sm:max-w-none">
+                  {product.title}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
       </div>
 
@@ -84,45 +118,56 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
           {/* Left: Gallery with High Resolution Artistry */}
           <div className="space-y-4">
-            <div className="relative aspect-4/5 w-full overflow-hidden bg-secondary">
-              {activeImage?.url && (
-                <Image
-                  src={activeImage.url}
-                  alt={activeImage.alt || product.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
-                  className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
-                />
-              )}
-              <div className="absolute top-4 left-4 bg-background/95 px-3 py-1.5 text-sm text-foreground">
-                {product.stockStatus === "in_stock" ? "Available in Salon" : "Bespoke Made to Order"}
-              </div>
+            <div className="relative overflow-hidden bg-secondary border border-border">
+              <AspectRatio ratio={4 / 5} className="w-full">
+                {activeImage?.url && (
+                  <Image
+                    src={activeImage.url}
+                    alt={activeImage.alt || product.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
+                  />
+                )}
+                <div className="absolute top-4 left-4 z-10">
+                  <Badge variant="outline" className="bg-background/95 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground border-border">
+                    {product.stockStatus === "in_stock" ? "Available in Salon" : "Bespoke Made to Order"}
+                  </Badge>
+                </div>
+              </AspectRatio>
             </div>
 
-            {/* Thumbnail selector */}
+            {/* Thumbnail selector using official Shadcn ToggleGroup */}
             {product.images.length > 1 && (
-              <div className="flex gap-3">
+              <ToggleGroup
+                value={[String(activeImageIdx)]}
+                onValueChange={(vals) => {
+                  if (vals[0] !== undefined) setActiveImageIdx(Number(vals[0]));
+                }}
+                className="flex gap-3 justify-start"
+              >
                 {product.images.map((img, idx) => (
-                  <button
+                  <ToggleGroupItem
                     key={img.url}
-                    type="button"
-                    onClick={() => setActiveImageIdx(idx)}
-                    className={`relative size-20 overflow-hidden bg-secondary transition-all ${
-                      activeImageIdx === idx ? "ring-2 ring-foreground" : "opacity-60 hover:opacity-100"
-                    }`}
+                    value={String(idx)}
+                    variant="outline"
+                    className={cn(
+                      "relative size-20 p-0 overflow-hidden bg-secondary transition-all border",
+                      activeImageIdx === idx ? "border-foreground ring-2 ring-foreground" : "opacity-60 hover:opacity-100 border-border"
+                    )}
                   >
                     <Image src={img.url} alt={img.alt} fill sizes="80px" className="object-cover" />
-                  </button>
+                  </ToggleGroupItem>
                 ))}
-              </div>
+              </ToggleGroup>
             )}
           </div>
 
           {/* Right: Jewelry Details & Specifications */}
           <div className="space-y-8">
             <div className="space-y-3">
-              <span className="text-sm text-muted-foreground block">
+              <span className="text-xs uppercase tracking-widest text-muted-foreground block font-mono">
                 {product.collection} Salon Series • Reference {product.sku}
               </span>
               <h1 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-5xl">
@@ -140,63 +185,68 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
             </div>
 
-            {/* Metal Selection */}
-            {product.metals.length > 0 && (
-              <div className="space-y-3">
-                <span className="text-sm font-medium text-foreground block">
-                  Select Precious Metal Alloy
-                </span>
-                <MetalSelector
-                  metals={product.metals}
-                  selectedMetal={selectedMetal}
-                  onSelect={setSelectedMetal}
-                />
-              </div>
-            )}
+            {/* Metallurgy Selector */}
+            <div className="space-y-3 pt-2 border-t border-border/50">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+                Selected Alloy: <strong className="text-foreground">{selectedMetal}</strong>
+              </span>
+              <MetalSelector
+                metals={product.metals}
+                selectedMetal={selectedMetal}
+                onSelect={setSelectedMetal}
+              />
+            </div>
 
-            {/* Short Narrative */}
-            <p className="text-base leading-relaxed text-muted-foreground">
-              {product.description}
-            </p>
-
-            {/* Gemological Specifications Matrix */}
-            <div className="bg-secondary/40 p-6 space-y-4">
-              <h3 className="font-heading text-lg font-normal text-foreground">
-                Atelier Gemological Specifications
-              </h3>
-              <dl className="grid grid-cols-2 gap-4 text-sm">
+            {/* Gemological Specs Summary */}
+            <div className="space-y-3 py-4 border-y border-border/50 text-sm">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <dt className="text-muted-foreground block">Primary Gemstone</dt>
-                  <dd className="font-medium text-foreground">{product.gemstones.join(", ")}</dd>
+                  <span className="text-muted-foreground block text-xs uppercase tracking-wider">Primary Gemstones</span>
+                  <span className="font-medium text-foreground text-sm">{product.gemstones.join(", ")}</span>
                 </div>
                 {product.caratWeight && (
                   <div>
-                    <dt className="text-muted-foreground block">Carat Weight</dt>
-                    <dd className="font-medium text-foreground">{product.caratWeight} ct</dd>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Total Carat Weight</span>
+                    <span className="font-medium text-foreground text-sm">{product.caratWeight} ct</span>
                   </div>
                 )}
+              </div>
+              <div className="grid grid-cols-2 gap-4 pt-2">
                 {product.clarity && (
                   <div>
-                    <dt className="text-muted-foreground block">Clarity Certification</dt>
-                    <dd className="font-medium text-foreground">{product.clarity} (GIA Verified)</dd>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Clarity Grade</span>
+                    <span className="font-medium text-foreground text-sm">{product.clarity} (GIA Certified)</span>
                   </div>
                 )}
                 {product.cutGrade && (
                   <div>
-                    <dt className="text-muted-foreground block">Cut Symmetry</dt>
-                    <dd className="font-medium text-foreground">{product.cutGrade}</dd>
+                    <span className="text-muted-foreground block text-xs uppercase tracking-wider">Cut Symmetry</span>
+                    <span className="font-medium text-foreground text-sm">{product.cutGrade} Proportion</span>
                   </div>
                 )}
-              </dl>
+              </div>
             </div>
 
-            {/* CTA and Consultation Trigger */}
-            <div className="space-y-4 pt-2">
-              <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
-                <DialogTrigger render={<Button size="lg" className="w-full text-sm font-medium" />}>
-                  Request Private Salon Viewing
-                </DialogTrigger>
+            {/* Craft Narrative */}
+            <div className="space-y-3">
+              <h3 className="font-heading text-lg font-normal text-foreground">
+                Artisanal Metallurgy &amp; Provenance
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {product.description}
+              </p>
+            </div>
 
+            {/* Action Buttons & Viewing Dialog */}
+            <div className="space-y-4 pt-4">
+              <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
+                <DialogTrigger
+                  render={
+                    <Button size="lg" className="w-full text-xs font-semibold uppercase tracking-wider">
+                      Request Private Salon Viewing
+                    </Button>
+                  }
+                />
                 <DialogPortal>
                   <DialogOverlay />
                   <DialogContent className="max-w-md bg-background border border-border">
@@ -204,7 +254,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                       <DialogTitle className="font-heading text-xl font-normal">
                         Private Atelier Consultation
                       </DialogTitle>
-                      <DialogDescription className="text-sm text-muted-foreground">
+                      <DialogDescription className="text-xs text-muted-foreground uppercase tracking-wider">
                         Schedule a private viewing of {product.title} with an atelier gemologist.
                       </DialogDescription>
                     </DialogHeader>
@@ -233,73 +283,80 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                       </div>
                     ) : (
                       <form onSubmit={handleBookingSubmit} className="space-y-4 pt-2">
-                        <div>
-                          <label className="text-sm text-muted-foreground block mb-1">
-                            Your Full Name *
-                          </label>
-                          <Input
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
-                            required
-                            placeholder="Lady Evelyn Sinclair"
-                            className="text-sm"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="text-sm text-muted-foreground block mb-1">
-                              Email Address *
-                            </label>
+                        <FieldGroup className="gap-4">
+                          <Field>
+                            <FieldLabel htmlFor="booking-name" className="text-xs text-muted-foreground uppercase tracking-wider">
+                              Your Full Name *
+                            </FieldLabel>
                             <Input
-                              type="email"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
+                              id="booking-name"
+                              value={fullName}
+                              onChange={(e) => setFullName(e.target.value)}
                               required
-                              placeholder="evelyn@sinclair.com"
-                              className="text-sm"
+                              placeholder="Lady Evelyn Sinclair"
+                              className="text-xs"
                             />
+                          </Field>
+
+                          <div className="grid grid-cols-2 gap-3">
+                            <Field>
+                              <FieldLabel htmlFor="booking-email" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                Email Address *
+                              </FieldLabel>
+                              <Input
+                                id="booking-email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="evelyn@sinclair.com"
+                                className="text-xs"
+                              />
+                            </Field>
+                            <Field>
+                              <FieldLabel htmlFor="booking-phone" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                Telephone *
+                              </FieldLabel>
+                              <Input
+                                id="booking-phone"
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                required
+                                placeholder="+1 (555) 019-2831"
+                                className="text-xs"
+                              />
+                            </Field>
                           </div>
-                          <div>
-                            <label className="text-sm text-muted-foreground block mb-1">
-                              Telephone *
-                            </label>
+
+                          <Field>
+                            <FieldLabel htmlFor="booking-date" className="text-xs text-muted-foreground uppercase tracking-wider">
+                              Preferred Viewing Date *
+                            </FieldLabel>
                             <Input
-                              type="tel"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
+                              id="booking-date"
+                              type="date"
+                              value={preferredDate}
+                              onChange={(e) => setPreferredDate(e.target.value)}
                               required
-                              placeholder="+1 (555) 019-2831"
-                              className="text-sm"
+                              className="text-xs"
                             />
-                          </div>
-                        </div>
+                          </Field>
 
-                        <div>
-                          <label className="text-sm text-muted-foreground block mb-1">
-                            Preferred Viewing Date *
-                          </label>
-                          <Input
-                            type="date"
-                            value={preferredDate}
-                            onChange={(e) => setPreferredDate(e.target.value)}
-                            required
-                            className="text-sm"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="text-sm text-muted-foreground block mb-1">
-                            Special Requests / Sizing Details
-                          </label>
-                          <Textarea
-                            value={notes}
-                            onChange={(e) => setNotes(e.target.value)}
-                            rows={3}
-                            placeholder="Ring size 6.5, interest in matching band..."
-                            className="text-sm"
-                          />
-                        </div>
+                          <Field>
+                            <FieldLabel htmlFor="booking-notes" className="text-xs text-muted-foreground uppercase tracking-wider">
+                              Special Requests / Sizing Details
+                            </FieldLabel>
+                            <Textarea
+                              id="booking-notes"
+                              value={notes}
+                              onChange={(e) => setNotes(e.target.value)}
+                              rows={3}
+                              placeholder="Ring size 6.5, interest in matching band..."
+                              className="text-xs"
+                            />
+                          </Field>
+                        </FieldGroup>
 
                         <div className="flex justify-end gap-3 pt-2">
                           <Button
@@ -320,7 +377,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                 </DialogPortal>
               </Dialog>
 
-              <div className="flex items-center justify-between text-sm text-muted-foreground pt-3 border-t border-border/50">
+              <div className="flex items-center justify-between text-xs tracking-wider uppercase text-muted-foreground pt-3 border-t border-border/50">
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="size-4 text-foreground" />
                   Insured Global Transport

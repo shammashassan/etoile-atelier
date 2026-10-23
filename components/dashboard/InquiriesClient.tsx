@@ -11,6 +11,14 @@ import {
   TableHead,
   TableCell,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface InquiriesClientProps {
   initialInquiries: Inquiry[];
@@ -30,7 +38,7 @@ export function InquiriesClient({ initialInquiries }: InquiriesClientProps) {
     <div className="space-y-6">
       <div>
         <h1 className="font-heading text-3xl font-light tracking-wide text-foreground">
-          Bespoke Appointments & Inquiries
+          Bespoke Appointments &amp; Inquiries
         </h1>
         <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">
           Review customer commission requests, private viewings, and appointment pipeline
@@ -90,18 +98,24 @@ export function InquiriesClient({ initialInquiries }: InquiriesClientProps) {
                     </p>
                   </TableCell>
                   <TableCell>
-                    <select
+                    <Select
                       value={inquiry.status}
-                      onChange={(e) =>
-                        handleStatusChange(inquiry._id, e.target.value as Inquiry["status"])
-                      }
-                      className="h-8 border border-border bg-background px-2 text-xs uppercase tracking-wider text-foreground outline-none focus:border-ring"
+                      onValueChange={(val) => {
+                        if (val) handleStatusChange(inquiry._id, val as Inquiry["status"]);
+                      }}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="scheduled">Scheduled</option>
-                      <option value="completed">Completed</option>
-                    </select>
+                      <SelectTrigger className="h-8 w-32 border border-border bg-background px-2 text-xs uppercase tracking-wider text-foreground">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="contacted">Contacted</SelectItem>
+                          <SelectItem value="scheduled">Scheduled</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </TableCell>
                 </TableRow>
               ))

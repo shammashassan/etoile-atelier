@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ArrowLeft, Save, UploadCloud } from "lucide-react";
+import { ArrowLeft, Save, UploadCloud, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import {
   ProductSchema,
@@ -16,10 +16,23 @@ import {
   STOCK_STATUSES,
 } from "@/lib/schemas/product";
 import { createProductAction, updateProductAction } from "@/lib/actions/product-actions";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProductFormClientProps {
   initialProduct?: Product;
@@ -72,6 +85,9 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
   const imagesValue = watch("images");
   const selectedMetals = watch("metals") || [];
   const selectedGemstones = watch("gemstones") || [];
+  const selectedCategory = watch("category");
+  const selectedStockStatus = watch("stockStatus");
+  const isFeatured = watch("featured");
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -108,7 +124,6 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
     }
   };
 
-  // Auto-slug generator from title if slug is empty or matching
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setValue("title", val);
@@ -118,34 +133,6 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
     setValue("slug", generatedSlug);
-  };
-
-  const toggleMetal = (metal: (typeof METALS)[number]) => {
-    const current = [...selectedMetals];
-    const idx = current.indexOf(metal);
-    if (idx >= 0) {
-      if (current.length > 1) {
-        current.splice(idx, 1);
-        setValue("metals", current as [typeof METALS[number], ...typeof METALS[number][]]);
-      }
-    } else {
-      current.push(metal);
-      setValue("metals", current as [typeof METALS[number], ...typeof METALS[number][]]);
-    }
-  };
-
-  const toggleGemstone = (gem: (typeof GEMSTONES)[number]) => {
-    const current = [...selectedGemstones];
-    const idx = current.indexOf(gem);
-    if (idx >= 0) {
-      if (current.length > 1) {
-        current.splice(idx, 1);
-        setValue("gemstones", current as [typeof GEMSTONES[number], ...typeof GEMSTONES[number][]]);
-      }
-    } else {
-      current.push(gem);
-      setValue("gemstones", current as [typeof GEMSTONES[number], ...typeof GEMSTONES[number][]]);
-    }
   };
 
   const onSubmit = async (data: Product) => {
@@ -209,9 +196,11 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
       </div>
 
       {serverError && (
-        <div className="border border-destructive/50 bg-destructive/10 p-4 text-xs text-destructive">
-          {serverError}
-        </div>
+        <Alert variant="destructive">
+          <ShieldAlert className="size-4" />
+          <AlertTitle>Catalog Update Failed</AlertTitle>
+          <AlertDescription>{serverError}</AlertDescription>
+        </Alert>
       )}
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -223,67 +212,70 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
               <CardTitle>Piece Nomenclature & Narrative</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Piece Title *
-                </label>
+                </FieldLabel>
                 <Input
+                  id="title"
                   {...register("title")}
                   onChange={handleTitleChange}
                   placeholder="e.g. The Solitaire Lumina Diamond Ring"
                 />
                 {errors.title && (
-                  <p className="text-xs text-destructive mt-1">{errors.title.message}</p>
+                  <FieldError>{errors.title.message}</FieldError>
                 )}
-              </div>
+              </Field>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+                <Field>
+                  <FieldLabel htmlFor="slug" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     URL Slug *
-                  </label>
-                  <Input {...register("slug")} placeholder="solitaire-lumina-diamond-ring" />
+                  </FieldLabel>
+                  <Input id="slug" {...register("slug")} placeholder="solitaire-lumina-diamond-ring" />
                   {errors.slug && (
-                    <p className="text-xs text-destructive mt-1">{errors.slug.message}</p>
+                    <FieldError>{errors.slug.message}</FieldError>
                   )}
-                </div>
-                <div>
-                  <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="sku" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Atelier SKU *
-                  </label>
-                  <Input {...register("sku")} placeholder="ETO-RNG-001" />
+                  </FieldLabel>
+                  <Input id="sku" {...register("sku")} placeholder="ETO-RNG-001" />
                   {errors.sku && (
-                    <p className="text-xs text-destructive mt-1">{errors.sku.message}</p>
+                    <FieldError>{errors.sku.message}</FieldError>
                   )}
-                </div>
+                </Field>
               </div>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="shortDescription" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Short Summary (for Catalog Cards) *
-                </label>
+                </FieldLabel>
                 <Input
+                  id="shortDescription"
                   {...register("shortDescription")}
                   placeholder="2.15ct Round Brilliant Diamond in sculpted Platinum 950."
                 />
                 {errors.shortDescription && (
-                  <p className="text-xs text-destructive mt-1">{errors.shortDescription.message}</p>
+                  <FieldError>{errors.shortDescription.message}</FieldError>
                 )}
-              </div>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Editorial Craft Storytelling *
-                </label>
+                </FieldLabel>
                 <Textarea
+                  id="description"
                   {...register("description")}
                   rows={4}
                   placeholder="Describe the gemstone provenance, setting technique, and artisanal finish..."
                 />
                 {errors.description && (
-                  <p className="text-xs text-destructive mt-1">{errors.description.message}</p>
+                  <FieldError>{errors.description.message}</FieldError>
                 )}
-              </div>
+              </Field>
             </CardContent>
           </Card>
 
@@ -293,80 +285,101 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
               <CardTitle>Artisanal Metallurgy & Gemstones</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-2">
+              <Field>
+                <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Available Precious Metals
-                </label>
-                <div className="flex flex-wrap gap-2">
+                </FieldLabel>
+                <ToggleGroup
+                  multiple
+                  value={selectedMetals}
+                  onValueChange={(vals) => {
+                    if (vals.length > 0) {
+                      setValue("metals", vals as [typeof METALS[number], ...typeof METALS[number][]]);
+                    }
+                  }}
+                  className="flex flex-wrap gap-2 w-full"
+                >
                   {METALS.map((metal) => {
                     const active = selectedMetals.includes(metal);
                     return (
-                      <button
+                      <ToggleGroupItem
                         key={metal}
-                        type="button"
-                        onClick={() => toggleMetal(metal)}
-                        className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider border transition-colors ${
+                        value={metal}
+                        variant="outline"
+                        className={cn(
+                          "h-auto px-3 py-1.5 text-xs font-medium uppercase tracking-wider border transition-colors",
                           active
-                            ? "border-primary bg-primary text-primary-foreground font-semibold"
+                            ? "border-primary bg-primary text-primary-foreground font-semibold hover:bg-primary/90"
                             : "border-border bg-background text-muted-foreground hover:text-foreground"
-                        }`}
+                        )}
                       >
                         {metal}
-                      </button>
+                      </ToggleGroupItem>
                     );
                   })}
-                </div>
-              </div>
+                </ToggleGroup>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-2">
+              <Field>
+                <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Featured Gemstones
-                </label>
-                <div className="flex flex-wrap gap-2">
+                </FieldLabel>
+                <ToggleGroup
+                  multiple
+                  value={selectedGemstones}
+                  onValueChange={(vals) => {
+                    if (vals.length > 0) {
+                      setValue("gemstones", vals as [typeof GEMSTONES[number], ...typeof GEMSTONES[number][]]);
+                    }
+                  }}
+                  className="flex flex-wrap gap-2 w-full"
+                >
                   {GEMSTONES.map((gem) => {
                     const active = selectedGemstones.includes(gem);
                     return (
-                      <button
+                      <ToggleGroupItem
                         key={gem}
-                        type="button"
-                        onClick={() => toggleGemstone(gem)}
-                        className={`px-3 py-1.5 text-xs font-medium uppercase tracking-wider border transition-colors ${
+                        value={gem}
+                        variant="outline"
+                        className={cn(
+                          "h-auto px-3 py-1.5 text-xs font-medium uppercase tracking-wider border transition-colors",
                           active
-                            ? "border-primary bg-primary text-primary-foreground font-semibold"
+                            ? "border-primary bg-primary text-primary-foreground font-semibold hover:bg-primary/90"
                             : "border-border bg-background text-muted-foreground hover:text-foreground"
-                        }`}
+                        )}
                       >
                         {gem}
-                      </button>
+                      </ToggleGroupItem>
                     );
                   })}
-                </div>
-              </div>
+                </ToggleGroup>
+              </Field>
 
               <div className="grid gap-4 sm:grid-cols-3">
-                <div>
-                  <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+                <Field>
+                  <FieldLabel htmlFor="caratWeight" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Carat Weight
-                  </label>
+                  </FieldLabel>
                   <Input
+                    id="caratWeight"
                     type="number"
                     step="0.01"
                     {...register("caratWeight", { valueAsNumber: true })}
                     placeholder="2.15"
                   />
-                </div>
-                <div>
-                  <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="clarity" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Clarity Grade
-                  </label>
-                  <Input {...register("clarity")} placeholder="VVS1 / Flawless" />
-                </div>
-                <div>
-                  <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+                  </FieldLabel>
+                  <Input id="clarity" {...register("clarity")} placeholder="VVS1 / Flawless" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="cutGrade" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Cut Grade
-                  </label>
-                  <Input {...register("cutGrade")} placeholder="Excellent" />
-                </div>
+                  </FieldLabel>
+                  <Input id="cutGrade" {...register("cutGrade")} placeholder="Excellent" />
+                </Field>
               </div>
             </CardContent>
           </Card>
@@ -408,32 +421,35 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
                 </div>
               </div>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="imageUrl" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Primary Image URL or Asset Path *
-                </label>
+                </FieldLabel>
                 <Input
+                  id="imageUrl"
                   {...register("images.0.url")}
                   placeholder="https://images.unsplash.com/... or /uploads/..."
                 />
                 {errors.images?.[0]?.url && (
-                  <p className="text-xs text-destructive mt-1">{errors.images[0].url.message}</p>
+                  <FieldError>{errors.images[0].url.message}</FieldError>
                 )}
-              </div>
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="imageAlt" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Image Alt Text *
-                </label>
+                </FieldLabel>
                 <Input
+                  id="imageAlt"
                   {...register("images.0.alt")}
                   placeholder="Studio close-up of solitaire ring"
                 />
-              </div>
+              </Field>
 
               {/* Thumbnail Preview */}
               {imagesValue?.[0]?.url && (
                 <div className="mt-4 flex items-center gap-4 border border-border p-3 bg-muted/20">
-                  <div className="relative size-20 overflow-hidden border border-border bg-background">
+                  <div className="relative size-20 shrink-0 overflow-hidden border border-border bg-background">
                     <Image
                       src={imagesValue[0].url}
                       alt={imagesValue[0].alt || "Preview"}
@@ -443,7 +459,7 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
                       unoptimized
                     />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1 min-w-0">
                     <span className="text-xs font-medium text-foreground block">
                       Primary Asset Preview
                     </span>
@@ -464,94 +480,114 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
               <CardTitle>Valuation & Classification</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="price" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Retail Price ($ USD) *
-                </label>
+                </FieldLabel>
                 <Input
+                  id="price"
                   type="number"
                   {...register("price", { valueAsNumber: true })}
                   placeholder="18500"
                 />
                 {errors.price && (
-                  <p className="text-xs text-destructive mt-1">{errors.price.message}</p>
+                  <FieldError>{errors.price.message}</FieldError>
                 )}
-              </div>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="compareAtPrice" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Compare At Price ($ USD)
-                </label>
+                </FieldLabel>
                 <Input
+                  id="compareAtPrice"
                   type="number"
                   {...register("compareAtPrice", { valueAsNumber: true })}
                   placeholder="Optional anchor value"
                 />
-              </div>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Category *
-                </label>
-                <select
-                  {...register("category")}
-                  className="w-full h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground outline-none focus:border-ring"
+                </FieldLabel>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={(val) => {
+                    if (val) setValue("category", val as (typeof CATEGORIES)[number]);
+                  }}
                 >
-                  {CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <SelectTrigger className="w-full h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {CATEGORIES.map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="collection" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Collection *
-                </label>
-                <Input {...register("collection")} placeholder="e.g. Solitaires" />
-              </div>
+                </FieldLabel>
+                <Input id="collection" {...register("collection")} placeholder="e.g. Solitaires" />
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Availability Status *
-                </label>
-                <select
-                  {...register("stockStatus")}
-                  className="w-full h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground outline-none focus:border-ring"
+                </FieldLabel>
+                <Select
+                  value={selectedStockStatus}
+                  onValueChange={(val) => {
+                    if (val) setValue("stockStatus", val as (typeof STOCK_STATUSES)[number]);
+                  }}
                 >
-                  {STOCK_STATUSES.map((status) => (
-                    <option key={status} value={status}>
-                      {status.replace("_", " ")}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <SelectTrigger className="w-full h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground">
+                    <SelectValue placeholder="Availability Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {STOCK_STATUSES.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status.replace("_", " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
 
-              <div>
-                <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground block mb-1.5">
+              <Field>
+                <FieldLabel htmlFor="stockQuantity" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Physical Inventory Count
-                </label>
+                </FieldLabel>
                 <Input
+                  id="stockQuantity"
                   type="number"
                   {...register("stockQuantity", { valueAsNumber: true })}
                   placeholder="1"
                 />
-              </div>
+              </Field>
 
               <div className="pt-4 border-t border-border flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-medium text-foreground block">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-foreground block">
                     Featured on Storefront
                   </span>
                   <span className="text-xs text-muted-foreground block">
                     Display prominently on the homepage atelier carousel
                   </span>
                 </div>
-                <input
-                  type="checkbox"
-                  {...register("featured")}
-                  className="size-4 accent-primary"
+                <Switch
+                  checked={Boolean(isFeatured)}
+                  onCheckedChange={(checked) => setValue("featured", checked)}
                 />
               </div>
             </CardContent>

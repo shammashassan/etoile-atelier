@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useQueryState, parseAsString } from "nuqs";
 import { Search, Plus, Trash2, Star, Eye, Pencil } from "lucide-react";
-import { type Product } from "@/lib/schemas/product";
+import { type Product, CATEGORIES, STOCK_STATUSES } from "@/lib/schemas/product";
 import { deleteProductAction, toggleFeaturedAction } from "@/lib/actions/product-actions";
 import {
   Table,
@@ -18,6 +18,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from "@/components/ui/empty";
 
 interface ProductsTableClientProps {
   initialProducts: Product[];
@@ -27,6 +51,7 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
   const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
   const [category, setCategory] = useQueryState("category", parseAsString.withDefault("all"));
   const [stockStatus, setStockStatus] = useQueryState("status", parseAsString.withDefault("all"));
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   // Client-side filtering on live query state
@@ -52,13 +77,13 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
     });
   };
 
-  const handleDelete = (id?: string) => {
-    if (!id) return;
-    if (confirm("Are you sure you want to remove this piece from the catalog?")) {
-      startTransition(async () => {
-        await deleteProductAction(id);
-      });
-    }
+  const handleConfirmDelete = () => {
+    if (!deletingProductId) return;
+    const id = deletingProductId;
+    setDeletingProductId(null);
+    startTransition(async () => {
+      await deleteProductAction(id);
+    });
   };
 
   return (
@@ -73,15 +98,13 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
             Manage your fine jewelry catalog, diamonds, metallurgy, and availability
           </p>
         </div>
-        <Link href="/admin/products/new">
-          <Button size="sm">
-            <Plus data-icon="inline-start" />
-            Add New Piece
-          </Button>
-        </Link>
+        <Button render={<Link href="/admin/products/new" />} size="sm">
+          <Plus data-icon="inline-start" />
+          Add New Piece
+        </Button>
       </div>
 
-      {/* Filter Bar (powered by Nuqs) */}
+      {/* Filter Bar (powered by Nuqs & Shadcn Select) */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -94,29 +117,47 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
         </div>
 
         <div className="flex items-center gap-2">
-          <select
+          <Select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground outline-none focus:border-ring"
+            onValueChange={(val) => {
+              if (val) void setCategory(val);
+            }}
           >
-            <option value="all">All Categories</option>
-            <option value="rings">Rings</option>
-            <option value="necklaces">Necklaces</option>
-            <option value="bracelets">Bracelets</option>
-            <option value="earrings">Earrings</option>
-            <option value="high jewelry">High Jewelry</option>
-          </select>
+            <SelectTrigger className="h-9 w-40 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="all">All Categories</SelectItem>
+                {CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
-          <select
+          <Select
             value={stockStatus}
-            onChange={(e) => setStockStatus(e.target.value)}
-            className="h-9 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground outline-none focus:border-ring"
+            onValueChange={(val) => {
+              if (val) void setStockStatus(val);
+            }}
           >
-            <option value="all">All Statuses</option>
-            <option value="in_stock">In Stock</option>
-            <option value="made_to_order">Made to Order</option>
-            <option value="sold_out">Sold Out</option>
-          </select>
+            <SelectTrigger className="h-9 w-40 border border-border bg-background px-3 text-xs uppercase tracking-wider text-foreground">
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="all">All Statuses</SelectItem>
+                {STOCK_STATUSES.map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {status.replace("_", " ")}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -126,9 +167,9 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
           <TableHeader>
             <TableRow>
               <TableHead className="w-16">Preview</TableHead>
-              <TableHead>Piece & SKU</TableHead>
+              <TableHead>Piece &amp; SKU</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Metals & Gemstones</TableHead>
+              <TableHead>Metals &amp; Gemstones</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Availability</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -137,8 +178,15 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
           <TableBody>
             {filteredProducts.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-32 text-center text-xs text-muted-foreground uppercase tracking-wider">
-                  No jewelry matching your filter parameters.
+                <TableCell colSpan={7} className="p-8">
+                  <Empty className="p-4 border-none">
+                    <EmptyHeader>
+                      <EmptyTitle className="text-sm font-semibold">No Pieces Found</EmptyTitle>
+                      <EmptyDescription className="text-xs">
+                        No jewelry matching your search or filter parameters.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (
@@ -207,21 +255,27 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
                         >
                           <Star className={`size-3.5 ${product.featured ? "fill-primary text-primary" : "text-muted-foreground"}`} />
                         </Button>
-                        <Link href={`/admin/products/${product._id || product.slug}`}>
-                          <Button variant="ghost" size="icon-xs" title="Edit Masterpiece">
-                            <Pencil className="size-3.5 text-muted-foreground" />
-                          </Button>
-                        </Link>
-                        <Link href={`/products/${product.slug}`} target="_blank">
-                          <Button variant="ghost" size="icon-xs" title="View Public Page">
-                            <Eye className="size-3.5 text-muted-foreground" />
-                          </Button>
-                        </Link>
+                        <Button
+                          render={<Link href={`/admin/products/${product._id || product.slug}`} />}
+                          variant="ghost"
+                          size="icon-xs"
+                          title="Edit Masterpiece"
+                        >
+                          <Pencil className="size-3.5 text-muted-foreground" />
+                        </Button>
+                        <Button
+                          render={<Link href={`/products/${product.slug}`} target="_blank" />}
+                          variant="ghost"
+                          size="icon-xs"
+                          title="View Public Page"
+                        >
+                          <Eye className="size-3.5 text-muted-foreground" />
+                        </Button>
                         {product._id && (
                           <Button
                             variant="ghost"
                             size="icon-xs"
-                            onClick={() => handleDelete(product._id)}
+                            onClick={() => setDeletingProductId(product._id || null)}
                             title="Delete piece"
                           >
                             <Trash2 className="size-3.5 text-destructive/80 hover:text-destructive" />
@@ -236,6 +290,32 @@ export function ProductsTableClient({ initialProducts }: ProductsTableClientProp
           </TableBody>
         </Table>
       </div>
+
+      {/* Official Shadcn Alert Dialog for Delete Confirmation */}
+      <AlertDialog
+        open={Boolean(deletingProductId)}
+        onOpenChange={(open) => {
+          if (!open) setDeletingProductId(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>De-catalog Masterpiece</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you certain you wish to remove this jewelry piece from the atelier catalog? This action will immediately archive its public listing.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={handleConfirmDelete}
+            >
+              Confirm Deletion
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

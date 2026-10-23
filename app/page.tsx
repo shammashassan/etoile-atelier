@@ -86,12 +86,12 @@ export default async function Home() {
               <p className="text-base text-muted-foreground leading-relaxed max-w-prose">
                 Handcrafted in our Place Vendôme workshops with unheated Ceylon sapphires, Muzo emeralds, and certified natural diamonds set in solid Platinum 950.
               </p>
-              <div className="mt-6">
+              <div className="mt-8">
                 <Link
                   href="/collections"
-                  className="inline-flex items-center gap-2 text-base font-medium text-foreground hover:text-primary transition-colors underline underline-offset-4"
+                  className="bg-primary text-primary-foreground px-6 py-3.5 text-base font-medium inline-flex items-center gap-2 transition-transform duration-150 active:scale-[0.98] hover:bg-primary/90"
                 >
-                  View Salon Catalog
+                  Explore Salon Catalog
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
@@ -232,7 +232,7 @@ export default async function Home() {
                     <span className="font-heading text-2xl font-light text-foreground block">
                       ${products[0].price.toLocaleString()}
                     </span>
-                    <span className="text-sm text-primary font-medium">Immediate Acquisition</span>
+                    <span className="text-sm text-foreground/80 font-medium">Immediate Acquisition</span>
                   </div>
                 </div>
               </MotionItem>

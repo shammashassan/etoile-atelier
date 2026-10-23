@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function GlobalError({
   error,
@@ -20,12 +21,12 @@ export default function GlobalError({
         <p className="max-w-md text-sm text-muted-foreground">
           A critical system error occurred. Please try reloading the application.
         </p>
-        <button
+        <Button
           onClick={() => reset()}
-          className="rounded px-4 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90"
+          size="sm"
         >
           Reload
-        </button>
+        </Button>
       </body>
     </html>
   );

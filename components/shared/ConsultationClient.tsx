@@ -5,15 +5,27 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ShieldCheck, MapPin, Clock } from "lucide-react";
+import { ShieldCheck, MapPin, Clock, ShieldAlert } from "lucide-react";
 import {
   INQUIRY_TYPES,
   BUDGET_RANGES,
 } from "@/lib/schemas/inquiry";
 import { submitInquiryAction } from "@/lib/actions/inquiry-actions";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "@/components/ui/empty";
 import { SuccessCheckmark } from "@/components/shared/motion/SuccessCheckmark";
 
 const ConsultationFormSchema = z.object({
@@ -76,17 +88,19 @@ export function ConsultationClient() {
 
   if (isSuccess) {
     return (
-      <div className="mx-auto max-w-xl bg-secondary p-12 text-center">
-        <div className="flex justify-center mb-6">
-          <SuccessCheckmark size={64} />
-        </div>
-        <h2 className="font-heading text-3xl font-normal text-foreground mb-4">
-          Private Consultation Requested
-        </h2>
-        <p className="text-sm leading-relaxed text-muted-foreground mb-8">
-          A dedicated Senior Gemologist from Étoile Atelier has received your commission specifications and will reach out within 24 hours to coordinate your salon appointment.
-        </p>
-        <div className="flex justify-center gap-4">
+      <Empty className="mx-auto max-w-xl bg-secondary p-12 text-center border border-border">
+        <EmptyHeader>
+          <EmptyMedia className="mb-4">
+            <SuccessCheckmark size={64} />
+          </EmptyMedia>
+          <EmptyTitle className="text-2xl font-normal">
+            Private Consultation Requested
+          </EmptyTitle>
+          <EmptyDescription className="text-sm leading-relaxed max-w-md">
+            A dedicated Senior Gemologist from Étoile Atelier has received your commission specifications and will reach out within 24 hours to coordinate your salon appointment.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent className="flex flex-row justify-center gap-4 mt-4">
           <Button
             variant="outline"
             size="sm"
@@ -97,13 +111,14 @@ export function ConsultationClient() {
           >
             Submit Another Request
           </Button>
-          <Link href="/collections">
-            <Button size="sm">
-              Explore Salon Pieces
-            </Button>
-          </Link>
-        </div>
-      </div>
+          <Button
+            render={<Link href="/collections" />}
+            size="sm"
+          >
+            Explore Salon Pieces
+          </Button>
+        </EmptyContent>
+      </Empty>
     );
   }
 
@@ -167,165 +182,178 @@ export function ConsultationClient() {
       </div>
 
       {/* Right Column: Form (7 cols) */}
-      <div className="lg:col-span-7 bg-secondary p-8 sm:p-12">
+      <div className="lg:col-span-7 bg-secondary p-8 sm:p-12 border border-border">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-          {/* Section: Select Type */}
-          <div className="space-y-3">
-            <label className="text-xs font-medium text-foreground block">
-              Commission Category
-            </label>
-            <div className="grid gap-2.5 sm:grid-cols-2">
-              {INQUIRY_TYPES.map((type) => {
-                const isSelected = selectedType === type;
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setValue("jewelryType", type)}
-                    className={`p-3.5 text-left text-xs transition-colors ${
-                      isSelected
-                        ? "bg-foreground text-background font-medium"
-                        : "bg-background text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <FieldGroup className="gap-8">
+            {/* Section: Select Type using official Shadcn ToggleGroup */}
+            <Field>
+              <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Commission Category
+              </FieldLabel>
+              <ToggleGroup
+                value={[selectedType]}
+                onValueChange={(vals) => {
+                  if (vals[0]) setValue("jewelryType", vals[0] as (typeof INQUIRY_TYPES)[number]);
+                }}
+                className="grid gap-2.5 sm:grid-cols-2 w-full"
+              >
+                {INQUIRY_TYPES.map((type) => {
+                  const isSelected = selectedType === type;
+                  return (
+                    <ToggleGroupItem
+                      key={type}
+                      value={type}
+                      variant="outline"
+                      className={cn(
+                        "h-auto p-3.5 text-left text-xs tracking-normal normal-case border justify-start",
+                        isSelected
+                          ? "bg-foreground text-background border-foreground hover:bg-foreground/90 font-medium"
+                          : "bg-background text-foreground border-border hover:bg-muted"
+                      )}
+                    >
+                      {type}
+                    </ToggleGroupItem>
+                  );
+                })}
+              </ToggleGroup>
+            </Field>
 
-          {/* Section: Budget Allocation */}
-          <div className="space-y-3">
-            <label className="text-xs font-medium text-foreground block">
-              Target Acquisition Budget
-            </label>
-            <div className="grid gap-2 sm:grid-cols-3">
-              {BUDGET_RANGES.map((b) => {
-                const isSelected = selectedBudget === b;
-                return (
-                  <button
-                    key={b}
-                    type="button"
-                    onClick={() => setValue("budgetRange", b)}
-                    className={`p-3 text-center text-xs transition-colors ${
-                      isSelected
-                        ? "bg-foreground text-background font-medium"
-                        : "bg-background text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {b}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+            {/* Section: Budget Allocation using official Shadcn ToggleGroup */}
+            <Field>
+              <FieldLabel className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Target Acquisition Budget
+              </FieldLabel>
+              <ToggleGroup
+                value={[selectedBudget]}
+                onValueChange={(vals) => {
+                  if (vals[0]) setValue("budgetRange", vals[0] as (typeof BUDGET_RANGES)[number]);
+                }}
+                className="grid gap-2 sm:grid-cols-3 w-full"
+              >
+                {BUDGET_RANGES.map((b) => {
+                  const isSelected = selectedBudget === b;
+                  return (
+                    <ToggleGroupItem
+                      key={b}
+                      value={b}
+                      variant="outline"
+                      className={cn(
+                        "h-auto p-3 text-center text-xs tracking-normal normal-case border justify-center",
+                        isSelected
+                          ? "bg-foreground text-background border-foreground hover:bg-foreground/90 font-medium"
+                          : "bg-background text-foreground border-border hover:bg-muted"
+                      )}
+                    >
+                      {b}
+                    </ToggleGroupItem>
+                  );
+                })}
+              </ToggleGroup>
+            </Field>
 
-          {/* Section: Client & Appointment Details */}
-          <div className="space-y-4">
-            <span className="text-xs font-medium text-foreground block">
-              Client &amp; Appointment Details
-            </span>
+            {/* Section: Client & Appointment Details */}
+            <div className="space-y-4 pt-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-foreground block">
+                Client &amp; Appointment Details
+              </span>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="text-xs text-muted-foreground block mb-1">
-                  Full Legal Name *
-                </label>
-                <Input
-                  {...register("fullName")}
-                  placeholder="Countess Genevieve de Valois"
-                  className="bg-background text-xs"
-                />
-                {errors.fullName && (
-                  <span className="text-xs text-destructive mt-1 block">
-                    {errors.fullName.message}
-                  </span>
-                )}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field>
+                  <FieldLabel htmlFor="fullName" className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Full Legal Name *
+                  </FieldLabel>
+                  <Input
+                    id="fullName"
+                    {...register("fullName")}
+                    placeholder="Countess Genevieve de Valois"
+                    className="bg-background text-xs"
+                  />
+                  {errors.fullName && (
+                    <FieldError>{errors.fullName.message}</FieldError>
+                  )}
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="email" className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Email Address *
+                  </FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email")}
+                    placeholder="genevieve@atelier.com"
+                    className="bg-background text-xs"
+                  />
+                  {errors.email && (
+                    <FieldError>{errors.email.message}</FieldError>
+                  )}
+                </Field>
               </div>
 
-              <div>
-                <label className="text-xs text-muted-foreground block mb-1">
-                  Email Address *
-                </label>
-                <Input
-                  type="email"
-                  {...register("email")}
-                  placeholder="genevieve@atelier.com"
-                  className="bg-background text-xs"
-                />
-                {errors.email && (
-                  <span className="text-xs text-destructive mt-1 block">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
-            </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field>
+                  <FieldLabel htmlFor="phone" className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Direct Telephone *
+                  </FieldLabel>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    {...register("phone")}
+                    placeholder="+33 1 42 68 00 00"
+                    className="bg-background text-xs"
+                  />
+                  {errors.phone && (
+                    <FieldError>{errors.phone.message}</FieldError>
+                  )}
+                </Field>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="text-xs text-muted-foreground block mb-1">
-                  Direct Telephone *
-                </label>
-                <Input
-                  type="tel"
-                  {...register("phone")}
-                  placeholder="+33 1 42 68 00 00"
-                  className="bg-background text-xs"
-                />
-                {errors.phone && (
-                  <span className="text-xs text-destructive mt-1 block">
-                    {errors.phone.message}
-                  </span>
-                )}
+                <Field>
+                  <FieldLabel htmlFor="preferredDate" className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Preferred Salon Date or Timeline *
+                  </FieldLabel>
+                  <Input
+                    id="preferredDate"
+                    {...register("preferredDate")}
+                    placeholder="Paris Salon, late November"
+                    className="bg-background text-xs"
+                  />
+                  {errors.preferredDate && (
+                    <FieldError>{errors.preferredDate.message}</FieldError>
+                  )}
+                </Field>
               </div>
 
-              <div>
-                <label className="text-xs text-muted-foreground block mb-1">
-                  Preferred Salon Date or Timeline *
-                </label>
-                <Input
-                  {...register("preferredDate")}
-                  placeholder="Paris Salon, late November"
-                  className="bg-background text-xs"
+              <Field>
+                <FieldLabel htmlFor="notes" className="text-xs text-muted-foreground uppercase tracking-wider">
+                  Aesthetic Vision &amp; Stone Preferences
+                </FieldLabel>
+                <Textarea
+                  id="notes"
+                  {...register("notes")}
+                  rows={4}
+                  placeholder="Describe your desired gemstone (e.g. unheated Ceylon sapphire, cushion cut), metal preferences, or family heirloom reset details..."
+                  className="bg-background text-xs leading-relaxed"
                 />
-                {errors.preferredDate && (
-                  <span className="text-xs text-destructive mt-1 block">
-                    {errors.preferredDate.message}
-                  </span>
+                {errors.notes && (
+                  <FieldError>{errors.notes.message}</FieldError>
                 )}
-              </div>
+              </Field>
             </div>
-
-            <div>
-              <label className="text-xs text-muted-foreground block mb-1">
-                Aesthetic Vision &amp; Stone Preferences
-              </label>
-              <Textarea
-                {...register("notes")}
-                rows={4}
-                placeholder="Describe your desired gemstone (e.g. unheated Ceylon sapphire, cushion cut), metal preferences, or family heirloom reset details..."
-                className="bg-background text-xs leading-relaxed"
-              />
-              {errors.notes && (
-                <span className="text-xs text-destructive mt-1 block">
-                  {errors.notes.message}
-                </span>
-              )}
-            </div>
-          </div>
+          </FieldGroup>
 
           {serverError && (
-            <div className="bg-destructive/10 p-3 text-xs text-destructive">
-              {serverError}
-            </div>
+            <Alert variant="destructive">
+              <ShieldAlert className="size-4" />
+              <AlertTitle>Submission Error</AlertTitle>
+              <AlertDescription>{serverError}</AlertDescription>
+            </Alert>
           )}
 
           <div className="pt-2">
             <Button
               type="submit"
               size="lg"
-              className="w-full text-xs font-medium"
+              className="w-full text-xs font-semibold uppercase tracking-wider"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Transmitting Dossier..." : "Submit Private Salon Request"}
