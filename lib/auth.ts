@@ -7,8 +7,8 @@ export const auth = betterAuth({
     client: mongoClient,
     transaction: false,
   }),
-  secret: process.env.BETTER_AUTH_SECRET || "etoile_atelier_development_secret_32char_key",
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  secret: process.env.BETTER_AUTH_SECRET!,
+  baseURL: process.env.BETTER_AUTH_URL!,
   emailAndPassword: {
     enabled: true,
   },

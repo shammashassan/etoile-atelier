@@ -1,14 +1,43 @@
-# Étoile Atelier Architecture & Design System
+# Étoile Atelier — Haute Joaillerie & Fine Lapidary Arts
 
-> Luxury jewelry e-commerce platform built with Next.js App Router, Tailwind CSS v4, Base UI, and shadcn/ui.
+> Handcrafted fine jewelry, ethical diamonds, rare gemstones, and bespoke atelier creations sculpted in Place Vendôme since 1924.
 
-## Stack
+## About the Maison
+Étoile Atelier is an independent Parisian high-jewelry maison headquartered at 12 Place Vendôme, Paris. The atelier specializes in handcrafted bespoke creations, unheated Ceylon sapphires, Muzo emeralds, and certified natural diamonds set exclusively in solid Platinum 950 and 18-karat recycled gold.
+
+## Salons & Private Appointments
+- **Paris Salon & Workshops:** 12 Place Vendôme, 75001 Paris, France
+- **Geneva Salon:** Rue du Rhône 42, 1204 Genève, Switzerland
+- **London Salon:** 14 New Bond Street, Mayfair, London, UK
+- **New York Salon:** 680 Madison Avenue, New York, NY, USA
+
+Private viewing appointments and bespoke commissions can be scheduled online or via direct concierge inquiry:
+- Concierge: concierge@etoile-atelier.com
+- Telephone: +1 (800) 458-9214
+
+## High Jewelry Collections
+- **Solitaire High Jewels:** Archival four-prong and tension-set natural diamond rings in solid Platinum 950.
+- **Rare Gemstone Rings:** Certified unheated Ceylon sapphires, Colombian Muzo emeralds, and Pigeon Blood rubies.
+- **Haute Collars & Pendants:** Hand-fabricated pavé collars and signature celestial pendants.
+- **Bespoke Cuffs & Bangles:** Solid precious metal bangles with concealed clasp engineering.
+
+## Atelier Governance & Ethics
+- **Metallurgy:** Certified solid Platinum 950 metallurgy and 18-karat recycled gold.
+- **Ethical Sourcing:** Strict Kimberley Process compliance, audited conflict-free diamonds.
+- **Certification:** Dual certification by the Gemological Institute of America (GIA) and the Laboratoire Français de Gemmologie (LFG).
+- **Archival Provenance:** All historic motifs respect archival French jewelry heritage.
+
+## Key URLs
+- Homepage: /
+- Jewelry Collections: /collections
+- Bespoke Consultation Salon: /consultation
+- Historical Provenance & Ledger: /#provenance
+
+## System Architecture (For AI & Technical Agents)
 - Framework: Next.js (App Router) + React 19
-- Primitive Library: Base UI (@base-ui/react)
-- Component Library: shadcn/ui (style: base-sera, taupe palette)
-- Styling: Tailwind CSS v4 with @theme inline and strict token invariance
-- Typography: Playfair Display (Serif headings) + Noto Sans (Body)
+- Primitives: Base UI (@base-ui/react) + shadcn/ui
+- Styling: Tailwind CSS v4 with strict design token invariance
 - Database: Native MongoDB Driver (maxPoolSize: 5, minPoolSize: 0, maxIdleTimeMS: 30000)
-- Validation: Zod across all boundaries
-- State: Nuqs for URL state management
-- Animation: Motion (Framer Motion)
+- Validation: Zod schemas across all boundaries
+- Authentication: Better Auth with server-first session verification and Next.js 16 proxy boundary
+- URL State: Nuqs query state adapters

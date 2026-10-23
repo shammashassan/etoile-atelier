@@ -30,7 +30,7 @@ export const BRAND = {
     "Complimentary insured global shipping & private atelier consultation",
 
   currency: "USD",
-  url: "https://etoile-atelier.com",
+  url: "https://etoile-atelier.vercel.app",
 
   contact: {
     email: "concierge@etoile-atelier.com",

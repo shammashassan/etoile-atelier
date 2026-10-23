@@ -1,6 +1,6 @@
 import { MongoClient, type Db } from "mongodb";
 
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/jewelry";
+const uri = process.env.MONGODB_URI!;
 
 const options = {
   maxPoolSize: 5,

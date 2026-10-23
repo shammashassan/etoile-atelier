@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${BRAND.seo.consultationTitle} | ${BRAND.name}`,
     description: BRAND.consultationDescription,
-    url: `${BRAND.url}/consultation`,
+    url: `${process.env.NEXT_BASE_APP_URL!}/consultation`,
   },
   alternates: {
     canonical: "/consultation",

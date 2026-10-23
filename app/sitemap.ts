@@ -1,10 +1,15 @@
 import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/queries/products";
-import { BRAND } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.BETTER_AUTH_URL || BRAND.url;
-  const products = await getProducts();
+  const baseUrl = process.env.NEXT_BASE_APP_URL!.replace(/\/$/, "");
+
+  let products: Awaited<ReturnType<typeof getProducts>> = [];
+  try {
+    products = await getProducts();
+  } catch {
+    products = [];
+  }
 
   const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
@@ -35,3 +40,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...productRoutes,
   ];
 }
+

@@ -1,15 +1,17 @@
 import type { MetadataRoute } from "next";
-import { BRAND } from "@/lib/data";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_BASE_APP_URL!.replace(/\/$/, "");
+
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: ["/admin", "/api"],
       },
     ],
-    sitemap: `${BRAND.url}/sitemap.xml`,
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
+
