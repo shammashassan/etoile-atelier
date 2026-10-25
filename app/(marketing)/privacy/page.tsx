@@ -169,9 +169,9 @@ export default async function PrivacyPage() {
                 All bespoke inquiries and appointment requests are transmitted via end-to-end encrypted protocols directly to our Place Vendôme director.
               </p>
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
-                className="w-full text-xs rounded-none border-border"
+                className="w-full text-xs rounded-none"
                 render={<Link href="/consultation" />}
                 nativeButton={false}
               >

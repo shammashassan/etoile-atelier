@@ -156,7 +156,7 @@ export function HeroPhotographicRail() {
                   alt={activePrint.alt}
                   fill
                   priority={activePrint.priority}
-                  sizes="100vw"
+                  sizes="(max-width: 768px) 92vw, 45vw"
                   className="object-cover"
                 />
               </motion.div>

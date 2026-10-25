@@ -13,7 +13,7 @@ interface SiteFooterProps {
 
 export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
   return (
-    <footer className="dark bg-background text-foreground px-6 md:px-12 xl:px-16 pt-28 pb-28 md:pb-16">
+    <footer className="dark bg-background text-foreground px-6 md:px-12 xl:px-16 pt-20 md:pt-28 pb-8 md:pb-8">
       <div className="flex flex-col gap-16">
         {/* Monumental Wordmark: Spans Full Screen */}
         <div>
@@ -26,7 +26,7 @@ export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
         </div>
 
         {/* Navigation & Salon Ledger */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-xs text-muted-foreground pt-8 bg-card/60 p-8">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-xs text-muted-foreground bg-card/60 p-6 sm:p-8">
           <div className="flex flex-col gap-2.5">
             <span className="font-medium text-foreground text-xs uppercase tracking-wider block">
               Salons
@@ -87,11 +87,11 @@ export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
         {/* Legal Museum Credits: Discreet Haute Joaillerie Provenance Disclosure */}
         <div className="border-t border-border/40 pt-6 flex flex-col gap-4 text-xs text-muted-foreground/80">
           <Collapsible className="space-y-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
               <span className="text-xs">
                 {BRAND.museumProvenance.title}
               </span>
-              <CollapsibleTrigger className="hover:text-foreground text-xs underline underline-offset-4 cursor-pointer transition-colors text-left sm:text-right">
+              <CollapsibleTrigger className="hover:text-foreground text-xs underline underline-offset-4 cursor-pointer transition-colors text-center sm:text-right">
                 View Full Provenance &amp; Accession Ledger
               </CollapsibleTrigger>
             </div>
@@ -100,19 +100,19 @@ export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
             </CollapsibleContent>
           </Collapsible>
 
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-2 text-xs">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-center sm:text-left">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
               <span>© 2026 {atelierName}. All rights reserved.</span>
-              <span className="text-border/60 hidden sm:inline" aria-hidden="true">•</span>
+              <span className="text-border/60 inline" aria-hidden="true">•</span>
               <Link href="/terms" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
                 Terms of Service
               </Link>
-              <span className="text-border/60 hidden sm:inline" aria-hidden="true">•</span>
+              <span className="text-border/60 inline" aria-hidden="true">•</span>
               <Link href="/privacy" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
                 Privacy Policy
               </Link>
             </div>
-            <span>{BRAND.citiesSummary}</span>
+            <span className="text-muted-foreground/80 text-center sm:text-right">{BRAND.citiesSummary}</span>
           </div>
         </div>
       </div>
