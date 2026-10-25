@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist, Noto_Sans, Playfair_Display } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { MobileBottomDock } from "@/components/shared/MobileBottomDock";
 import { BRAND } from "@/lib/data";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -64,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={cn(
         "h-full antialiased font-sans scroll-smooth",
         geistSans.variable,
@@ -71,10 +74,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         playfairDisplay.variable
       )}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-foreground selection:text-background">
+      <body className="min-h-full flex flex-col text-foreground selection:bg-foreground selection:text-background">
         <NuqsAdapter>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </NuqsAdapter>
+        <Suspense fallback={null}>
+          <MobileBottomDock />
+        </Suspense>
       </body>
     </html>
   );

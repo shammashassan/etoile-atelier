@@ -23,7 +23,7 @@ export default async function CollectionsPage() {
   ]);
 
   return (
-    <div className="flex min-h-svh flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-svh flex-col text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Uniform Haute Joaillerie Header */}
       <SiteHeader
         announcementBar={settings.announcementBar}
@@ -31,7 +31,7 @@ export default async function CollectionsPage() {
       />
 
       {/* Main Collections Content */}
-      <main className="flex-1 px-6 md:px-12 xl:px-16 py-12 lg:py-20">
+      <main className="flex-1 bg-background px-6 md:px-12 xl:px-16 py-12 lg:py-20">
         <Suspense fallback={<Skeleton className="h-96 w-full" />}>
           <CollectionsFilterClient initialProducts={products} />
         </Suspense>

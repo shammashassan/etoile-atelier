@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx --env-file=.env scripts/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -15,6 +15,7 @@
     "@hookform/resolvers": "^5.9.2",
     "better-auth": "^1.7.12",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.11.0",
     "cn": "^0.5.0",
     "lucide-react": "^1.61.0",
     "mongodb": "^7.7.0",

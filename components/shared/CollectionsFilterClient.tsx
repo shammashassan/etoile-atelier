@@ -40,6 +40,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CardTilt } from "@/components/shared/motion/CardTilt";
+import { FacetGlint } from "@/components/shared/motion/FacetGlint";
 import {
   MaskedLineHeadline,
   MotionSection,
@@ -344,7 +345,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                       <div>
                         <Link
                           href={`/products/${product.slug}`}
-                          className="block relative overflow-hidden bg-secondary"
+                          className="block relative overflow-hidden bg-secondary group/image"
                         >
                           <AspectRatio ratio={4 / 5} className="w-full">
                             {primaryImage?.url && (
@@ -353,14 +354,21 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                                 alt={primaryImage.alt || product.title}
                                 fill
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-104"
+                                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                               />
                             )}
+                            <FacetGlint />
                             {/* Discreet status tag */}
                             <div className="absolute top-3 left-3 z-10">
                               <Badge variant="outline" className="bg-background/95 px-3 py-1 text-xs font-medium border-border">
                                 {product.stockStatus === "in_stock" ? "Available" : "Bespoke Made to Order"}
                               </Badge>
+                            </div>
+                            {/* Hover Inspection Badge */}
+                            <div className="pointer-events-none absolute bottom-3 right-3 z-20 opacity-0 translate-y-1.5 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0">
+                              <span className="inline-flex items-center gap-1 bg-background/95 backdrop-blur-md px-2.5 py-1 text-[11px] font-mono text-foreground border border-border shadow-md">
+                                <span>Inspect Specs ↗</span>
+                              </span>
                             </div>
                           </AspectRatio>
                         </Link>

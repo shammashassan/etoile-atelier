@@ -33,6 +33,8 @@ import {
 import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
 import { MetalSelector } from "@/components/shared/motion/MetalSelector";
 import { SuccessCheckmark } from "@/components/shared/motion/SuccessCheckmark";
+import { CardTilt } from "@/components/shared/motion/CardTilt";
+import { FacetGlint } from "@/components/shared/motion/FacetGlint";
 import { submitInquiryAction } from "@/lib/actions/inquiry-actions";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -89,31 +91,32 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-secondary/40 py-4 px-6 md:px-12 xl:px-16"
+        className="bg-secondary/40 py-3.5 sm:py-4 px-6 md:px-12 xl:px-16"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
           <Button
             render={<Link href="/collections" />}
             nativeButton={false}
             variant="ghost"
             size="sm"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground h-auto p-0"
+            className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground h-auto p-0 w-fit shrink-0"
           >
-            <ArrowLeft className="size-4" />
+            <ArrowLeft className="size-3.5 sm:size-4" />
             <span>Salon Collection</span>
           </Button>
-          <Breadcrumb>
-            <BreadcrumbList className="text-sm">
-              <BreadcrumbItem>
+
+          <Breadcrumb className="text-xs sm:text-sm overflow-hidden">
+            <BreadcrumbList className="text-xs sm:text-sm flex-nowrap overflow-hidden">
+              <BreadcrumbItem className="shrink-0">
                 <BreadcrumbLink render={<Link href="/" />}>Atelier</BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
+              <BreadcrumbSeparator className="shrink-0" />
+              <BreadcrumbItem className="shrink-0">
                 <BreadcrumbLink render={<Link href="/collections" />}>{product.category}</BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage className="font-medium text-foreground truncate max-w-48 sm:max-w-none">
+              <BreadcrumbSeparator className="shrink-0" />
+              <BreadcrumbItem className="min-w-0">
+                <BreadcrumbPage className="font-medium text-foreground truncate max-w-[200px] sm:max-w-xs md:max-w-sm lg:max-w-none">
                   {product.title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -131,8 +134,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-4"
           >
-            <div className="relative overflow-hidden bg-secondary border border-border">
-              <AspectRatio ratio={4 / 5} className="w-full">
+            <CardTilt maxTilt={4} className="overflow-hidden bg-secondary border border-border">
+              <AspectRatio ratio={4 / 5} className="w-full relative group">
                 <AnimatePresence mode="wait">
                   {activeImage?.url && (
                     <motion.div
@@ -149,8 +152,9 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                         fill
                         sizes="(max-width: 1024px) 100vw, 50vw"
                         priority
-                        className="object-cover transition-transform duration-1000 ease-out hover:scale-103"
+                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-103"
                       />
+                      <FacetGlint />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -160,7 +164,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
                   </Badge>
                 </div>
               </AspectRatio>
-            </div>
+            </CardTilt>
 
             {/* Thumbnail selector using official Shadcn ToggleGroup */}
             {product.images.length > 1 && (

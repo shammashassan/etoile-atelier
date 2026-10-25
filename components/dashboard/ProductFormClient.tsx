@@ -74,7 +74,7 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
       featured: false,
       images: [
         {
-          url: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=85",
+          url: "/images/products/solitaire-lumina-diamond-ring.jpg",
           alt: "Solitaire diamond ring",
           isPrimary: true,
         },
@@ -428,7 +428,7 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
                 <Input
                   id="imageUrl"
                   {...register("images.0.url")}
-                  placeholder="https://images.unsplash.com/... or /uploads/..."
+                  placeholder="https://res.cloudinary.com/... or /images/..."
                 />
                 {errors.images?.[0]?.url && (
                   <FieldError>{errors.images[0].url.message}</FieldError>

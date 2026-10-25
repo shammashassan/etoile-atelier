@@ -196,9 +196,9 @@ export const BRAND = {
 
   museumProvenance: {
     title:
-      "Archival Historical Imagery: The Metropolitan Museum of Art Open Access (CC0)",
+      "Haute Joaillerie Archival Dossier & Gemological Certification",
     summary:
-      "Drawing of the “Koh-I-Noor Diamond” (1851, R. S. Garrard & Co., Acc. 363608), Double Ring (ca. 1895, Marcus & Co., Acc. 16835), Duchess of Devonshire Portrait Diamond (19th c., Acc. 811876), Sapphire Necklace (18th c., Acc. 446767), and Imperial Gold Ring (11th–13th c., Acc. 451108) via The Metropolitan Museum of Art (CC0 Public Domain).",
+      "All Étoile Atelier creations are accompanied by independent laboratory dossiers from the Gemological Institute of America (GIA) and the Swiss Gemmological Institute (SSEF), verifying natural unheated provenance, flawless cut grades, and ethical Kimberley Process compliance.",
   },
 
   seo: {
@@ -217,7 +217,11 @@ export const BRAND = {
     homeTitle: "Étoile Atelier | Haute Joaillerie & Fine Jewelry — Place Vendôme",
     collectionsTitle: "Haute Joaillerie Collections",
     consultationTitle: "Private Atelier Consultation & Bespoke Commissions",
+    termsTitle: "Terms of Service & Atelier Governance",
+    privacyTitle: "Privacy Policy & Client Data Discretion",
     adminTitle: "Atelier Management | Étoile Atelier",
+    termsDescription: "Official terms of service, bespoke commission protocols, insured armored transit, and dual gemological certification standards at Étoile Atelier.",
+    privacyDescription: "Client data discretion and privacy policy governed by French and Swiss banking-level confidentiality standards at Étoile Atelier.",
     ogImageAlt: "Étoile Atelier | Haute Joaillerie • Place Vendôme",
   },
 } as const;
@@ -253,14 +257,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Excellent",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=85",
-        alt: "The Solitaire Lumina Diamond Ring in Platinum",
+        url: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877317/etoile-atelier/solitaire-lumina-diamond-ring.jpg",
+        alt: "The Solitaire Lumina Diamond Ring in sculpted Platinum 950",
         isPrimary: true,
-      },
-      {
-        url: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=1200&q=85",
-        alt: "Top angle facet view of Solitaire Lumina",
-        isPrimary: false,
       },
     ],
     stockStatus: "in_stock",
@@ -286,14 +285,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Excellent",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1200&q=85",
-        alt: "Céleste Royal Sapphire Pendant necklace",
+        url: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877318/etoile-atelier/celeste-royal-sapphire-pendant.jpg",
+        alt: "Céleste Royal Sapphire Pendant necklace with diamond halo",
         isPrimary: true,
-      },
-      {
-        url: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=85",
-        alt: "Céleste pendant close-up",
-        isPrimary: false,
       },
     ],
     stockStatus: "in_stock",
@@ -319,8 +313,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Very Good",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1200&q=85",
-        alt: "Aura Sculpted Diamond Cuff bracelet in yellow gold",
+        url: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877319/etoile-atelier/aura-sculpted-diamond-cuff.jpg",
+        alt: "Aura Sculpted Diamond Cuff bracelet in solid 18k yellow gold",
         isPrimary: true,
       },
     ],
@@ -347,8 +341,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Excellent",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=85",
-        alt: "Verdant Colombian Emerald drop earrings",
+        url: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877320/etoile-atelier/verdant-colombian-emerald-drops.jpg",
+        alt: "Verdant Colombian Emerald drop earrings in 18k gold",
         isPrimary: true,
       },
     ],
@@ -375,8 +369,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     cutGrade: "Excellent",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1598560917505-59a3ad559071?auto=format&fit=crop&w=1200&q=85",
-        alt: "Constellation Diamond Eternity Band",
+        url: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877320/etoile-atelier/constellation-eternity-band.jpg",
+        alt: "Constellation Emerald-Cut Diamond Eternity Band in Platinum 950",
         isPrimary: true,
       },
     ],

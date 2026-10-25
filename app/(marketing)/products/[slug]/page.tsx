@@ -7,7 +7,6 @@ import { SiteHeader } from "@/components/shared/SiteHeader";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { ProductDetailClient } from "@/components/shared/ProductDetailClient";
 
-// Product pages are dynamic (per-slug), allow blocking render without a loading.tsx
 export const instant = false;
 
 interface ProductPageProps {
@@ -68,12 +67,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="flex min-h-svh flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-svh flex-col text-foreground selection:bg-primary selection:text-primary-foreground">
       <SiteHeader
         announcementBar={settings.announcementBar}
         atelierName={settings.atelierName}
       />
-      <main className="flex-1">
+      <main className="flex-1 bg-background">
         <ProductDetailClient product={product} />
       </main>
       <SiteFooter atelierName={settings.atelierName} />

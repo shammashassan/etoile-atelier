@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState, useEffect } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
@@ -13,7 +13,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetClose,
+  SheetDescription,
 } from "@/components/ui/sheet";
 
 interface SiteHeaderProps {
@@ -62,17 +62,16 @@ const NAV_LINKS: NavItem[] = [
 function NavLinks() {
   const pathname = usePathname();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setHoveredId(null);
+  }
 
   const activeItem = NAV_LINKS.find((item) => item.match(pathname));
   const activeId = activeItem?.id ?? null;
   const currentIndicatorId = hoveredId ?? activeId;
-
-  // When the route changes (i.e. user clicked a link), clear hover so the
-  // indicator snaps back to the newly active item instead of staying on
-  // wherever the mouse happened to be during the click.
-  useEffect(() => {
-    setHoveredId(null);
-  }, [pathname]);
 
   return (
     <nav
@@ -103,7 +102,7 @@ function NavLinks() {
           >
             <span>{item.label}</span>
 
-            {/* Subtle ghost anchor: retains active indicator presence when hovering another salon */}
+            {/* Subtle ghost anchor */}
             {isActive && !isTarget && (
               <span
                 aria-hidden="true"
@@ -111,7 +110,7 @@ function NavLinks() {
               />
             )}
 
-            {/* Animated brown line indicator */}
+            {/* Animated bronze line indicator */}
             {isTarget && (
               <motion.span
                 layoutId="headerNavIndicator"
@@ -132,26 +131,6 @@ function NavLinks() {
   );
 }
 
-function NavLinksFallback() {
-  return (
-    <nav className="flex items-center justify-start gap-6 lg:gap-8 xl:gap-10 text-sm lg:text-base text-muted-foreground whitespace-nowrap">
-      {NAV_LINKS.map((item) => (
-        <Link
-          key={item.id}
-          href={item.href}
-          prefetch={true}
-          className={cn(
-            "relative inline-block py-1 tracking-wide text-muted-foreground transition-colors hover:text-foreground",
-            item.className
-          )}
-        >
-          {item.label}
-        </Link>
-      ))}
-    </nav>
-  );
-}
-
 function HeaderAction() {
   const pathname = usePathname();
   const isConsultation = pathname?.startsWith("/consultation");
@@ -168,18 +147,6 @@ function HeaderAction() {
     );
   }
 
-  return (
-    <Link
-      href="/consultation"
-      prefetch={true}
-      className="bg-primary text-primary-foreground px-4 lg:px-6 py-2.5 text-[13px] sm:text-sm lg:text-base font-medium whitespace-nowrap transition-transform duration-150 active:scale-[0.98] hover:bg-primary/90"
-    >
-      Book Private Viewing
-    </Link>
-  );
-}
-
-function HeaderActionFallback() {
   return (
     <Link
       href="/consultation"
@@ -218,34 +185,101 @@ function MobileAction() {
   );
 }
 
-function MobileNavDrawerLinks() {
+function MobileNavDrawerLinks({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
   const isCollections = pathname?.startsWith("/collections") || pathname?.startsWith("/products");
   const isConsultation = pathname?.startsWith("/consultation");
 
+  const handleAnchorClick = (id: string, e: React.MouseEvent) => {
+    onClose();
+    if (pathname === "/") {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-6 text-lg">
-      <SheetClose render={<Link href="/" prefetch={true} className="text-foreground hover:text-primary transition-colors" />}>
-        Home Atelier
-      </SheetClose>
-      <SheetClose render={<Link href="/collections" prefetch={true} className={cn("transition-colors hover:text-primary", isCollections ? "text-foreground font-semibold" : "text-muted-foreground")} />}>
-        Collections Catalog
-      </SheetClose>
-      <SheetClose render={<Link href="/consultation" prefetch={true} className={cn("transition-colors hover:text-primary", isConsultation ? "text-foreground font-semibold" : "text-muted-foreground")} />}>
-        Bespoke Salon Consultation
-      </SheetClose>
-      <SheetClose render={<Link href="/#studio" className="text-muted-foreground hover:text-foreground transition-colors" />}>
-        Optical Studio
-      </SheetClose>
-      <SheetClose render={<Link href="/#vault" className="text-muted-foreground hover:text-foreground transition-colors" />}>
-        Vendôme Vault
-      </SheetClose>
-      <div className="border-t border-border pt-6 mt-4">
-        <SheetClose render={<Link href="/admin/login" prefetch={true} className="text-sm text-muted-foreground hover:text-foreground block py-1" />}>
+    <nav className="flex flex-col gap-5 text-lg pt-2">
+      <Link
+        href="/"
+        prefetch={true}
+        onClick={onClose}
+        className={cn(
+          "transition-colors flex items-center justify-between py-1.5",
+          pathname === "/" ? "text-primary font-medium" : "text-foreground hover:text-primary"
+        )}
+      >
+        <span>Home Atelier</span>
+        {pathname === "/" && <span className="size-1.5 rounded-full bg-primary" />}
+      </Link>
+
+      <Link
+        href="/collections"
+        prefetch={true}
+        onClick={onClose}
+        className={cn(
+          "transition-colors flex items-center justify-between py-1.5",
+          isCollections ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+        )}
+      >
+        <span>Collections Catalog</span>
+        {isCollections && <span className="size-1.5 rounded-full bg-primary" />}
+      </Link>
+
+      <Link
+        href="/consultation"
+        prefetch={true}
+        onClick={onClose}
+        className={cn(
+          "transition-colors flex items-center justify-between py-1.5",
+          isConsultation ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+        )}
+      >
+        <span>Bespoke Salon Consultation</span>
+        {isConsultation && <span className="size-1.5 rounded-full bg-primary" />}
+      </Link>
+
+      <Link
+        href="/#studio"
+        onClick={(e) => handleAnchorClick("studio", e)}
+        className="text-muted-foreground hover:text-foreground transition-colors py-1.5"
+      >
+        Optical &amp; Metallurgy Studio
+      </Link>
+
+      <Link
+        href="/#vault"
+        onClick={(e) => handleAnchorClick("vault", e)}
+        className="text-muted-foreground hover:text-foreground transition-colors py-1.5"
+      >
+        Vendôme Lapidary Vault
+      </Link>
+
+      <div className="border-t border-border pt-6 mt-4 flex flex-col gap-4">
+        <div className="text-xs text-muted-foreground">
+          <span className="font-mono block uppercase tracking-widest text-[11px] mb-1.5">
+            Place Vendôme Concierge
+          </span>
+          <a
+            href="tel:+33142680000"
+            className="text-foreground hover:text-primary transition-colors font-mono font-medium block text-sm"
+          >
+            +33 1 42 68 00 00
+          </a>
+        </div>
+        <Link
+          href="/admin/login"
+          prefetch={true}
+          onClick={onClose}
+          className="text-sm text-muted-foreground hover:text-foreground block py-1.5 pt-3 border-t border-border/50"
+        >
           Director Portal
-        </SheetClose>
+        </Link>
       </div>
-    </div>
+    </nav>
   );
 }
 
@@ -278,7 +312,7 @@ export function SiteHeader({
         {/* Desktop & Tablet View: Strictly Symmetrical 3-Column Grid */}
         <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
           {/* Left Wing (1fr): Primary Salons */}
-          <Suspense fallback={<NavLinksFallback />}>
+          <Suspense fallback={<nav className="flex items-center gap-6 text-sm text-muted-foreground invisible" />}>
             <NavLinks />
           </Suspense>
 
@@ -298,32 +332,32 @@ export function SiteHeader({
 
           {/* Right Wing (1fr): High-Value Action CTA */}
           <div className="flex items-center justify-end">
-            <Suspense fallback={<HeaderActionFallback />}>
+            <Suspense fallback={null}>
               <HeaderAction />
             </Suspense>
           </div>
         </div>
 
-        {/* Mobile View: Balanced Minimal Bar with Drawer */}
+        {/* Mobile View: Balanced Minimal Bar with Sheet Drawer */}
         <div className="flex md:hidden items-center justify-between">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
               aria-label="Open Navigation Menu"
-              className="p-2 -ml-2 text-foreground hover:text-primary transition-colors focus:outline-none"
+              className="p-2 -ml-2 text-foreground hover:text-primary transition-colors focus:outline-none cursor-pointer"
             >
               <Menu className="size-6" />
             </SheetTrigger>
             <SheetContent side="left" className="w-[85vw] max-w-sm bg-background p-6">
-              <SheetHeader className="p-0 mb-8 border-b border-border pb-4 text-left">
+              <SheetHeader className="p-0 mb-6 border-b border-border pb-4 text-left">
                 <SheetTitle className="font-heading text-xl font-normal tracking-wide normal-case text-foreground">
                   {atelierName}
                 </SheetTitle>
-                <span className="text-[13px] uppercase tracking-widest text-muted-foreground">
+                <SheetDescription className="text-[13px] uppercase tracking-widest text-muted-foreground mt-0.5">
                   {BRAND.headquarters.district} • {BRAND.headquarters.city}
-                </span>
+                </SheetDescription>
               </SheetHeader>
-              <Suspense fallback={<div className="h-40 animate-pulse bg-muted/20" />}>
-                <MobileNavDrawerLinks />
+              <Suspense fallback={null}>
+                <MobileNavDrawerLinks onClose={() => setMobileOpen(false)} />
               </Suspense>
             </SheetContent>
           </Sheet>
@@ -339,7 +373,7 @@ export function SiteHeader({
           </Link>
 
           {/* Mobile Right CTA Button */}
-          <Suspense fallback={<div className="w-16 h-8 bg-muted/30" />}>
+          <Suspense fallback={null}>
             <MobileAction />
           </Suspense>
         </div>

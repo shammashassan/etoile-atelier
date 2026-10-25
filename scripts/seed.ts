@@ -16,16 +16,41 @@ async function seed() {
     await client.connect();
     const db = client.db("jewelry");
 
-    // 1. Seed Products
+    // 1. Seed & Update Products with New Luxury Imagery
     const productsCollection = db.collection("products");
-    const existingCount = await productsCollection.countDocuments();
-    if (existingCount === 0) {
-      console.log(`Seeding ${INITIAL_PRODUCTS.length} initial luxury jewelry items...`);
-      await productsCollection.insertMany(INITIAL_PRODUCTS as unknown as Parameters<typeof productsCollection.insertMany>[0]);
-      console.log("Products seeded successfully.");
-    } else {
-      console.log(`Products collection already has ${existingCount} items. Skipping.`);
+    console.log(`Synchronizing ${INITIAL_PRODUCTS.length} initial luxury jewelry items...`);
+    for (const prod of INITIAL_PRODUCTS) {
+      await productsCollection.updateOne(
+        { slug: prod.slug },
+        {
+          $set: {
+            title: prod.title,
+            sku: prod.sku,
+            description: prod.description,
+            shortDescription: prod.shortDescription,
+            price: prod.price,
+            compareAtPrice: prod.compareAtPrice,
+            category: prod.category,
+            collection: prod.collection,
+            metals: prod.metals,
+            gemstones: prod.gemstones,
+            caratWeight: prod.caratWeight,
+            clarity: prod.clarity,
+            cutGrade: prod.cutGrade,
+            images: prod.images,
+            stockStatus: prod.stockStatus,
+            stockQuantity: prod.stockQuantity,
+            featured: prod.featured,
+            updatedAt: new Date(),
+          },
+          $setOnInsert: {
+            createdAt: new Date(),
+          },
+        },
+        { upsert: true }
+      );
     }
+    console.log("Products synchronized with luxury imagery successfully.");
 
     // 2. Seed Settings
     const settingsCollection = db.collection("settings");

@@ -29,6 +29,7 @@ import {
   EmptyContent,
 } from "@/components/ui/empty";
 import { SuccessCheckmark } from "@/components/shared/motion/SuccessCheckmark";
+import { MagneticButton } from "@/components/shared/motion/MagneticButton";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -365,14 +366,14 @@ export function ConsultationClient() {
           )}
 
           <div className="pt-2">
-            <Button
+            <MagneticButton
               type="submit"
-              size="lg"
-              className="w-full text-xs font-semibold uppercase tracking-wider"
+              strength={0.25}
+              className="w-full h-12 bg-foreground text-background hover:bg-foreground/90 font-medium text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Transmitting Dossier..." : "Submit Private Salon Request"}
-            </Button>
+              <span>{isSubmitting ? "Transmitting Dossier..." : "Submit Private Salon Request"}</span>
+            </MagneticButton>
             <p className="mt-3 text-center text-xs text-muted-foreground">
               All inquiries are held in strict discretion under Swiss and French banking-level data privacy.
             </p>

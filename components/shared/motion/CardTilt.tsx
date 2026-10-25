@@ -1,19 +1,22 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
+import { motion, type HTMLMotionProps } from "motion/react";
 import { cn } from "@/lib/utils";
 
-interface CardTiltProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardTiltProps extends Omit<HTMLMotionProps<"div">, "children"> {
   children: React.ReactNode;
   maxTilt?: number;
   perspective?: number;
+  enableTouchTilt?: boolean;
 }
 
 export function CardTilt({
   children,
   className,
-  maxTilt = 7,
+  maxTilt = 6,
   perspective = 1000,
+  enableTouchTilt = true,
   ...props
 }: CardTiltProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -22,57 +25,70 @@ export function CardTilt({
     ry: 0,
     gx: 50,
     gy: 50,
-    isHover: false,
+    isActive: false,
   });
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === "touch" || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!cardRef.current) return;
+      if (e.pointerType === "touch" && !enableTouchTilt) return;
 
-    const px = (x / rect.width) * 2 - 1; // -1 to 1
-    const py = (y / rect.height) * 2 - 1; // -1 to 1
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-    const ry = px * maxTilt;
-    const rx = -py * maxTilt;
+      // Normalize -1 to 1
+      const px = Math.max(-1, Math.min(1, (x / rect.width) * 2 - 1));
+      const py = Math.max(-1, Math.min(1, (y / rect.height) * 2 - 1));
 
-    const gx = (x / rect.width) * 100;
-    const gy = (y / rect.height) * 100;
+      // Touch gets a gentler, buttery tilt
+      const factor = e.pointerType === "touch" ? 0.65 : 1;
+      const ry = px * maxTilt * factor;
+      const rx = -py * maxTilt * factor;
 
-    setStyleProps({ rx, ry, gx, gy, isHover: true });
-  };
+      const gx = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      const gy = Math.max(0, Math.min(100, (y / rect.height) * 100));
 
-  const handlePointerLeave = () => {
-    setStyleProps((prev) => ({ ...prev, rx: 0, ry: 0, isHover: false }));
-  };
+      setStyleProps({ rx, ry, gx, gy, isActive: true });
+    },
+    [enableTouchTilt, maxTilt]
+  );
+
+  const resetTilt = useCallback(() => {
+    setStyleProps((prev) => ({ ...prev, rx: 0, ry: 0, isActive: false }));
+  }, []);
 
   return (
-    <div
+    <motion.div
       ref={cardRef}
       onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      className={cn("group/tilt relative will-change-transform", className)}
+      onPointerLeave={resetTilt}
+      onPointerUp={resetTilt}
+      onPointerCancel={resetTilt}
+      whileTap={{ scale: 0.985 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      className={cn("group/tilt relative will-change-transform touch-pan-y", className)}
       style={{ perspective: `${perspective}px` }}
       {...props}
     >
       <div
-        className="relative size-full transition-transform duration-300 ease-out"
+        className="relative size-full transition-transform duration-250 ease-out"
         style={{
           transform: `rotateX(${styleProps.rx}deg) rotateY(${styleProps.ry}deg)`,
           transformStyle: "preserve-3d",
         }}
       >
         {children}
-        {/* Specular Glare Overlay */}
+        {/* Specular Gemstone Glare Overlay */}
         <div
+          aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-300"
           style={{
-            opacity: styleProps.isHover ? 0.25 : 0,
-            background: `radial-gradient(circle 320px at ${styleProps.gx}% ${styleProps.gy}%, oklch(0.98 0.05 85 / 70%), transparent 70%)`,
+            opacity: styleProps.isActive ? 0.22 : 0,
+            background: `radial-gradient(circle 280px at ${styleProps.gx}% ${styleProps.gy}%, oklch(0.98 0.04 85 / 75%), transparent 70%)`,
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -45,6 +45,33 @@ export function MotionItem({ children, className = "", delay = 0 }: MotionSectio
   );
 }
 
+/**
+ * Blur-to-focus entrance for luxury editorial blocks.
+ */
+export function BlurFade({
+  children,
+  className = "",
+  delay = 0,
+  yOffset = 14,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  yOffset?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: yOffset, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-6%" }}
+      transition={{ duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 interface MaskedLineHeadlineProps {
   lines: string[];
   className?: string;
@@ -66,10 +93,7 @@ export function MaskedLineHeadline({
   return (
     <Tag className={cn("font-heading font-normal tracking-tight", className)}>
       {lines.map((line, idx) => (
-        <span
-          key={idx}
-          className="block overflow-hidden pb-1 -mb-1"
-        >
+        <span key={idx} className="block overflow-hidden pb-1 -mb-1">
           <motion.span
             initial={{ y: "105%" }}
             animate={{ y: "0%" }}
@@ -85,6 +109,28 @@ export function MaskedLineHeadline({
         </span>
       ))}
     </Tag>
+  );
+}
+
+/**
+ * Soft gemstone luster shimmer across text (pure CSS sweep, transitions-dev 15-shimmer-text inspired).
+ */
+export function TextShimmer({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-block bg-gradient-to-r from-foreground via-primary to-foreground bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_5s_ease-in-out_infinite]",
+        className
+      )}
+    >
+      {children}
+    </span>
   );
 }
 

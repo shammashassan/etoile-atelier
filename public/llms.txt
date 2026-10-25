@@ -31,6 +31,8 @@ Private viewing appointments and bespoke commissions can be scheduled online or 
 - Homepage: /
 - Jewelry Collections: /collections
 - Bespoke Consultation Salon: /consultation
+- Terms of Service & Governance: /terms
+- Privacy Policy & Discretion Charter: /privacy
 - Historical Provenance & Ledger: /#provenance
 
 ## System Architecture (For AI & Technical Agents)

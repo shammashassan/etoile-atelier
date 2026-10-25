@@ -1,6 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { v2 as cloudinary, type UploadApiResponse } from "cloudinary";
+
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+const hasCloudinary = Boolean(cloudName && apiKey && apiSecret);
+
+if (hasCloudinary) {
+  cloudinary.config({
+    cloud_name: cloudName,
+    api_key: apiKey,
+    api_secret: apiSecret,
+    secure: true,
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,6 +49,31 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    // If Cloudinary credentials exist, upload directly to Cloudinary CDN
+    if (hasCloudinary) {
+      const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder: "etoile-atelier",
+            resource_type: "image",
+          },
+          (err, result) => {
+            if (err || !result) reject(err || new Error("Cloudinary upload failed"));
+            else resolve(result);
+          }
+        );
+        stream.end(buffer);
+      });
+
+      return NextResponse.json({
+        success: true,
+        url: uploadResult.secure_url,
+        filename: uploadResult.public_id,
+        storage: "cloudinary",
+      });
+    }
+
+    // Otherwise fallback gracefully to local storage
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
     await mkdir(uploadsDir, { recursive: true });
 
@@ -46,6 +87,7 @@ export async function POST(req: NextRequest) {
       success: true,
       url: publicUrl,
       filename: safeName,
+      storage: "local",
     });
   } catch (error) {
     console.error("Upload handler error:", error);
