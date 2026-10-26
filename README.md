@@ -1,11 +1,11 @@
-# Étoile Atelier
+# Amara Gold
 
-> Luxury fine jewelry e-commerce platform built with Next.js App Router, React 19, Tailwind CSS v4, Base UI, and shadcn/ui.
+> Sovereign 22K Kerala gold lineage, BIS 916 hallmarked bridal trousseaus, and contemporary haute joaillerie. Built with Next.js App Router, React 19, Tailwind CSS v4, Base UI, and shadcn/ui.
 
 ## Tech Stack
 - **Framework:** Next.js (App Router) + React 19
 - **Primitives:** Base UI (`@base-ui/react`)
-- **Component System:** shadcn/ui (`base-sera` style with warm taupe palette)
+- **Component System:** shadcn/ui (`base-sera` style with warm taupe & 22K gold palette)
 - **Styling:** Tailwind CSS v4 with `@theme inline`
 - **Database:** MongoDB Native Driver (`maxPoolSize: 5`, singleton connection)
 - **Validation:** Zod

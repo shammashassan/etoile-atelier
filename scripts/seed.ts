@@ -18,7 +18,8 @@ async function seed() {
 
     // 1. Seed & Update Products with New Luxury Imagery
     const productsCollection = db.collection("products");
-    console.log(`Synchronizing ${INITIAL_PRODUCTS.length} initial luxury jewelry items...`);
+    console.log(`Cleaning old products and synchronizing ${INITIAL_PRODUCTS.length} Amara Gold items...`);
+    await productsCollection.deleteMany({ slug: { $nin: INITIAL_PRODUCTS.map((p) => p.slug) } });
     for (const prod of INITIAL_PRODUCTS) {
       await productsCollection.updateOne(
         { slug: prod.slug },
@@ -60,7 +61,8 @@ async function seed() {
       await settingsCollection.insertOne(INITIAL_SETTINGS as unknown as Parameters<typeof settingsCollection.insertOne>[0]);
       console.log("Settings seeded successfully.");
     } else {
-      console.log(`Settings collection already has ${settingsCount} items. Skipping.`);
+      console.log(`Updating existing settings with Amara Gold identity...`);
+      await settingsCollection.updateOne({}, { $set: INITIAL_SETTINGS });
     }
 
     // 3. Create indexes
@@ -77,7 +79,7 @@ async function seed() {
         body: {
           email: BRAND.contact.adminEmail,
           password: BRAND.contact.adminDefaultPassword,
-          name: "Director Vivienne",
+          name: "Director Devika Menon",
         },
       });
       console.log("Director admin account initialized successfully.");

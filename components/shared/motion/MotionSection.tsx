@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Image, { ImageProps } from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+
+export { ScrollParallax } from "./ScrollParallax";
 
 interface MotionSectionProps {
   children: React.ReactNode;
@@ -77,6 +79,7 @@ interface MaskedLineHeadlineProps {
   className?: string;
   lineClassName?: string;
   tag?: "h1" | "h2" | "h3";
+  animateOnMount?: boolean;
 }
 
 /**
@@ -88,6 +91,7 @@ export function MaskedLineHeadline({
   className = "",
   lineClassName = "",
   tag = "h1",
+  animateOnMount = true,
 }: MaskedLineHeadlineProps) {
   const Tag = tag;
   return (
@@ -96,7 +100,9 @@ export function MaskedLineHeadline({
         <span key={idx} className="block overflow-hidden pb-1 -mb-1">
           <motion.span
             initial={{ y: "105%" }}
-            animate={{ y: "0%" }}
+            {...(animateOnMount
+              ? { animate: { y: "0%" } }
+              : { whileInView: { y: "0%" }, viewport: { once: true } })}
             transition={{
               duration: 0.95,
               delay: idx * 0.12 + 0.08,
@@ -168,32 +174,6 @@ export function ShutterImage({
           className={cn("object-cover transition-transform duration-700 ease-out hover:scale-105", imageClassName)}
           {...props}
         />
-      </motion.div>
-    </div>
-  );
-}
-
-interface ScrollParallaxProps {
-  children: React.ReactNode;
-  className?: string;
-  offsetY?: number;
-}
-
-/**
- * Controlled, subtle vertical drift on scroll (max 4-6%) for photographic elements.
- */
-export function ScrollParallax({ children, className = "", offsetY = 24 }: ScrollParallaxProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [-offsetY, offsetY]);
-
-  return (
-    <div ref={ref} className={cn("relative overflow-hidden", className)}>
-      <motion.div style={{ y }} className="w-full h-full">
-        {children}
       </motion.div>
     </div>
   );

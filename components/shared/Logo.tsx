@@ -2,23 +2,27 @@ import React from "react";
 import { BRAND } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-export interface EtoileMarkProps extends React.SVGProps<SVGSVGElement> {
+export { AmaraMark as EtoileMark, AmaraSeal as EtoileSeal };
+
+export interface AmaraMarkProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
   size?: number | string;
   showHalo?: boolean;
 }
 
+export type EtoileMarkProps = AmaraMarkProps;
+
 /**
- * The Étoile Vendôme Star Mark
+ * The Amara Sovereign Star Mark
  * An 8-point celestial star structured with diamond pavilion facet geometry
- * and concentric Place Vendôme octagonal framing.
+ * and sovereign gold framing.
  */
-export function EtoileMark({
+export function AmaraMark({
   className,
   size = 32,
   showHalo = true,
   ...props
-}: EtoileMarkProps) {
+}: AmaraMarkProps) {
   return (
     <svg
       viewBox="0 0 100 100"
@@ -33,7 +37,7 @@ export function EtoileMark({
     >
       {showHalo && (
         <>
-          {/* Place Vendôme Octagonal Halo */}
+          {/* Sovereign Octagonal Halo */}
           <polygon
             points="32,6 68,6 94,32 94,68 68,94 32,94 6,68 6,32"
             stroke="currentColor"
@@ -54,7 +58,7 @@ export function EtoileMark({
       )}
 
       {/* 8-Point Faceted Diamond Celestial Star */}
-      <g className="etoile-star-facets">
+      <g className="amara-star-facets">
         {/* North Ray */}
         <polygon points="50,50 44.8,37.5 50,4" fill="currentColor" fillOpacity="0.55" />
         <polygon points="50,50 50,4 55.2,37.5" fill="currentColor" fillOpacity="0.95" />
@@ -99,20 +103,22 @@ export function EtoileMark({
   );
 }
 
-export interface EtoileSealProps extends React.SVGProps<SVGSVGElement> {
+export interface AmaraSealProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
   size?: number | string;
 }
 
+export type EtoileSealProps = AmaraSealProps;
+
 /**
- * The Étoile Place Vendôme Hallmark Seal
- * Inspired by French Master Goldsmith hallmarks (poinçon de maître).
+ * The Amara Sovereign Hallmark Seal
+ * Inspired by sovereign master goldsmith hallmarks.
  */
-export function EtoileSeal({
+export function AmaraSeal({
   className,
   size = 80,
   ...props
-}: EtoileSealProps) {
+}: AmaraSealProps) {
   return (
     <svg
       viewBox="0 0 160 160"
@@ -227,7 +233,7 @@ export interface LogoProps {
 }
 
 /**
- * Universal Étoile Atelier Haute Joaillerie Logo Component
+ * Universal Amara Gold Haute Joaillerie Logo Component
  */
 export function Logo({
   variant = "horizontal",
@@ -268,7 +274,7 @@ export function Logo({
 
   if (variant === "mark") {
     return (
-      <EtoileMark
+      <AmaraMark
         size={markSizeMap[size]}
         className={cn(goldAccent ? "text-primary" : "text-foreground", className, markClassName)}
       />
@@ -277,7 +283,7 @@ export function Logo({
 
   if (variant === "seal") {
     return (
-      <EtoileSeal
+      <AmaraSeal
         size={sealSizeMap[size]}
         className={cn(goldAccent ? "text-primary" : "text-foreground", className)}
       />
@@ -312,7 +318,7 @@ export function Logo({
   if (variant === "stacked") {
     return (
       <div className={cn("flex flex-col items-center text-center gap-3 group", className)}>
-        <EtoileMark
+        <AmaraMark
           size={markSizeMap[size]}
           className={cn(
             "transition-transform duration-300 group-hover:scale-105",
@@ -347,7 +353,7 @@ export function Logo({
   // Default: Horizontal
   return (
     <div className={cn("flex items-center gap-3.5 group", className)}>
-      <EtoileMark
+      <AmaraMark
         size={markSizeMap[size]}
         className={cn(
           "transition-transform duration-300 group-hover:scale-105",

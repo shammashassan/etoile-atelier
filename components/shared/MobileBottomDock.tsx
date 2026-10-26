@@ -154,7 +154,7 @@ function MobileBottomDockInner() {
 
   const currentTab = showQuickContact ? "concierge" : activeTab;
   const activeIndex = DOCK_TABS.findIndex((tab) => tab.id === currentTab);
-  const parisSalon = BRAND.salons[0];
+  const primarySalon = BRAND.salons[0];
 
   const handleTabClick = (
     tab: DockTab,
@@ -245,11 +245,11 @@ function MobileBottomDockInner() {
           >
             <div className="flex items-center justify-between pb-3 border-b border-border/40">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-primary block font-normal">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-accent block font-medium">
                   Private Salon Dispatch
                 </span>
                 <h4 className="font-heading text-lg font-normal text-foreground mt-0.5">
-                  Place Vendôme Concierge
+                  Kerala &amp; Dubai Concierge
                 </h4>
               </div>
               <button
@@ -263,16 +263,16 @@ function MobileBottomDockInner() {
             </div>
 
             <p className="text-xs text-muted-foreground my-3 leading-relaxed font-normal">
-              Immediate private appointment booking, diamond sourcing, or secure vault viewing arrangements in Paris, Geneva, London, and New York.
+              Immediate bridal viewing booking, diamond sourcing, or bespoke trousseau appointments in Kochi, Kozhikode, Thrissur, and Dubai.
             </p>
 
             <div className="flex flex-col gap-2 pt-1">
               <a
-                href={parisSalon.telHref}
-                className="w-full bg-primary text-primary-foreground py-2.5 px-4 text-xs font-normal rounded-lg flex items-center justify-center gap-2 active:opacity-90 transition-opacity shadow-xs"
+                href={primarySalon.telHref}
+                className="w-full bg-accent text-accent-foreground py-2.5 px-4 text-xs font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-accent/90 active:opacity-90 transition-opacity shadow-xs"
               >
                 <Phone className="size-3.5" />
-                <span>Call Paris Concierge ({parisSalon.phone})</span>
+                <span>Call Concierge ({primarySalon.phone})</span>
               </a>
               <Link
                 href="/consultation"
@@ -303,7 +303,7 @@ function MobileBottomDockInner() {
           {activeIndex !== -1 && (
             <motion.div
               aria-hidden="true"
-              className="absolute inset-y-1.5 bg-primary rounded-full pointer-events-none"
+              className="absolute inset-y-1.5 bg-primary border border-primary rounded-full pointer-events-none shadow-xs"
               style={{
                 left: "6px",
                 width: "calc((100% - 12px) / 5)",
@@ -328,7 +328,7 @@ function MobileBottomDockInner() {
             const buttonClasses = cn(
               "relative z-10 flex flex-col items-center justify-center py-2 px-1 rounded-full text-[10px] sm:text-[11px] font-normal transition-colors select-none outline-none cursor-pointer",
               isActive
-                ? "text-primary-foreground"
+                ? "text-primary-foreground font-medium"
                 : "text-muted-foreground hover:text-foreground"
             );
 

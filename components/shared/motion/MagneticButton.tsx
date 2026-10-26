@@ -10,6 +10,7 @@ interface MagneticButtonProps extends HTMLMotionProps<"button"> {
   strength?: number;
   showArrow?: boolean;
   arrowClassName?: string;
+  variant?: "primary" | "accent" | "outline-accent";
 }
 
 /**
@@ -23,6 +24,7 @@ export function MagneticButton({
   strength = 0.35,
   showArrow = true,
   arrowClassName,
+  variant = "primary",
   ...props
 }: MagneticButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -71,7 +73,9 @@ export function MagneticButton({
       style={{ x: smoothX, y: smoothY }}
       className={cn(
         "group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 text-base font-medium transition-colors select-none",
-        "bg-primary text-primary-foreground hover:bg-primary/95",
+        variant === "accent" && "bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm",
+        variant === "primary" && "bg-primary text-primary-foreground hover:bg-primary/95",
+        variant === "outline-accent" && "bg-transparent text-foreground border border-accent/60 hover:bg-accent/15 hover:border-accent",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className
       )}
@@ -95,7 +99,7 @@ export function MagneticButton({
       {/* Subtle gold specular rim highlight */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 border border-white/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 border border-accent/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
     </motion.button>
   );

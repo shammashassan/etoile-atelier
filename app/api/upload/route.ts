@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           {
-            folder: "etoile-atelier",
+            folder: "amara-gold",
             resource_type: "image",
           },
           (err, result) => {

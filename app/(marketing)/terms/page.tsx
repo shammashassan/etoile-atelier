@@ -58,7 +58,7 @@ export default async function TermsPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div className="flex min-h-svh flex-col text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-svh flex-col text-foreground">
       {/* Uniform Haute Joaillerie Header */}
       <SiteHeader
         announcementBar={settings.announcementBar}
@@ -213,7 +213,7 @@ export default async function TermsPage() {
               </h2>
               <div className="text-sm text-muted-foreground space-y-3 leading-relaxed">
                 <p>
-                  Private salon viewings in Paris, Geneva, London, and New York are arranged strictly by appointment. For bespoke high-jewelry commissions sculpted in our workshops:
+                  Private salon viewings in Kochi, Kozhikode, Thrissur, and Dubai are arranged strictly by appointment. For bespoke high-jewelry commissions sculpted in our workshops:
                 </p>
                 <div className="bg-background/80 p-5 border border-border/60 space-y-2 text-xs">
                   <p><strong className="text-foreground">50% Creation Retainer:</strong> A non-refundable 50% deposit is required upon formal client sign-off of archival gouache drawings and 3D wax prototypes.</p>
@@ -289,7 +289,7 @@ export default async function TermsPage() {
                 <ul className="list-disc list-inside space-y-1.5 pl-1 text-xs">
                   <li>Full 100% door-to-door transit insurance covering declared valuation until physical client signature.</li>
                   <li>Mandatory verification of government-issued photo ID upon handover.</li>
-                  <li>Complimentary personal reception and handover at our salons in Paris, Geneva, London, or New York.</li>
+                  <li>Complimentary personal reception and handover at our showrooms in Kochi, Kozhikode, Thrissur, or Dubai.</li>
                 </ul>
               </div>
             </section>

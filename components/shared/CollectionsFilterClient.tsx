@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useQueryState, parseAsString } from "nuqs";
 import { Search, X, ArrowRight } from "lucide-react";
 import { type Product, CATEGORIES, METALS } from "@/lib/schemas/product";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -145,7 +145,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        className="space-y-6 bg-secondary/50 p-6 sm:p-8 border border-border/50"
+        className="space-y-6 bg-primary text-primary-foreground p-6 sm:p-8 border border-border/30 shadow-md"
       >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           {/* Search Input */}
@@ -155,7 +155,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search gemstones, designs, metals..."
-              className="pl-10 text-xs bg-background rounded-none border-border"
+              className="pl-10 text-xs bg-background text-foreground rounded-none border-border"
             />
             {search && (
               <Button
@@ -178,7 +178,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 if (val) startTransition(() => { void setMetal(val); });
               }}
             >
-              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background rounded-none border-border">
+              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background text-foreground rounded-none border-border">
                 <SelectValue placeholder="Precious Metal" />
               </SelectTrigger>
               <SelectContent>
@@ -199,7 +199,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 if (val) startTransition(() => { void setSort(val); });
               }}
             >
-              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background rounded-none border-border">
+              <SelectTrigger className="h-10 w-full sm:w-48 px-3.5 text-xs tracking-wider uppercase bg-background text-foreground rounded-none border-border">
                 <SelectValue placeholder="Sort Order" />
               </SelectTrigger>
               <SelectContent>
@@ -220,10 +220,10 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               }
               variant="outline"
               className={cn(
-                "h-10 w-full sm:w-auto px-4 text-xs tracking-wider uppercase font-normal border border-border transition-colors justify-center",
+                "h-10 w-full sm:w-auto px-4 text-xs tracking-wider uppercase font-normal border transition-colors justify-center cursor-pointer",
                 inStockOnly === "true"
-                  ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-                  : "bg-background text-foreground hover:bg-muted"
+                  ? "bg-accent text-accent-foreground border-accent font-medium shadow-xs"
+                  : "bg-transparent text-primary-foreground/80 border-primary-foreground/25 hover:bg-primary-foreground/10 hover:text-primary-foreground"
               )}
             >
               Available in Salon
@@ -235,7 +235,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                 variant="link"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-muted-foreground hover:text-foreground self-start sm:self-auto"
+                className="text-xs text-primary-foreground/70 hover:text-primary-foreground underline underline-offset-4 self-start sm:self-auto"
               >
                 Reset Filters
               </Button>
@@ -245,7 +245,7 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
 
         {/* Category Filter using official Shadcn ToggleGroup & Separator */}
         <div className="pt-2">
-          <Separator className="my-4 bg-border/60" />
+          <Separator className="my-4 bg-primary-foreground/20" />
           <ToggleGroup
             value={[category]}
             onValueChange={(vals) => {
@@ -257,10 +257,10 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
               value="all"
               variant="outline"
               className={cn(
-                "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors",
+                "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors cursor-pointer",
                 category === "all"
-                  ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-                  : "bg-background text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                  ? "bg-accent text-accent-foreground border-accent font-medium shadow-xs"
+                  : "bg-transparent text-primary-foreground/80 border-primary-foreground/25 hover:bg-primary-foreground/10 hover:text-primary-foreground"
               )}
             >
               All Masterpieces ({initialProducts.length})
@@ -274,10 +274,10 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                   value={cat}
                   variant="outline"
                   className={cn(
-                    "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors",
+                    "h-9 px-4 text-xs font-normal uppercase tracking-wider transition-colors cursor-pointer",
                     isSelected
-                      ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
-                      : "bg-background text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                      ? "bg-accent text-accent-foreground border-accent font-medium shadow-xs"
+                      : "bg-transparent text-primary-foreground/80 border-primary-foreground/25 hover:bg-primary-foreground/10 hover:text-primary-foreground"
                   )}
                 >
                   {cat} ({count})
@@ -381,12 +381,26 @@ export function CollectionsFilterClient({ initialProducts }: CollectionsFilterCl
                               </Link>
                             </CardTitle>
                             <span className="font-heading text-base font-light text-foreground shrink-0">
-                              ${product.price.toLocaleString()}
+                              {formatPrice(product.price, "INR")}
                             </span>
                           </div>
                           <CardDescription className="text-sm text-muted-foreground">
                             {product.metals[0]} • {product.gemstones[0]} {product.caratWeight ? `(${product.caratWeight} ct)` : ""}
                           </CardDescription>
+                          <div className="flex items-center gap-2 pt-1.5 font-mono text-xs">
+                            {product.pavanWeight ? (
+                              <span className="text-accent font-medium">
+                                {product.pavanWeight} Pavans ({product.netGoldWeightGrams}g 916 Gold)
+                              </span>
+                            ) : (
+                              <span className="text-accent font-medium">BIS 916 Certified</span>
+                            )}
+                            {product.makingChargePercent && (
+                              <span className="text-muted-foreground text-[11px]">
+                                • VA: {product.makingChargePercent}%
+                              </span>
+                            )}
+                          </div>
                         </CardHeader>
 
                         <CardContent className="px-6 py-2">

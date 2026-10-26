@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Sparkles, Pause, Play, ArrowUpRight, Eye } from "lucide-react";
 import { ShutterImage } from "./motion/MotionSection";
+import { type Product } from "@/lib/schemas/product";
+import { type SiteSettings } from "@/lib/schemas/settings";
+import { ScrollParallax } from "./motion/ScrollParallax";
 import { CardTilt } from "./motion/CardTilt";
 import { FacetGlint } from "./motion/FacetGlint";
-import { cn } from "@/lib/utils";
 
 interface HeroPrint {
   id: string;
@@ -24,54 +26,97 @@ interface HeroPrint {
 
 const HERO_PRINTS: HeroPrint[] = [
   {
-    id: "solitaire",
-    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877317/etoile-atelier/solitaire-lumina-diamond-ring.jpg",
-    alt: "The Solitaire Lumina Diamond Ring in sculpted solid Platinum 950",
-    title: "Solitaire Lumina in Platinum 950",
-    subtitle: "2.15 ct Brilliant Cut • GIA Verified",
+    id: "couture-emerald-necklace",
+    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971894/etoile-atelier/hero-editorial-couture-emerald.jpg",
+    alt: "Amara Gold Haute Joaillerie Emerald & Diamond Collar Necklace in 22K Gold",
+    title: "Haute Joaillerie Emerald Collar",
+    subtitle: "3.40 ct Royal Zambian Emerald • Natural VVS Diamonds",
     aspectRatio: "aspect-3/4",
     priority: true,
-    href: "/products/solitaire-lumina-diamond-ring",
-    actionText: "Inspect 2.15ct Pavé",
+    href: "/collections?category=Heritage+Palakka+%26+Temple",
+    actionText: "Discover Emerald Collar",
   },
   {
-    id: "sapphire",
-    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877318/etoile-atelier/celeste-royal-sapphire-pendant.jpg",
-    alt: "Céleste Royal Sapphire Pendant in Platinum & 18k White Gold",
-    title: "Céleste Royal Sapphire Pendant",
-    subtitle: "3.40 ct Ceylon Sapphire • SSEF Certified",
-    aspectRatio: "aspect-square",
-    href: "/products/celeste-royal-sapphire-pendant",
-    actionText: "Examine Ceylon Sapphire",
+    id: "lumina-solitaire",
+    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971502/etoile-atelier/hero-editorial-solitaire-on-figure.jpg",
+    alt: "The Amara Gold Lumina Solitaire Diamond Ring on-figure in 22K Gold and Platinum 950",
+    title: "The Amara Gold Lumina Solitaire",
+    subtitle: "2.15 ct VVS1 Natural Diamond • Hand-Set in Platinum & 22K Gold",
+    aspectRatio: "aspect-3/4",
+    href: "/products/amara-gold-lumina-solitaire-ring",
+    actionText: "Inspect Lumina Solitaire",
   },
   {
-    id: "workbench",
-    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877321/etoile-atelier/artisan-workbench.jpg",
-    alt: "Master Lapidary Workbench, Place Vendôme Atelier Paris",
-    title: "Place Vendôme Lapidary Studio",
-    subtitle: "Handcrafted Atelier Heritage • Paris 1924",
+    id: "sculpted-gold-cuff",
+    src: "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971895/etoile-atelier/hero-editorial-sculpted-cuff.jpg",
+    alt: "Amara Gold Architectural Sculpted Diamond Cuff Bracelet in Solid 22K Gold",
+    title: "Architectural Sculpted Gold Cuff",
+    subtitle: "4.20 ctw Brilliant Diamonds • Hand-Formed Solid Gold",
     aspectRatio: "aspect-16/10",
-    href: "/#studio",
-    actionText: "Explore Optical Bench",
+    href: "/collections?category=Kasavu+Kadas+%26+Bangles",
+    actionText: "Examine Sculpted Cuff",
   },
 ];
 
 const AUTOPLAY_INTERVAL = 5000; // 5 seconds per slide
 
-export function HeroPhotographicRail() {
+interface HeroPhotographicRailProps {
+  products?: Product[];
+  settings?: SiteSettings;
+}
+
+export function HeroPhotographicRail({ products, settings }: HeroPhotographicRailProps = {}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
-  const activePrint = HERO_PRINTS[activeIndex];
+  const s0 = settings?.heroSlides?.[0];
+  const s1 = settings?.heroSlides?.[1];
+  const s2 = settings?.heroSlides?.[2];
+
+  const prints: HeroPrint[] = [
+    {
+      id: s0?.id || "couture-emerald-necklace",
+      src: s0?.image || "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971894/etoile-atelier/hero-editorial-couture-emerald.jpg",
+      alt: s0?.alt || "Amara Gold Haute Joaillerie Emerald & Diamond Collar Necklace in 22K Gold",
+      title: s0?.title || "Haute Joaillerie Emerald Collar",
+      subtitle: s0?.subtitle || "3.40 ct Royal Zambian Emerald • Natural VVS Diamonds",
+      aspectRatio: "aspect-3/4",
+      priority: true,
+      href: s0?.href || "/collections?category=Heritage+Palakka+%26+Temple",
+      actionText: s0?.actionText || "Discover Emerald Collar",
+    },
+    {
+      id: s1?.id || "lumina-solitaire",
+      src: s1?.image || "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971502/etoile-atelier/hero-editorial-solitaire-on-figure.jpg",
+      alt: s1?.alt || "The Amara Gold Lumina Solitaire Diamond Ring on-figure in 22K Gold and Platinum 950",
+      title: s1?.title || "The Amara Gold Lumina Solitaire",
+      subtitle: s1?.subtitle || "2.15 ct VVS1 Natural Diamond • Hand-Set in Platinum & 22K Gold",
+      aspectRatio: "aspect-3/4",
+      href: s1?.href || "/products/amara-gold-lumina-solitaire-ring",
+      actionText: s1?.actionText || "Inspect Lumina Solitaire",
+    },
+    {
+      id: s2?.id || "sculpted-gold-cuff",
+      src: s2?.image || "https://res.cloudinary.com/dunh3j6yu/image/upload/v1792971895/etoile-atelier/hero-editorial-sculpted-cuff.jpg",
+      alt: s2?.alt || "Amara Gold Architectural Sculpted Diamond Cuff Bracelet in Solid 22K Gold",
+      title: s2?.title || "Architectural Sculpted Gold Cuff",
+      subtitle: s2?.subtitle || "4.20 ctw Brilliant Diamonds • Hand-Formed Solid Gold",
+      aspectRatio: "aspect-16/10",
+      href: s2?.href || "/collections?category=Kasavu+Kadas+%26+Bangles",
+      actionText: s2?.actionText || "Examine Sculpted Cuff",
+    },
+  ];
+
+  const activePrint = prints[activeIndex];
 
   const handleNext = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % HERO_PRINTS.length);
-  }, []);
+    setActiveIndex((prev) => (prev + 1) % prints.length);
+  }, [prints.length]);
 
   const handlePrev = useCallback(() => {
-    setActiveIndex((prev) => (prev - 1 + HERO_PRINTS.length) % HERO_PRINTS.length);
-  }, []);
+    setActiveIndex((prev) => (prev - 1 + prints.length) % prints.length);
+  }, [prints.length]);
 
   // Autoplay timer
   useEffect(() => {
@@ -117,23 +162,23 @@ export function HeroPhotographicRail() {
           {/* Header pill indicator & Auto-play status */}
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-border/30 text-xs">
             <span className="font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
-              <Sparkles className="size-3 text-primary animate-pulse" />
-              Salon Folio 0{activeIndex + 1} / 0{HERO_PRINTS.length}
+              <Sparkles className="size-3 text-accent animate-pulse" />
+              Salon Folio 0{activeIndex + 1} / 0{prints.length}
             </span>
             <button
               type="button"
               onClick={() => setIsPaused(!isPaused)}
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 text-[11px] font-mono px-1.5 py-0.5 rounded-xs bg-secondary"
+              className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 text-[11px] font-mono px-1.5 py-0.5 rounded-xs bg-secondary cursor-pointer"
               aria-label={isPaused ? "Resume auto slide" : "Pause auto slide"}
             >
               {isPaused ? (
                 <>
-                  <Play className="size-2.5 text-primary" />
+                  <Play className="size-2.5 text-accent" />
                   <span>Resume</span>
                 </>
               ) : (
                 <>
-                  <Pause className="size-2.5 text-primary" />
+                  <Pause className="size-2.5 text-accent" />
                   <span>Auto</span>
                 </>
               )}
@@ -191,7 +236,7 @@ export function HeroPhotographicRail() {
 
           {/* Pagination Indicators with Filling Progress Bar */}
           <div className="flex items-center justify-center gap-2 pt-4">
-            {HERO_PRINTS.map((item, idx) => {
+            {prints.map((item, idx) => {
               const isActive = idx === activeIndex;
               return (
                 <button
@@ -210,7 +255,7 @@ export function HeroPhotographicRail() {
                         duration: isPaused ? 0 : AUTOPLAY_INTERVAL / 1000,
                         ease: "linear",
                       }}
-                      className="h-full bg-primary"
+                      className="h-full bg-accent"
                     />
                   )}
                 </button>
@@ -220,98 +265,104 @@ export function HeroPhotographicRail() {
         </div>
       </div>
 
-      {/* ── DESKTOP & TABLET VIEW (md+): Asymmetric Tri-Print Photographic Rail ── */}
+      {/* ── DESKTOP & TABLET VIEW (md+): Asymmetric Tri-Print Photographic Rail with Scroll Parallax ── */}
       <div className="hidden md:grid gap-8 grid-cols-12 items-start">
-        {/* Print 1 (Cols 1-3, offset down): Céleste Royal Sapphire Pendant */}
-        <div className="col-span-3 flex flex-col gap-3 mt-16 group/print">
-          <CardTilt maxTilt={6}>
-            <Link href="/products/celeste-royal-sapphire-pendant" className="block relative overflow-hidden bg-secondary">
-              <ShutterImage
-                src="https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877318/etoile-atelier/celeste-royal-sapphire-pendant.jpg"
-                alt="Céleste Royal Sapphire Pendant in Platinum & 18k White Gold"
-                aspectRatio="aspect-square"
-                sizes="(max-width: 1024px) 30vw, 25vw"
-                delay={0.1}
-              />
-              <FacetGlint />
-              {/* Floating inspect micro-tag */}
-              <div className="pointer-events-none absolute bottom-3 left-3 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
-                <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3 py-1 text-xs font-mono text-foreground border border-border/60 shadow-lg">
-                  <Eye className="size-3 text-primary" />
-                  <span>Examine Sapphire ↗</span>
-                </span>
-              </div>
-            </Link>
-          </CardTilt>
-          <div className="flex flex-col text-base pt-1">
-            <Link href="/products/celeste-royal-sapphire-pendant" className="text-foreground font-medium hover:text-primary transition-colors flex items-center justify-between">
-              <span>Céleste Royal Sapphire Pendant</span>
-              <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
-            </Link>
-            <span className="text-sm text-muted-foreground">3.40 ct Ceylon Sapphire • SSEF Certified</span>
+        {/* Print 1 (Cols 1-3, offset down): Left Hero Print - Royal Kerala Bride */}
+        <ScrollParallax offsetY={32} className="col-span-3">
+          <div className="flex flex-col gap-3 mt-14 group/print">
+            <CardTilt maxTilt={6}>
+              <Link href={prints[0].href} className="block relative overflow-hidden bg-secondary">
+                <ShutterImage
+                  src={prints[0].src}
+                  alt={prints[0].alt}
+                  aspectRatio="aspect-3/4"
+                  sizes="(max-width: 1024px) 30vw, 25vw"
+                  delay={0.1}
+                />
+                <FacetGlint />
+                {/* Floating inspect micro-tag */}
+                <div className="pointer-events-none absolute bottom-3 left-3 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
+                  <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3 py-1 text-xs font-mono text-foreground border border-border/60 shadow-lg">
+                    <Eye className="size-3 text-accent" />
+                    <span>{prints[0].actionText} ↗</span>
+                  </span>
+                </div>
+              </Link>
+            </CardTilt>
+            <div className="flex flex-col text-base pt-1">
+              <Link href={prints[0].href} className="text-foreground font-medium hover:text-accent transition-colors flex items-center justify-between">
+                <span>{prints[0].title}</span>
+                <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
+              </Link>
+              <span className="text-sm text-muted-foreground">{prints[0].subtitle}</span>
+            </div>
           </div>
-        </div>
+        </ScrollParallax>
 
-        {/* Print 2 (Cols 4-8): The Solitaire Lumina Diamond Ring in Platinum 950 */}
-        <div className="col-span-5 flex flex-col gap-3 group/print">
-          <CardTilt maxTilt={7}>
-            <Link href="/products/solitaire-lumina-diamond-ring" className="block relative overflow-hidden bg-secondary">
-              <ShutterImage
-                src="https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877317/etoile-atelier/solitaire-lumina-diamond-ring.jpg"
-                alt="The Solitaire Lumina Diamond Ring in sculpted solid Platinum 950"
-                aspectRatio="aspect-3/4"
-                priority
-                sizes="(max-width: 1024px) 45vw, 42vw"
-                delay={0.2}
-              />
-              <FacetGlint />
-              {/* Floating inspect micro-tag */}
-              <div className="pointer-events-none absolute bottom-4 left-4 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
-                <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3.5 py-1.5 text-xs font-mono text-foreground border border-border/60 shadow-xl">
-                  <Sparkles className="size-3 text-primary animate-pulse" />
-                  <span>Inspect 2.15ct Masterwork ↗</span>
-                </span>
-              </div>
-            </Link>
-          </CardTilt>
-          <div className="flex flex-col sm:flex-row justify-between text-base pt-1 gap-1">
-            <Link href="/products/solitaire-lumina-diamond-ring" className="text-foreground font-medium hover:text-primary transition-colors flex items-center gap-1.5">
-              <span>Solitaire Lumina in Platinum 950</span>
-              <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
-            </Link>
-            <span className="text-sm text-muted-foreground">2.15 ct Brilliant Cut • GIA Verified</span>
+        {/* Print 2 (Cols 4-8): Center Hero Print - The Lumina Solitaire On-Figure */}
+        <ScrollParallax offsetY={-16} className="col-span-5">
+          <div className="flex flex-col gap-3 group/print">
+            <CardTilt maxTilt={7}>
+              <Link href={prints[1].href} className="block relative overflow-hidden bg-secondary">
+                <ShutterImage
+                  src={prints[1].src}
+                  alt={prints[1].alt}
+                  aspectRatio="aspect-3/4"
+                  priority
+                  sizes="(max-width: 1024px) 45vw, 42vw"
+                  delay={0.2}
+                />
+                <FacetGlint />
+                {/* Floating inspect micro-tag */}
+                <div className="pointer-events-none absolute bottom-4 left-4 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
+                  <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3.5 py-1.5 text-xs font-mono text-foreground border border-border/60 shadow-xl">
+                    <Sparkles className="size-3 text-accent animate-pulse" />
+                    <span>{prints[1].actionText} ↗</span>
+                  </span>
+                </div>
+              </Link>
+            </CardTilt>
+            <div className="flex flex-col sm:flex-row justify-between text-base pt-1 gap-1">
+              <Link href={prints[1].href} className="text-foreground font-medium hover:text-accent transition-colors flex items-center gap-1.5">
+                <span>{prints[1].title}</span>
+                <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
+              </Link>
+              <span className="text-sm text-muted-foreground">{prints[1].subtitle}</span>
+            </div>
           </div>
-        </div>
+        </ScrollParallax>
 
-        {/* Print 3 (Cols 9-12): Place Vendôme Lapidary Studio */}
-        <div className="col-span-4 flex flex-col gap-3 mt-8 group/print">
-          <CardTilt maxTilt={6}>
-            <Link href="/#studio" className="block relative overflow-hidden bg-secondary">
-              <ShutterImage
-                src="https://res.cloudinary.com/dunh3j6yu/image/upload/v1792877321/etoile-atelier/artisan-workbench.jpg"
-                alt="Master Lapidary Workbench, Place Vendôme Atelier Paris"
-                aspectRatio="aspect-16/10"
-                sizes="(max-width: 1024px) 33vw, 33vw"
-                delay={0.3}
-              />
-              <FacetGlint />
-              {/* Floating inspect micro-tag */}
-              <div className="pointer-events-none absolute bottom-3 left-3 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
-                <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3 py-1 text-xs font-mono text-foreground border border-border/60 shadow-lg">
-                  <Eye className="size-3 text-primary" />
-                  <span>Enter Optical Bench ↓</span>
-                </span>
-              </div>
-            </Link>
-          </CardTilt>
-          <div className="flex flex-col sm:flex-row justify-between text-base pt-1 gap-1">
-            <Link href="/#studio" className="text-foreground font-medium hover:text-primary transition-colors flex items-center gap-1.5">
-              <span>Place Vendôme Lapidary Studio</span>
-              <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
-            </Link>
-            <span className="text-sm text-muted-foreground">Handcrafted Heritage • Paris 1924</span>
+        {/* Print 3 (Cols 9-12): Amara Gold & Thrissur Goldsmith Studio */}
+        <ScrollParallax offsetY={42} className="col-span-4">
+          <div className="flex flex-col gap-3 mt-7 group/print">
+            <CardTilt maxTilt={6}>
+              <Link href={prints[2].href} className="block relative overflow-hidden bg-secondary">
+                <ShutterImage
+                  src={prints[2].src}
+                  alt={prints[2].alt}
+                  aspectRatio="aspect-16/10"
+                  sizes="(max-width: 1024px) 33vw, 33vw"
+                  delay={0.3}
+                />
+                <FacetGlint />
+                {/* Floating inspect micro-tag */}
+                <div className="pointer-events-none absolute bottom-3 left-3 z-30 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover/print:opacity-100 group-hover/print:translate-y-0">
+                  <span className="inline-flex items-center gap-1.5 bg-background/95 backdrop-blur-md px-3 py-1 text-xs font-mono text-foreground border border-border/60 shadow-lg">
+                    <Eye className="size-3 text-accent" />
+                    <span>{prints[2].actionText} ↓</span>
+                  </span>
+                </div>
+              </Link>
+            </CardTilt>
+            <div className="flex flex-col sm:flex-row justify-between text-base pt-1 gap-1">
+              <Link href={prints[2].href} className="text-foreground font-medium hover:text-accent transition-colors flex items-center gap-1.5">
+                <span>{prints[2].title}</span>
+                <ArrowUpRight className="size-4 opacity-0 group-hover/print:opacity-100 transition-opacity" />
+              </Link>
+              <span className="text-sm text-muted-foreground">{prints[2].subtitle}</span>
+            </div>
           </div>
-        </div>
+        </ScrollParallax>
       </div>
     </div>
   );

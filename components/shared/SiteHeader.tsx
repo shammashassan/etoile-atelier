@@ -38,24 +38,24 @@ const NAV_LINKS: NavItem[] = [
       Boolean(pathname?.startsWith("/collections") || pathname?.startsWith("/products")),
   },
   {
-    href: "/consultation",
-    label: "Bespoke Salon",
-    id: "consultation",
-    match: (pathname) => Boolean(pathname?.startsWith("/consultation")),
+    href: "/#vault-carousel",
+    label: "Archival Vault",
+    id: "vault",
+    className: "hidden xl:inline-block",
+    match: () => false,
   },
   {
     href: "/#studio",
     label: "Optical Studio",
     id: "studio",
-    className: "hidden xl:inline-block",
+    className: "hidden 2xl:inline-block",
     match: () => false,
   },
   {
-    href: "/#vault",
-    label: "Vendôme Vault",
-    id: "vault",
-    className: "hidden 2xl:inline-block",
-    match: () => false,
+    href: "/about",
+    label: "Our Heritage",
+    id: "about",
+    match: (pathname) => Boolean(pathname?.startsWith("/about")),
   },
 ];
 
@@ -106,16 +106,16 @@ function NavLinks() {
             {isActive && !isTarget && (
               <span
                 aria-hidden="true"
-                className="absolute left-0 right-0 -bottom-1 h-0.5 bg-primary/25 transition-opacity duration-300 pointer-events-none"
+                className="absolute left-0 right-0 -bottom-1 h-0.5 bg-accent/30 transition-opacity duration-300 pointer-events-none"
               />
             )}
 
-            {/* Animated bronze line indicator */}
+            {/* Animated gold hairline indicator */}
             {isTarget && (
               <motion.span
                 layoutId="headerNavIndicator"
                 aria-hidden="true"
-                className="absolute left-0 right-0 -bottom-1 h-0.5 bg-primary pointer-events-none"
+                className="absolute left-0 right-0 -bottom-1 h-0.5 bg-accent pointer-events-none"
                 transition={{
                   type: "spring",
                   stiffness: 380,
@@ -167,7 +167,7 @@ function MobileAction() {
       <Link
         href="/collections"
         prefetch={true}
-        className="bg-primary text-primary-foreground px-3.5 py-2 text-[13px] font-medium whitespace-nowrap hover:bg-primary/90"
+        className="bg-primary text-primary-foreground px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-[13px] font-medium whitespace-nowrap hover:bg-primary/90 active:scale-95 transition-transform"
       >
         Catalog
       </Link>
@@ -178,7 +178,7 @@ function MobileAction() {
     <Link
       href="/consultation"
       prefetch={true}
-      className="bg-primary text-primary-foreground px-3.5 py-2 text-[13px] font-medium whitespace-nowrap hover:bg-primary/90"
+      className="bg-primary text-primary-foreground px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-[13px] font-medium whitespace-nowrap hover:bg-primary/90 active:scale-95 transition-transform shadow-xs"
     >
       Book Viewing
     </Link>
@@ -202,18 +202,17 @@ function MobileNavDrawerLinks({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <nav className="flex flex-col gap-5 text-lg pt-2">
+    <nav className="flex flex-col gap-5 text-base">
       <Link
         href="/"
         prefetch={true}
         onClick={onClose}
         className={cn(
-          "transition-colors flex items-center justify-between py-1.5",
-          pathname === "/" ? "text-primary font-medium" : "text-foreground hover:text-primary"
+          "transition-colors py-1.5",
+          pathname === "/" ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
         )}
       >
-        <span>Home Atelier</span>
-        {pathname === "/" && <span className="size-1.5 rounded-full bg-primary" />}
+        Atelier Entrance
       </Link>
 
       <Link
@@ -221,25 +220,31 @@ function MobileNavDrawerLinks({ onClose }: { onClose: () => void }) {
         prefetch={true}
         onClick={onClose}
         className={cn(
-          "transition-colors flex items-center justify-between py-1.5",
-          isCollections ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+          "transition-colors py-1.5",
+          isCollections ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
         )}
       >
-        <span>Collections Catalog</span>
-        {isCollections && <span className="size-1.5 rounded-full bg-primary" />}
+        Amara Gold Haute Collections
       </Link>
 
       <Link
-        href="/consultation"
+        href="/about"
         prefetch={true}
         onClick={onClose}
         className={cn(
-          "transition-colors flex items-center justify-between py-1.5",
-          isConsultation ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+          "transition-colors py-1.5",
+          pathname === "/about" ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
         )}
       >
-        <span>Bespoke Salon Consultation</span>
-        {isConsultation && <span className="size-1.5 rounded-full bg-primary" />}
+        Our Heritage &amp; Thrissur Lineage
+      </Link>
+
+      <Link
+        href="/#vault-carousel"
+        onClick={(e) => handleAnchorClick("vault-carousel", e)}
+        className="text-muted-foreground hover:text-foreground transition-colors py-1.5"
+      >
+        Archival Gold &amp; Diamond Vault
       </Link>
 
       <Link
@@ -250,24 +255,16 @@ function MobileNavDrawerLinks({ onClose }: { onClose: () => void }) {
         Optical &amp; Metallurgy Studio
       </Link>
 
-      <Link
-        href="/#vault"
-        onClick={(e) => handleAnchorClick("vault", e)}
-        className="text-muted-foreground hover:text-foreground transition-colors py-1.5"
-      >
-        Vendôme Lapidary Vault
-      </Link>
-
       <div className="border-t border-border pt-6 mt-4 flex flex-col gap-4">
         <div className="text-xs text-muted-foreground">
           <span className="font-mono block uppercase tracking-widest text-[11px] mb-1.5">
-            Place Vendôme Concierge
+            Kerala &amp; Dubai Concierge
           </span>
           <a
-            href="tel:+33142680000"
+            href="tel:+914842389000"
             className="text-foreground hover:text-primary transition-colors font-mono font-medium block text-sm"
           >
-            +33 1 42 68 00 00
+            +91 484 238 9000
           </a>
         </div>
         <Link
@@ -291,16 +288,16 @@ export function SiteHeader({
 
   return (
     <div className="w-full bg-background text-foreground">
-      {/* Top Architectural Quiet Bar */}
-      <div className="bg-secondary px-6 md:px-12 xl:px-16 py-2.5 text-[13px] sm:text-sm text-muted-foreground flex justify-between items-center tracking-wide">
-        <span className="truncate pr-4">{announcementBar}</span>
+      {/* Top Architectural Noir Quiet Bar */}
+      <div className="dark bg-background border-b border-border/80 px-4 sm:px-6 md:px-12 xl:px-16 py-2.5 text-[12px] sm:text-[13px] text-muted-foreground flex justify-between items-center tracking-wide">
+        <span className="truncate pr-4 text-foreground/90">{announcementBar}</span>
         <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-          <span className="hidden md:inline">{BRAND.citiesSummary}</span>
-          <span className="hidden md:inline opacity-30">/</span>
+          <span className="hidden md:inline text-muted-foreground">{BRAND.citiesSummary}</span>
+          <span className="hidden md:inline text-border">/</span>
           <Link
             href="/admin/login"
             prefetch={true}
-            className="text-muted-foreground hover:text-foreground transition-colors font-medium text-[13px] sm:text-sm"
+            className="text-muted-foreground hover:text-foreground transition-colors font-medium text-[12px] sm:text-[13px]"
           >
             Director Portal
           </Link>
@@ -308,7 +305,7 @@ export function SiteHeader({
       </div>
 
       {/* Main Haute Joaillerie Header: Symmetrical 3-Column Architecture */}
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm px-6 md:px-12 xl:px-16 py-5 md:py-6">
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm px-4 sm:px-6 md:px-12 xl:px-16 py-4 md:py-6">
         {/* Desktop & Tablet View: Strictly Symmetrical 3-Column Grid */}
         <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
           {/* Left Wing (1fr): Primary Salons */}
@@ -339,11 +336,11 @@ export function SiteHeader({
         </div>
 
         {/* Mobile View: Balanced Minimal Bar with Sheet Drawer */}
-        <div className="flex md:hidden items-center justify-between">
+        <div className="flex md:hidden items-center justify-between gap-2 w-full">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
               aria-label="Open Navigation Menu"
-              className="p-2 -ml-2 text-foreground hover:text-primary transition-colors focus:outline-none cursor-pointer"
+              className="p-2 -ml-2 text-foreground hover:text-primary transition-colors focus:outline-none cursor-pointer shrink-0"
             >
               <Menu className="size-6" />
             </SheetTrigger>
@@ -362,20 +359,22 @@ export function SiteHeader({
             </SheetContent>
           </Sheet>
 
-          {/* Centered Wordmark on Mobile */}
-          <Link href="/" prefetch={true} className="text-center px-2">
-            <span className="font-heading text-lg sm:text-xl font-normal tracking-wide text-foreground block whitespace-nowrap">
+          {/* Centered Wordmark on Mobile (with min-w-0 and max-w to prevent button squeezing) */}
+          <Link href="/" prefetch={true} className="text-center px-1 min-w-0 max-w-[190px] sm:max-w-none truncate">
+            <span className="font-heading text-base sm:text-xl font-normal tracking-wide text-foreground block truncate">
               {atelierName}
             </span>
-            <span className="text-[13px] tracking-widest uppercase text-muted-foreground block -mt-0.5 whitespace-nowrap">
+            <span className="text-[11px] sm:text-xs tracking-widest uppercase text-muted-foreground block -mt-0.5 truncate">
               {BRAND.headquarters.district}
             </span>
           </Link>
 
-          {/* Mobile Right CTA Button */}
-          <Suspense fallback={null}>
-            <MobileAction />
-          </Suspense>
+          {/* Mobile Right CTA Button with guaranteed spacing */}
+          <div className="shrink-0 flex items-center justify-end pl-1">
+            <Suspense fallback={null}>
+              <MobileAction />
+            </Suspense>
+          </div>
         </div>
       </header>
     </div>

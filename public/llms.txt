@@ -1,39 +1,40 @@
-# Étoile Atelier — Haute Joaillerie & Fine Lapidary Arts
+# Amara Gold — Sovereign 22K High Jewelry & Kerala Goldsmith Lineage
 
-> Handcrafted fine jewelry, ethical diamonds, rare gemstones, and bespoke atelier creations sculpted in Place Vendôme since 1924.
+> Master-crafted 22K sovereign gold (BIS 916 certified), certified natural VVS diamonds, uncut Polki diamonds, and royal bridal trousseaus hand-forged in Thrissur, Kerala and Dubai DIFC since 1993.
 
 ## About the Maison
-Étoile Atelier is an independent Parisian high-jewelry maison headquartered at 12 Place Vendôme, Paris. The atelier specializes in handcrafted bespoke creations, unheated Ceylon sapphires, Muzo emeralds, and certified natural diamonds set exclusively in solid Platinum 950 and 18-karat recycled gold.
+Amara Gold is an imperial South Indian fine jewelry atelier rooted in the generational master goldsmith traditions of Thrissur, Kerala. The maison sculpts certified BIS 916 sovereign gold, rare Zambian emeralds, untreated Ceylon sapphires, and certified natural diamonds into contemporary heirloom jewelry and bridal trousseaus.
 
-## Salons & Private Appointments
-- **Paris Salon & Workshops:** 12 Place Vendôme, 75001 Paris, France
-- **Geneva Salon:** Rue du Rhône 42, 1204 Genève, Switzerland
-- **London Salon:** 14 New Bond Street, Mayfair, London, UK
-- **New York Salon:** 680 Madison Avenue, New York, NY, USA
+## Salons & Private Viewing Lounges
+- **Thrissur Swarna Salon:** 18 Round West, Thrissur 680001, Kerala, India
+- **Kochi Marine Drive Salon:** Marine Drive Promenade, Kochi 682031, Kerala, India
+- **Kozhikode Royal Suite:** Bank Road, Kozhikode 673001, Kerala, India
+- **Dubai DIFC Private Salon:** Gate Precinct 4, DIFC, Dubai, United Arab Emirates
 
-Private viewing appointments and bespoke commissions can be scheduled online or via direct concierge inquiry:
-- Concierge: concierge@etoile-atelier.com
-- Telephone: +1 (800) 458-9214
+Private bridal viewing appointments and bespoke heirloom commissions can be scheduled online or via direct concierge inquiry:
+- Concierge Email: concierge@amaragold.com
+- Telephone: +91 487 242 1100 / +971 4 362 7000
 
 ## High Jewelry Collections
-- **Solitaire High Jewels:** Archival four-prong and tension-set natural diamond rings in solid Platinum 950.
-- **Rare Gemstone Rings:** Certified unheated Ceylon sapphires, Colombian Muzo emeralds, and Pigeon Blood rubies.
-- **Haute Collars & Pendants:** Hand-fabricated pavé collars and signature celestial pendants.
-- **Bespoke Cuffs & Bangles:** Solid precious metal bangles with concealed clasp engineering.
+- **Bridal Harams & Malas:** Sovereign 22K gold Manga Maala, Palakka long sautoirs, and Mullamottu harams.
+- **Kasavu Kadas & Bangles:** Solid 22K sculpted openwork Kasavu filigree kadas with diamond pavé accents.
+- **Heritage Palakka & Temple:** Travancore royal cabochon emeralds and rubies in sovereign gold settings.
+- **Diamond Solitaires:** Certified natural VVS solitaires and eternity bands set in 22K gold and Platinum 950.
+- **Jimikkis & Earrings:** Sovereign 22K gold temple bell Jimikkis and royal Kasavu studs.
+- **Bullion & Coins:** 24K 999 pure and 22K 916 BIS hallmarked minted gold sovereigns.
 
 ## Atelier Governance & Ethics
-- **Metallurgy:** Certified solid Platinum 950 metallurgy and 18-karat recycled gold.
-- **Ethical Sourcing:** Strict Kimberley Process compliance, audited conflict-free diamonds.
-- **Certification:** Dual certification by the Gemological Institute of America (GIA) and the Laboratoire Français de Gemmologie (LFG).
-- **Archival Provenance:** All historic motifs respect archival French jewelry heritage.
+- **Purity & Hallmarking:** 100% BIS 916 sovereign hallmark with government laser-engraved HUID codes.
+- **Diamond Certification:** Full laboratory dossiers from GIA (Gemological Institute of America) and IGI.
+- **Ethical Metallurgy:** Conflict-free certified bullion with complete audit provenance.
 
 ## Key URLs
 - Homepage: /
 - Jewelry Collections: /collections
 - Bespoke Consultation Salon: /consultation
-- Terms of Service & Governance: /terms
-- Privacy Policy & Discretion Charter: /privacy
-- Historical Provenance & Ledger: /#provenance
+- Terms of Governance: /terms
+- Privacy Policy: /privacy
+- Daily Benchmark Gold Rates: /#gold-rates
 
 ## System Architecture (For AI & Technical Agents)
 - Framework: Next.js (App Router) + React 19

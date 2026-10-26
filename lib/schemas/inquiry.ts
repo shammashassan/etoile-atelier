@@ -1,19 +1,28 @@
 import { z } from "zod";
 
 export const INQUIRY_TYPES = [
+  "Kerala Bridal Trousseau (20+ Pavans)",
   "Custom Solitaire Engagement Ring",
-  "Bespoke High Jewelry Commission",
+  "Heritage Antique & Temple Gold Commission",
   "Private Atelier Viewing Appointment",
-  "Heritage Gemstone Resetting",
-  "Anniversary Band Design",
+  "Family Gold Remodeling & Exchange",
+  "Anniversary Band & Diamond Jewelry",
 ] as const;
 
 export const BUDGET_RANGES = [
-  "$2,500 – $5,000",
-  "$5,000 – $15,000",
-  "$15,000 – $35,000",
-  "$35,000 – $75,000",
-  "$75,000+",
+  "₹1,00,000 – ₹3,00,000 (15–40g)",
+  "₹3,00,000 – ₹7,00,000 (5–10 Pavans)",
+  "₹7,00,000 – ₹15,00,000 (10–20 Pavans)",
+  "₹15,00,000 – ₹35,00,000 (20–50 Pavans)",
+  "₹35,00,000+ (Imperial Bridal Trousseau)",
+] as const;
+
+export const SHOWROOM_LOCATIONS = [
+  "Kochi • Marine Drive Flagship",
+  "Kozhikode • Mavoor Road Lounge",
+  "Thrissur • Round West Sovereign Salon",
+  "Dubai • DIFC Gate Precinct Suite",
+  "Virtual WhatsApp Video Consultation",
 ] as const;
 
 export const INQUIRY_STATUSES = [
@@ -31,6 +40,7 @@ export const InquirySchema = z.object({
   preferredDate: z.string().min(1, "Preferred date is required"),
   jewelryType: z.enum(INQUIRY_TYPES),
   budgetRange: z.enum(BUDGET_RANGES),
+  showroomLocation: z.string().optional().default("Kochi • Marine Drive Flagship"),
   notes: z.string().max(1000, "Notes cannot exceed 1000 characters").optional().default(""),
   status: z.enum(INQUIRY_STATUSES).default("pending"),
   createdAt: z.date().default(() => new Date()),

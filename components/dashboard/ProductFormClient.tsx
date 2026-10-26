@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ArrowLeft, Save, UploadCloud, ShieldAlert } from "lucide-react";
+import { ArrowLeft, Save, UploadCloud, ShieldAlert, Trash2, Upload, Loader2 } from "lucide-react";
 import Link from "next/link";
 import {
   ProductSchema,
@@ -53,7 +53,7 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
     setValue,
     formState: { errors },
   } = useForm<Product>({
-    resolver: zodResolver(ProductSchema),
+    resolver: zodResolver(ProductSchema) as any,
     defaultValues: initialProduct || {
       title: "",
       slug: "",
@@ -390,50 +390,105 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
               <CardTitle>High-Resolution Imagery</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Local File Upload Button */}
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border border-dashed border-border p-4 bg-muted/10">
-                <div className="space-y-0.5">
-                  <span className="text-xs font-medium text-foreground block">
-                    Upload Photograph from Device
-                  </span>
-                  <span className="text-xs text-muted-foreground block">
-                    Saved directly to production asset storage (JPEG, PNG, WEBP up to 10MB)
-                  </span>
-                </div>
-                <div>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                    accept="image/*"
-                    className="hidden"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={isUploading}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <UploadCloud data-icon="inline-start" />
-                    {isUploading ? "Uploading File..." : "Choose Image File"}
-                  </Button>
-                </div>
-              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                accept="image/*"
+                className="hidden"
+              />
+              <input type="hidden" {...register("images.0.url")} />
+              {errors.images?.[0]?.url && (
+                <FieldError>{errors.images[0].url.message}</FieldError>
+              )}
 
-              <Field>
-                <FieldLabel htmlFor="imageUrl" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Primary Image URL or Asset Path *
-                </FieldLabel>
-                <Input
-                  id="imageUrl"
-                  {...register("images.0.url")}
-                  placeholder="https://res.cloudinary.com/... or /images/..."
-                />
-                {errors.images?.[0]?.url && (
-                  <FieldError>{errors.images[0].url.message}</FieldError>
-                )}
-              </Field>
+              {/* Case 1: Image exists - show preview with Change/Remove actions, hide upload dropzone */}
+              {imagesValue?.[0]?.url ? (
+                <div className="border border-border p-4 bg-muted/20 space-y-3">
+                  <div className="flex items-center justify-between border-b border-border/40 pb-2.5">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Primary Catalog Photograph
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={isUploading}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="text-xs h-7 px-2.5 cursor-pointer"
+                      >
+                        <Upload className="size-3 mr-1" />
+                        {isUploading ? "Uploading..." : "Change Photo"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        disabled={isUploading}
+                        onClick={() => {
+                          setValue("images.0.url", "", { shouldDirty: true, shouldValidate: true });
+                        }}
+                        className="text-xs h-7 px-2.5 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
+                      >
+                        <Trash2 className="size-3 mr-1" />
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="relative size-24 shrink-0 overflow-hidden border border-border bg-background">
+                      <Image
+                        src={imagesValue[0].url}
+                        alt={imagesValue[0].alt || "Preview"}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                      {isUploading && (
+                        <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
+                          <Loader2 className="size-5 animate-spin text-primary" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="space-y-1 min-w-0">
+                      <span className="text-xs font-medium text-foreground block">
+                        Masterpiece Photo Ready
+                      </span>
+                      <span className="text-xs text-muted-foreground block">
+                        Stored securely on production cloud CDN
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Case 2: No image exists - show the upload box */
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border border-dashed border-border p-6 bg-muted/10 text-center sm:text-left">
+                  <div className="space-y-0.5">
+                    <span className="text-xs font-medium text-foreground block">
+                      Upload Photograph from Device
+                    </span>
+                    <span className="text-xs text-muted-foreground block">
+                      JPEG, PNG, or WEBP up to 10MB (automatically stored on CDN)
+                    </span>
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={isUploading}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="cursor-pointer"
+                    >
+                      <UploadCloud data-icon="inline-start" />
+                      {isUploading ? "Uploading File..." : "Choose Image File"}
+                    </Button>
+                  </div>
+                </div>
+              )}
 
               <Field>
                 <FieldLabel htmlFor="imageAlt" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -445,30 +500,6 @@ export function ProductFormClient({ initialProduct }: ProductFormClientProps = {
                   placeholder="Studio close-up of solitaire ring"
                 />
               </Field>
-
-              {/* Thumbnail Preview */}
-              {imagesValue?.[0]?.url && (
-                <div className="mt-4 flex items-center gap-4 border border-border p-3 bg-muted/20">
-                  <div className="relative size-20 shrink-0 overflow-hidden border border-border bg-background">
-                    <Image
-                      src={imagesValue[0].url}
-                      alt={imagesValue[0].alt || "Preview"}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                      unoptimized
-                    />
-                  </div>
-                  <div className="space-y-1 min-w-0">
-                    <span className="text-xs font-medium text-foreground block">
-                      Primary Asset Preview
-                    </span>
-                    <span className="text-xs text-muted-foreground block truncate max-w-sm font-mono">
-                      {imagesValue[0].url}
-                    </span>
-                  </div>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>

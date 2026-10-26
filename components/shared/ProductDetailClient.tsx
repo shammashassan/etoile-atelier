@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft, ShieldCheck, Check } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Check, MessageCircle, Scale, MapPin, Sparkles } from "lucide-react";
 import { type Product } from "@/lib/schemas/product";
 import { BRAND } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -72,7 +72,8 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         phone,
         preferredDate,
         jewelryType: "Private Atelier Viewing Appointment",
-        budgetRange: "$15,000 – $35,000",
+        budgetRange: "₹15,00,000 – ₹35,00,000 (20–50 Pavans)",
+        showroomLocation: "Kochi • Marine Drive Flagship",
         notes: `Interest in ${product.title} (${selectedMetal}). ${notes}`,
       });
 
@@ -86,35 +87,36 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   return (
     <div className="w-full bg-background text-foreground">
-      {/* Top Breadcrumb Navigation */}
+      {/* Top Black Noir Breadcrumb Navigation Strip */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-secondary/40 py-3.5 sm:py-4 px-6 md:px-12 xl:px-16"
+        className="dark bg-background border-b border-border/80 py-3 sm:py-3.5 px-6 md:px-12 xl:px-16 text-muted-foreground"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
-          <Button
-            render={<Link href="/collections" />}
-            nativeButton={false}
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground h-auto p-0 w-fit shrink-0"
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <Link
+            href="/collections"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors w-fit group shrink-0 cursor-pointer"
           >
-            <ArrowLeft className="size-3.5 sm:size-4" />
+            <ArrowLeft className="size-3.5 sm:size-4 text-muted-foreground group-hover:text-foreground group-hover:-translate-x-1 transition-all" />
             <span>Salon Collection</span>
-          </Button>
+          </Link>
 
           <Breadcrumb className="text-xs sm:text-sm overflow-hidden">
-            <BreadcrumbList className="text-xs sm:text-sm flex-nowrap overflow-hidden">
+            <BreadcrumbList className="text-xs sm:text-sm flex-nowrap overflow-hidden text-muted-foreground">
               <BreadcrumbItem className="shrink-0">
-                <BreadcrumbLink render={<Link href="/" />}>Atelier</BreadcrumbLink>
+                <BreadcrumbLink render={<Link href="/" />} className="text-muted-foreground hover:text-foreground transition-colors">
+                  Atelier
+                </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="shrink-0" />
+              <BreadcrumbSeparator className="shrink-0 text-border" />
               <BreadcrumbItem className="shrink-0">
-                <BreadcrumbLink render={<Link href="/collections" />}>{product.category}</BreadcrumbLink>
+                <BreadcrumbLink render={<Link href="/collections" />} className="text-muted-foreground hover:text-foreground transition-colors">
+                  {product.category}
+                </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="shrink-0" />
+              <BreadcrumbSeparator className="shrink-0 text-border" />
               <BreadcrumbItem className="min-w-0">
                 <BreadcrumbPage className="font-medium text-foreground truncate max-w-[200px] sm:max-w-xs md:max-w-sm lg:max-w-none">
                   {product.title}
@@ -208,11 +210,11 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </h1>
               <div className="pt-2 flex items-baseline gap-4">
                 <span className="font-heading text-2xl font-light text-foreground sm:text-3xl">
-                  ${product.price.toLocaleString()}
+                  {formatPrice(product.price, "INR")}
                 </span>
                 {product.compareAtPrice && (
                   <span className="text-base text-muted-foreground line-through">
-                    ${product.compareAtPrice.toLocaleString()}
+                    {formatPrice(product.compareAtPrice, "INR")}
                   </span>
                 )}
               </div>
@@ -225,9 +227,14 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-3 pt-2 border-t border-border/50"
             >
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
-                Selected Alloy: <strong className="text-foreground">{selectedMetal}</strong>
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+                  Selected Alloy: <strong className="text-foreground font-heading">{selectedMetal}</strong>
+                </span>
+                <span className="text-xs font-mono uppercase tracking-wider text-accent font-medium">
+                  BIS 916 &amp; Hallmark Certified
+                </span>
+              </div>
               <MetalSelector
                 metals={product.metals}
                 selectedMetal={selectedMetal}
@@ -270,11 +277,88 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               </div>
             </motion.div>
 
+            {/* Transparent Kerala Gold Weight & Hallmark Breakdown */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="bg-secondary/60 p-5 border border-border/70 space-y-3"
+            >
+              <div className="flex items-center justify-between pb-2 border-b border-border/40">
+                <span className="text-xs font-mono uppercase tracking-wider text-accent flex items-center gap-1.5">
+                  <Scale className="size-3.5" />
+                  <span>Sovereign Weight &amp; Price Transparency</span>
+                </span>
+                <span className="text-[11px] font-mono text-muted-foreground">
+                  HUID: {product.huidCode || "KL-916-GOVT"}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono">
+                {product.grossWeightGrams && (
+                  <div>
+                    <span className="text-muted-foreground text-[11px] block">Gross Weight</span>
+                    <span className="text-foreground font-semibold tabular-nums">{product.grossWeightGrams} g</span>
+                  </div>
+                )}
+                {product.netGoldWeightGrams && (
+                  <div>
+                    <span className="text-muted-foreground text-[11px] block">Net 916 Gold</span>
+                    <span className="text-accent font-semibold tabular-nums">
+                      {product.netGoldWeightGrams} g {product.pavanWeight ? `(${product.pavanWeight} Pavans)` : ""}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <span className="text-muted-foreground text-[11px] block">Gold Purity</span>
+                  <span className="text-foreground font-semibold">22K BIS 916</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-[11px] block">Making Charge (VA)</span>
+                  <span className="text-foreground font-semibold tabular-nums">
+                    {product.makingChargePercent ? `${product.makingChargePercent}%` : "8.5%"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-[11px] block">Applicable GST</span>
+                  <span className="text-foreground font-semibold">3% (Govt. Norm)</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-[11px] block">Exchange Value</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">100% Zero Deduction</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Showroom Physical Availability Matrix */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="p-4 bg-background border border-border text-xs space-y-2"
+            >
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <MapPin className="size-3.5 text-accent" />
+                <span>Showroom Availability</span>
+              </span>
+              <div className="flex flex-wrap gap-2 text-[11px] font-mono">
+                <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                  Kochi Marine Drive: Available Today
+                </span>
+                <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                  Thrissur Swarna Salon: In Vault
+                </span>
+                <span className="px-2.5 py-1 bg-secondary text-muted-foreground border border-border">
+                  Kozhikode &amp; Dubai: 24h Transit
+                </span>
+              </div>
+            </motion.div>
+
             {/* Craft Narrative */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-3"
             >
               <h3 className="font-heading text-lg font-normal text-foreground">
@@ -290,145 +374,159 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-4 pt-4"
+              className="space-y-3 pt-4"
             >
-              <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
-                <DialogTrigger
-                  render={
-                    <Button size="lg" className="w-full text-xs font-semibold uppercase tracking-wider">
-                      Request Private Salon Viewing
-                    </Button>
-                  }
-                />
-                <DialogPortal>
-                  <DialogOverlay />
-                  <DialogContent className="max-w-md bg-background border border-border">
-                    <DialogHeader>
-                      <DialogTitle className="font-heading text-xl font-normal">
-                        Private Atelier Consultation
-                      </DialogTitle>
-                      <DialogDescription className="text-xs text-muted-foreground uppercase tracking-wider">
-                        Schedule a private viewing of {product.title} with an atelier gemologist.
-                      </DialogDescription>
-                    </DialogHeader>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
+                  <DialogTrigger
+                    render={
+                      <Button variant="accent" size="lg" className="w-full text-xs font-semibold uppercase tracking-wider">
+                        Book Private Viewing
+                      </Button>
+                    }
+                  />
+                  <DialogPortal>
+                    <DialogOverlay />
+                    <DialogContent className="max-w-md bg-background border border-border">
+                      <DialogHeader>
+                        <DialogTitle className="font-heading text-xl font-normal">
+                          Private Atelier Consultation
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-muted-foreground uppercase tracking-wider">
+                          Schedule a private viewing of {product.title} with an atelier gemologist.
+                        </DialogDescription>
+                      </DialogHeader>
 
-                    {isSubmitted ? (
-                      <div className="py-8 text-center space-y-4">
-                        <SuccessCheckmark size={56} className="mx-auto" />
-                        <div className="space-y-1">
-                          <h4 className="font-heading text-lg text-foreground">
-                            Viewing Requested
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Our concierge will contact you via {email || "email"} within 24 hours to confirm your private appointment.
-                          </p>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setIsSubmitted(false);
-                            setIsBookingOpen(false);
-                          }}
-                        >
-                          Close Confirmation
-                        </Button>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleBookingSubmit} className="space-y-4 pt-2">
-                        <FieldGroup className="gap-4">
-                          <Field>
-                            <FieldLabel htmlFor="booking-name" className="text-xs text-muted-foreground uppercase tracking-wider">
-                              Your Full Name *
-                            </FieldLabel>
-                            <Input
-                              id="booking-name"
-                              value={fullName}
-                              onChange={(e) => setFullName(e.target.value)}
-                              required
-                              placeholder="Lady Evelyn Sinclair"
-                              className="text-xs"
-                            />
-                          </Field>
-
-                          <div className="grid grid-cols-2 gap-3">
-                            <Field>
-                              <FieldLabel htmlFor="booking-email" className="text-xs text-muted-foreground uppercase tracking-wider">
-                                Email Address *
-                              </FieldLabel>
-                              <Input
-                                id="booking-email"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                placeholder="evelyn@sinclair.com"
-                                className="text-xs"
-                              />
-                            </Field>
-                            <Field>
-                              <FieldLabel htmlFor="booking-phone" className="text-xs text-muted-foreground uppercase tracking-wider">
-                                Telephone *
-                              </FieldLabel>
-                              <Input
-                                id="booking-phone"
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                required
-                                placeholder="+1 (555) 019-2831"
-                                className="text-xs"
-                              />
-                            </Field>
+                      {isSubmitted ? (
+                        <div className="py-8 text-center space-y-4">
+                          <SuccessCheckmark size={56} className="mx-auto" />
+                          <div className="space-y-1">
+                            <h4 className="font-heading text-lg text-foreground">
+                              Viewing Requested
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              Our concierge will contact you via {email || "email"} within 24 hours to confirm your private appointment.
+                            </p>
                           </div>
-
-                          <Field>
-                            <FieldLabel htmlFor="booking-date" className="text-xs text-muted-foreground uppercase tracking-wider">
-                              Preferred Viewing Date *
-                            </FieldLabel>
-                            <Input
-                              id="booking-date"
-                              type="date"
-                              value={preferredDate}
-                              onChange={(e) => setPreferredDate(e.target.value)}
-                              required
-                              className="text-xs"
-                            />
-                          </Field>
-
-                          <Field>
-                            <FieldLabel htmlFor="booking-notes" className="text-xs text-muted-foreground uppercase tracking-wider">
-                              Special Requests / Sizing Details
-                            </FieldLabel>
-                            <Textarea
-                              id="booking-notes"
-                              value={notes}
-                              onChange={(e) => setNotes(e.target.value)}
-                              rows={3}
-                              placeholder="Ring size 6.5, interest in matching band..."
-                              className="text-xs"
-                            />
-                          </Field>
-                        </FieldGroup>
-
-                        <div className="flex justify-end gap-3 pt-2">
                           <Button
-                            type="button"
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
-                            onClick={() => setIsBookingOpen(false)}
+                            onClick={() => {
+                              setIsSubmitted(false);
+                              setIsBookingOpen(false);
+                            }}
                           >
-                            Cancel
-                          </Button>
-                          <Button type="submit" size="sm" disabled={isSubmitting}>
-                            {isSubmitting ? "Transmitting..." : "Confirm Viewing Request"}
+                            Close Confirmation
                           </Button>
                         </div>
-                      </form>
-                    )}
-                  </DialogContent>
-                </DialogPortal>
-              </Dialog>
+                      ) : (
+                        <form onSubmit={handleBookingSubmit} className="space-y-4 pt-2">
+                          <FieldGroup className="gap-4">
+                            <Field>
+                              <FieldLabel htmlFor="booking-name" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                Your Full Name *
+                              </FieldLabel>
+                              <Input
+                                id="booking-name"
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                                required
+                                placeholder="Lakshmi Menon"
+                                className="text-xs"
+                              />
+                            </Field>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <Field>
+                                <FieldLabel htmlFor="booking-email" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                  Email Address *
+                                </FieldLabel>
+                                <Input
+                                  id="booking-email"
+                                  type="email"
+                                  value={email}
+                                  onChange={(e) => setEmail(e.target.value)}
+                                  required
+                                  placeholder="lakshmi@example.com"
+                                  className="text-xs"
+                                />
+                              </Field>
+                              <Field>
+                                <FieldLabel htmlFor="booking-phone" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                  Telephone *
+                                </FieldLabel>
+                                <Input
+                                  id="booking-phone"
+                                  type="tel"
+                                  value={phone}
+                                  onChange={(e) => setPhone(e.target.value)}
+                                  required
+                                  placeholder="+91 98470 12345"
+                                  className="text-xs"
+                                />
+                              </Field>
+                            </div>
+
+                            <Field>
+                              <FieldLabel htmlFor="booking-date" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                Preferred Viewing Date *
+                              </FieldLabel>
+                              <Input
+                                id="booking-date"
+                                type="date"
+                                value={preferredDate}
+                                onChange={(e) => setPreferredDate(e.target.value)}
+                                required
+                                className="text-xs"
+                              />
+                            </Field>
+
+                            <Field>
+                              <FieldLabel htmlFor="booking-notes" className="text-xs text-muted-foreground uppercase tracking-wider">
+                                Special Requests / Sizing Details
+                              </FieldLabel>
+                              <Textarea
+                                id="booking-notes"
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                rows={3}
+                                placeholder="Preferred showroom (Kochi, Thrissur, Kozhikode, Dubai), pavan target, matching bridal pieces..."
+                                className="text-xs"
+                              />
+                            </Field>
+                          </FieldGroup>
+
+                          <div className="flex justify-end gap-3 pt-2">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setIsBookingOpen(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button type="submit" variant="accent" size="sm" disabled={isSubmitting}>
+                              {isSubmitting ? "Transmitting..." : "Confirm Viewing Request"}
+                            </Button>
+                          </div>
+                        </form>
+                      )}
+                    </DialogContent>
+                  </DialogPortal>
+                </Dialog>
+
+                <a
+                  href={`https://wa.me/914842389000?text=${encodeURIComponent(
+                    `Hello Amara Gold, I am inquiring about ${product.title} (SKU: ${product.sku}). Please share details and showroom availability.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 h-10 px-4 text-xs font-semibold uppercase tracking-wider bg-emerald-700 hover:bg-emerald-600 text-white transition-colors shadow-xs"
+                >
+                  <MessageCircle className="size-3.5" />
+                  <span>WhatsApp Concierge</span>
+                </a>
+              </div>
 
               <div className="flex items-center justify-between text-sm text-muted-foreground pt-4">
                 <span className="flex items-center gap-1.5">

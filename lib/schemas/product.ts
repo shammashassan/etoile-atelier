@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const METALS = [
+  "22k Yellow Gold",
   "18k Yellow Gold",
   "18k White Gold",
   "18k Rose Gold",
@@ -8,21 +9,32 @@ export const METALS = [
 ] as const;
 
 export const GEMSTONES = [
+  "Golconda Type IIa Diamond",
+  "Polki Natural Diamond",
   "Natural Diamond",
   "Lab-Grown Diamond",
+  "Unheated Kashmir Sapphire",
   "Royal Blue Sapphire",
+  "Zambian Emerald",
   "Colombian Emerald",
   "Burmese Ruby",
+  "Basra Natural Pearl",
   "Tahitian South Sea Pearl",
   "None",
 ] as const;
 
 export const CATEGORIES = [
+  "Bridal Harams & Malas",
+  "Kasavu Kadas & Bangles",
+  "Heritage Palakka & Temple",
+  "Diamond Solitaires",
+  "Jimikkis & Earrings",
   "Rings",
   "Necklaces",
   "Bracelets",
   "Earrings",
   "High Jewelry",
+  "Coins & Bullion",
 ] as const;
 
 export const STOCK_STATUSES = [
@@ -53,6 +65,12 @@ export const ProductSchema = z.object({
   caratWeight: z.number().positive().optional().nullable(),
   clarity: z.string().optional().nullable(),
   cutGrade: z.string().optional().nullable(),
+  grossWeightGrams: z.number().positive().optional().nullable(),
+  netGoldWeightGrams: z.number().positive().optional().nullable(),
+  pavanWeight: z.number().positive().optional().nullable(),
+  makingChargePercent: z.number().nonnegative().optional().nullable(),
+  goldPurity: z.string().optional().default("22K (916 BIS Hallmarked)"),
+  huidCode: z.string().optional().nullable(),
   images: z.array(ProductImageSchema).min(1, "Provide at least one image"),
   stockStatus: z.enum(STOCK_STATUSES),
   stockQuantity: z.number().int().nonnegative(),

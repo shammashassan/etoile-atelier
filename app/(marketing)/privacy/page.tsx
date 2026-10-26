@@ -58,7 +58,7 @@ export default async function PrivacyPage() {
   const settings = await getSiteSettings();
 
   return (
-    <div className="flex min-h-svh flex-col text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-svh flex-col text-foreground">
       {/* Uniform Haute Joaillerie Header */}
       <SiteHeader
         announcementBar={settings.announcementBar}
@@ -196,7 +196,7 @@ export default async function PrivacyPage() {
                   At {settings.atelierName}, discretion is the cornerstone of haute joaillerie. Rooted in the century-old tradition of Parisian high jewelry and Swiss private client confidentiality, we treat all personal, gemological, and financial information with utmost reserve.
                 </p>
                 <p>
-                  This charter outlines the protocols under which {BRAND.legalName} collects, stores, processes, and safeguards client information across our digital salon portal and our physical salons in Paris, Geneva, London, and New York.
+                  This charter outlines the protocols under which {BRAND.legalName} collects, stores, processes, and safeguards client information across our digital salon portal and our physical showrooms in Kochi, Kozhikode, Thrissur, and Dubai.
                 </p>
               </div>
             </section>

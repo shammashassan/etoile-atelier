@@ -24,7 +24,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/dashboard/NavUser";
-import { EtoileMark } from "@/components/shared/Logo";
+import { AmaraMark } from "@/components/shared/Logo";
 import { BRAND } from "@/lib/data";
 
 const NAV_ITEMS = [
@@ -66,7 +66,7 @@ export function DashboardSidebar() {
               className="h-10 data-open:bg-sidebar-accent group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:!justify-center group-data-[collapsible=icon]:mx-auto"
             >
               <div className="flex size-8 shrink-0 items-center justify-center border border-sidebar-border bg-sidebar-primary text-sidebar-primary-foreground">
-                <EtoileMark size={18} showHalo={false} className="text-sidebar-primary-foreground" />
+                <AmaraMark size={18} showHalo={false} className="text-sidebar-primary-foreground" />
               </div>
               <div className="flex flex-col text-left group-data-[collapsible=icon]:hidden">
                 <span className="font-heading text-sm font-normal tracking-widest uppercase text-sidebar-foreground">

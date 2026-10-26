@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         playfairDisplay.variable
       )}
     >
-      <body className="min-h-full flex flex-col text-foreground selection:bg-foreground selection:text-background">
+      <body className="min-h-full flex flex-col text-foreground selection:bg-accent selection:text-accent-foreground">
         <NuqsAdapter>
           <TooltipProvider>
             {children}

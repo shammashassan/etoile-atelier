@@ -5,6 +5,7 @@ import { getSiteSettings } from "@/lib/queries/settings";
 import { BRAND } from "@/lib/data";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { SiteFooter } from "@/components/shared/SiteFooter";
+import { DailyGoldRateBar } from "@/components/shared/DailyGoldRateBar";
 import { CollectionsFilterClient } from "@/components/shared/CollectionsFilterClient";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -23,7 +24,10 @@ export default async function CollectionsPage() {
   ]);
 
   return (
-    <div className="flex min-h-svh flex-col text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="flex min-h-svh flex-col text-foreground">
+      {/* Daily Live Benchmark Gold Rate Bar */}
+      <DailyGoldRateBar />
+
       {/* Uniform Haute Joaillerie Header */}
       <SiteHeader
         announcementBar={settings.announcementBar}

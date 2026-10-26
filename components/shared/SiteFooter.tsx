@@ -40,19 +40,22 @@ export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
 
           <div className="flex flex-col gap-2.5">
             <span className="font-medium text-foreground text-xs uppercase tracking-wider block">
-              Acquisitions
+              Acquisitions &amp; Heritage
             </span>
+            <Link href="/about" className="hover:text-foreground transition-colors leading-relaxed">
+              Our Heritage (Est. 1993)
+            </Link>
             <Link href="/collections" className="hover:text-foreground transition-colors leading-relaxed">
-              Solitaire High Jewels
+              Complete Sovereign Catalog
             </Link>
-            <Link href="/collections?category=Rings" className="hover:text-foreground transition-colors leading-relaxed">
-              Rare Gemstone Rings
+            <Link href="/collections?category=Bridal+Harams+%26+Malas" className="hover:text-foreground transition-colors leading-relaxed">
+              Manga Mala &amp; Kasu Malas
             </Link>
-            <Link href="/collections?category=Necklaces" className="hover:text-foreground transition-colors leading-relaxed">
-              Haute Collars &amp; Pendants
+            <Link href="/collections?category=Kasavu+Kadas+%26+Bangles" className="hover:text-foreground transition-colors leading-relaxed">
+              Thrissur Kasavu Kadas
             </Link>
             <Link href="/consultation" className="hover:text-foreground transition-colors leading-relaxed">
-              Bespoke Commissions
+              Bespoke Salon Commissions
             </Link>
           </div>
 
@@ -103,6 +106,10 @@ export function SiteFooter({ atelierName = BRAND.name }: SiteFooterProps) {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
               <span>© 2026 {atelierName}. All rights reserved.</span>
+              <span className="text-border/60 inline" aria-hidden="true">•</span>
+              <Link href="/about" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
+                Our Story
+              </Link>
               <span className="text-border/60 inline" aria-hidden="true">•</span>
               <Link href="/terms" className="hover:text-foreground transition-colors underline-offset-4 hover:underline">
                 Terms of Service
